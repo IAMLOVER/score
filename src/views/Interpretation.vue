@@ -12,23 +12,43 @@
           <span class="cb66">765</span>
         </div>
         <!-- 5个描述 -->
-        <div class="desc-item item1" :class="acitve==0?'active':null">
+        <div
+          class="desc-item item1"
+          :class="active==0?'active':null"
+          @click="slideTo(0)"
+        >
           <p class="img"></p>
           <p class="item-title">身份</p>
         </div>
-        <div class="desc-item item2" :class="acitve==1?'active':null">
+        <div
+          class="desc-item item2"
+          :class="active==1?'active':null"
+          @click="slideTo(1)"
+        >
           <p class="img"></p>
           <p class="item-title">大数据</p>
         </div>
-        <div class="desc-item item3" :class="acitve==2?'active':null">
+        <div
+          class="desc-item item3"
+          :class="active==2?'active':null"
+          @click="slideTo(2)"
+        >
           <p class="img"></p>
           <p class="item-title">人脉</p>
         </div>
-        <div class="desc-item item4" :class="acitve==3?'active':null">
+        <div
+          class="desc-item item4"
+          :class="active==3?'active':null"
+          @click="slideTo(3)"
+        >
           <p class="img"></p>
           <p class="item-title">履约</p>
         </div>
-        <div class="desc-item item5" :class="acitve==4?'active':null">
+        <div
+          class="desc-item item5"
+          :class="active==4?'active':null"
+          @click="slideTo(4)"
+        >
           <p class="img"></p>
           <p class="item-title">交易</p>
         </div>
@@ -107,15 +127,15 @@ export default {
   components: {},
   data() {
     return {
-      acitve:0, //控制雷达图显示高亮
-
+      active: 0 //控制雷达图显示高亮
     };
   },
   created() {
     // this.$tools.showLoading();
   },
   mounted() {
-    let swiper = new window.Swiper(".swiper-container", {
+    let _this = this;
+    this.swiper = new window.Swiper(".swiper-container", {
       loop: true,
       effect: "coverflow",
       slidesPerView: "auto",
@@ -128,9 +148,9 @@ export default {
       },
       centeredSlides: true,
       autoplay: false,
-      on:{
-        slideChangeTransitionEnd:function(){
-          console.log(this.activeIndex)
+      on: {
+        slideChange: function() {
+          _this.active = this.realIndex;
         }
       }
     });
@@ -138,6 +158,9 @@ export default {
   methods: {
     showMsg() {
       this.$tools.showMsg("功能正在开发，敬请期待...");
+    },
+    slideTo(index) {
+      this.swiper.slideToLoop(index, 300, false);
     }
   }
 };
@@ -149,9 +172,9 @@ export default {
   height: 100%;
   // BG DESC AREA
   .inter-bg-area {
-    padding-top: 0.32rem;
+    padding-top: 0.2rem;
     width: 100%;
-    height: 10.48rem;
+    height: 9.28rem;
     background: url("../assets/image/interpretation/inter_bg.jpg") no-repeat
       center center / 100% 100%;
 
@@ -205,6 +228,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
       .img {
         width: 0.34rem;
         height: 0.34rem;
@@ -278,10 +302,10 @@ export default {
     }
     // PREIOD 本期解读
     .preiod {
-      margin: 0.4rem auto 0;
+      margin: 0.35rem auto 0;
       width: 6.9rem;
-      height: 1.7rem;
-      padding: 0.22rem 0.3rem;
+      min-height: 1.7rem;
+      padding: 0.22rem 0.05rem .22rem 0.3rem;
       background-color: #fff;
       box-shadow: 0px 1px 12px 0px rgba(73, 73, 73, 0.14);
       border-radius: 0.1rem;
@@ -316,9 +340,11 @@ export default {
     height: 5rem;
     width: 100%;
     padding-bottom: 0.2rem;
-    bottom: 0.52rem;
+    bottom: 0.5rem;
     .swiper-slide {
       width: 4.32rem;
+      height: 4.8rem;
+      overflow: hidden;
       background-color: #fff;
       border-radius: 0.1rem;
       padding: 0.62rem 0.3rem 0;
