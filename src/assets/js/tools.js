@@ -4,7 +4,6 @@ axios.defaults.timeout = 180000;
 axios.defaults.baseURL = 'http://m.dazhongdianjin.cn';
 const ERR_OK = 0;
 let tools = (function () {
-  let grade = '';//信用级别
   // 请求数据
   function callServer(url, params, type) {
     if (!url) return;
@@ -238,7 +237,6 @@ let tools = (function () {
     hideLoading,
     addParamsForUrl,
     isWeiXin,
-    grade
   }
 })();
 

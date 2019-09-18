@@ -1,8 +1,8 @@
-import { Lazyload,Sticky } from "vant";
+import { Lazyload } from "vant";
 
 const vantComponents = {
   install(Vue) {
-    Vue.use(Lazyload).use(Sticky)
+    Vue.use(Lazyload)
   }
 };
 export default vantComponents;

@@ -23,7 +23,7 @@
       <ul class="four-content">
         <li
           class="four-item"
-          @click="showMsg"
+          @click="goToQuickScore"
         >
           <span class="item-icon kuaishutifen"></span>
           <span class="item-title">快速提分</span>
@@ -173,7 +173,7 @@ export default {
     return {
       nowTime: "", // 当前评估时间
       scoreData: 400, //信用分默认400
-      areaIcon: "icon4", //仪表盘背景图
+      areaIcon: "icon4" //仪表盘背景图
     };
   },
   created() {
@@ -202,32 +202,32 @@ export default {
       this.scoreData = random <= 400 ? 400 : random;
       if (this.scoreData >= 400 && this.scoreData < 550) {
         this.areaIcon = "icon4";
-        this.$tools.grade = 4; // 存入全局变量分数对应的级别
+        sessionStorage.grade = 4; // 存入sessionstorage对应的级别
         return;
       }
       if (this.scoreData >= 550 && this.scoreData < 650) {
         this.areaIcon = "icon5";
-        this.$tools.grade = 5;
+        sessionStorage.grade = 5;
         return;
       }
       if (this.scoreData >= 650 && this.scoreData < 750) {
         this.areaIcon = "icon6";
-        this.$tools.grade = 6;
+        sessionStorage.grade = 6;
         return;
       }
       if (this.scoreData >= 750 && this.scoreData < 850) {
         this.areaIcon = "icon7";
-        this.$tools.grade = 7;
+        sessionStorage.grade = 7;
         return;
       }
       if (this.scoreData >= 850 && this.scoreData < 950) {
         this.areaIcon = "icon8";
-        this.$tools.grade = 8;
+        sessionStorage.grade = 8;
         return;
       }
       if (this.scoreData >= 950) {
         this.areaIcon = "icon9";
-        this.$tools.grade = 9;
+        sessionStorage.grade = 9;
         return;
       }
     },
@@ -237,6 +237,12 @@ export default {
     goToInterpretation() {
       this.$router.push({
         name: "Interpretation",
+        query: { scoreData: this.scoreData }
+      });
+    },
+    goToQuickScore() {
+      this.$router.push({
+        name: "QuickScore",
         query: { scoreData: this.scoreData }
       });
     }

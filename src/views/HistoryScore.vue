@@ -38,9 +38,18 @@
       <!-- HISTORY AREA -->
       <section class="history-list-area">
         <!-- 吸顶 -->
-        <van-sticky>
-          <p class="history-list-title">历史消息</p>
-        </van-sticky>
+        <div
+          class="navWrap"
+          ref="navWrap"
+        >
+          <div
+            class="nav"
+            ref="navContent"
+          >
+            <p class="history-list-title">历史消息</p>
+          </div>
+        </div>
+
         <div
           id="upscrollWarp"
           class="upscroll-wrap"
@@ -104,7 +113,11 @@ export default {
   },
   created() {
     // 从全局变量中取出记录的级别
-    this.active = this.$tools.grade;
+    this.active = sessionStorage.grade;
+  },
+  mounted() {
+    // 设置sticky吸顶效果
+    this.sticky();
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -147,6 +160,22 @@ export default {
         .catch(error => {
           mescroll.endErr();
         });
+    },
+    // 历史消息吸顶效果
+    sticky() {
+      let { navWrap, navContent } = this.$refs;
+      if (this.mescroll.os.ios) {
+        navWrap.classList.add("nav-sticky");
+      } else {
+        this.mescroll.onScroll = function(mescroll, y, isUp) {
+          // 列表当前滚动的距离y
+          if (y > navWrap.offsetTop) {
+            navContent.classList.add("nav-fixed");
+          } else {
+            navContent.classList.remove("nav-fixed");
+          }
+        };
+      }
     }
   }
 };
@@ -198,6 +227,7 @@ export default {
         .tips {
           width: 6rem;
           line-height: 0.4rem;
+          height: 0.4rem;
           margin: 0 auto;
           color: #333;
           display: grid;
@@ -246,13 +276,45 @@ export default {
   // HISTORY LIST AREA
   .history-list-area {
     padding-top: 1.6rem;
-    .history-list-title {
-      color: #999999;
-      font-weight: 500;
-      line-height: 0.64rem;
-      background-color: #fff;
-      padding-left: 0.3rem;
+    .navWrap {
+      width: 100%;
+      height: 0.8rem;
+      .nav {
+        background-color: #fff;
+        height: 0.8rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-left: 0.3rem;
+      }
+      .history-list-title {
+        color: #999999;
+        font-weight: 500;
+      }
     }
+
+    //ios使用sticky样式实现
+    .nav-sticky {
+      z-index: 9999; //需设置zIndex,避免在悬停时,可能会被列表数据遮住
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0; //相对mescroll的div悬停的位置
+    }
+
+    /*android和pc端悬停*/
+    .nav-fixed {
+      z-index: 9999;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
     .upscroll-wrap {
       border-top: 0.02rem solid #efeff1;
       .history-list {
