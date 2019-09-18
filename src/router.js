@@ -10,7 +10,7 @@ const routes = [
   { path: '/', redirect: '/CreditScore' },
   { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
   { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
-  { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用分历史' } },
+  { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用历史' } },
   { path: '/QuickScore', component: QuickScore, name: 'QuickScore', meta: { title: '快速提分' } }
 ]
 

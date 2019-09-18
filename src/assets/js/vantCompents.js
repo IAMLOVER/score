@@ -1,10 +1,8 @@
-import { Lazyload, Swipe, SwipeItem } from "vant";
+import { Lazyload,Sticky } from "vant";
 
 const vantComponents = {
   install(Vue) {
-    Vue.use(Lazyload)
-      .use(Swipe)
-      .use(SwipeItem)
+    Vue.use(Lazyload).use(Sticky)
   }
 };
 export default vantComponents;

@@ -4,7 +4,7 @@
     <section class="inter-bg-area">
       <span
         class="button history"
-        @click="showMsg"
+        @click="goToHistory"
       >历史信用分</span>
       <section class="inter-bg-desc">
         <!-- 图片 -->
@@ -127,7 +127,7 @@ export default {
   components: {},
   data() {
     return {
-      scoreData: "", //信用分
+      scoreData: 400, //信用分
       active: 0 //控制雷达图显示高亮
     };
   },
@@ -161,8 +161,8 @@ export default {
     }, 300);
   },
   methods: {
-    showMsg() {
-      this.$tools.showMsg("功能正在开发，敬请期待...");
+    goToHistory() {
+      this.$router.push({name:'HistoryScore'});
     },
     slideTo(index) {
       this.swiper.slideToLoop(index, 300, false);
