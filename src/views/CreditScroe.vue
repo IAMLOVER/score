@@ -5,8 +5,11 @@
       class="banner-area"
       @click="goToInterpretation"
     >
-      <div class="score-area">
-        <p class="score">500</p>
+      <div
+        class="score-area"
+        :class="areaIcon"
+      >
+        <p class="score">{{scoreData}}</p>
         <p>信用良好</p>
       </div>
       <p class="updatetime-area">
@@ -168,7 +171,9 @@ export default {
   components: {},
   data() {
     return {
-      nowTime: ""
+      nowTime: "", // 当前评估时间
+      scoreData: 400, //信用分默认400
+      areaIcon: "icon4" //仪表盘背景图
     };
   },
   created() {
@@ -191,12 +196,43 @@ export default {
           .padStart(2, "0"),
         ymd = year + "-" + month + "-" + day;
       this.nowTime = ymd;
+
+      // 测试用例，随机生成大于500的数
+      let random = Math.ceil(Math.random() * 1000);
+      this.scoreData = random <= 400 ? 400 : random;
+      if (this.scoreData >= 400 && this.scoreData < 550) {
+        this.areaIcon = "icon4";
+        return;
+      }
+      if (this.scoreData >= 550 && this.scoreData < 650) {
+        this.areaIcon = "icon5";
+        return;
+      }
+      if (this.scoreData >= 650 && this.scoreData < 750) {
+        this.areaIcon = "icon6";
+        return;
+      }
+      if (this.scoreData >= 750 && this.scoreData < 850) {
+        this.areaIcon = "icon7";
+        return;
+      }
+      if (this.scoreData >= 850 && this.scoreData < 950) {
+        this.areaIcon = "icon8";
+        return;
+      }
+      if (this.scoreData >= 950) {
+        this.areaIcon = "icon9";
+        return;
+      }
     },
     showMsg() {
       this.$tools.showMsg("功能正在开发中，敬请期待...");
     },
     goToInterpretation() {
-      this.$router.push({ name: "Interpretation" });
+      this.$router.push({
+        name: "Interpretation",
+        query: { scoreData: this.scoreData }
+      });
     }
   }
 };
@@ -220,12 +256,31 @@ export default {
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     padding-top: 0.7rem;
-    background: url("../assets/image/creditScore/rate_icon.png") no-repeat
-      center center/100% 100%;
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
     color: #fff;
     font-size: 0.3rem;
     line-height: 0.3rem;
     text-align: center;
+    &.icon4 {
+      background-image: url("../assets/image/creditScore/400.png");
+    }
+    &.icon5 {
+      background-image: url("../assets/image/creditScore/550.png");
+    }
+    &.icon6 {
+      background-image: url("../assets/image/creditScore/650.png");
+    }
+    &.icon7 {
+      background-image: url("../assets/image/creditScore/750.png");
+    }
+    &.icon8 {
+      background-image: url("../assets/image/creditScore/850.png");
+    }
+    &.icon9 {
+      background-image: url("../assets/image/creditScore/950.png");
+    }
 
     .score {
       font-size: 0.8rem;

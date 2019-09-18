@@ -16,20 +16,14 @@
   <title>信用分</title>
   <!-- COMPUTED REM -->
   <script>
-    ~ function () {
-      let evt = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-
-      function computed() {
-        let HTML = document.documentElement,
-          deviceW = HTML.clientWidth,
-          designW = 750,
-          ratio = deviceW / designW * 100;
-        if (deviceW >= designW) ratio = 100;
-        HTML.style.fontSize = ratio + 'px';
-      }
-      computed();
-      window.addEventListener(evt, computed);
-    }();
+    function adjuest() {
+      //-> 按照设计稿标准比例,在根据当前屏幕的尺寸,动态的计算出当前页面的REM比例,保证在不同屏幕的下的响应式开发
+      var desW = 750;
+      var winW = document.documentElement.clientWidth;
+      document.documentElement.style.fontSize = winW / desW * 100 + 'px';
+    };
+    adjuest();
+    window.onresize = adjuest
   </script>
 </head>
 

@@ -9,7 +9,7 @@
       <section class="inter-bg-desc">
         <!-- 图片 -->
         <div class="inter-bg-1">
-          <span class="cb66">765</span>
+          <span class="cb66">{{scoreData}}</span>
         </div>
         <!-- 5个描述 -->
         <div
@@ -53,69 +53,69 @@
           <p class="item-title">交易</p>
         </div>
       </section>
+      <!-- PREIOD AREA -->
       <section class="preiod">
         <p class="preiod-title">本期解读</p>
         <div class="preiod-desc">
           保持你个人信息的稳定，避免发生逾期行为，这对你的信用分非常重要，本期你做得很好，加油哦
         </div>
       </section>
-    </section>
-
-    <!-- SWIPER AREA -->
-    <div class="swiper-container swiper-area">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide slide1">
-          <p class="slide-title ">身份特征</p>
-          <p class="slide-desc">
-            我们会从您的实民情况、社会属性、居住环境、教育情况进行考察
-          </p>
-          <p class="how-do">如何提升“身份特征”评估？</p>
-          <p class="slide-desc">
-            提供真实、完整、丰富的个人信息、有助于提升“身份”维度评估值
-          </p>
-        </div>
-        <div class="swiper-slide slide2">
-          <p class="slide-title ">大数据</p>
-          <p class="slide-desc">
-            学而时习之，不亦说乎?有朋自远方来，不亦乐乎?人不知而不悦,不亦君子乎?
-          </p>
-          <p class="how-do">如何提升“身份特征”评估？</p>
-          <p class="slide-desc">
-            学习知识后时常复习它，不也是愉快的吗?有志同道合的朋友从远方来访，不也很快乐吗?
-          </p>
-        </div>
-        <div class="swiper-slide slide3">
-          <p class="slide-title ">人脉</p>
-          <p class="slide-desc">
-            默而识之,学而不厌,诲人不倦,何有于我哉!
-          </p>
-          <p class="how-do">如何提升“身份特征”评估？</p>
-          <p class="slide-desc">
-            默默地记住所学的知识,学习却不感觉满足,教导他人不知疲倦,这些对我来说,有哪一点是我所具备的呢?
-          </p>
-        </div>
-        <div class="swiper-slide slide4">
-          <p class="slide-title ">履约</p>
-          <p class="slide-desc">
-            三人行,必有我师焉；择其善者而从之,其不善者而改之。
-          </p>
-          <p class="how-do">如何提升“身份特征”评估？</p>
-          <p class="slide-desc">
-            几个人在一起走路,其中一定有人可以当我的老师.应当选择他们的优点去学习,
-          </p>
-        </div>
-        <div class="swiper-slide slide5">
-          <p class="slide-title ">交易</p>
-          <p class="slide-desc">
-            不愤不启,不悱不发.举一隅不以三隅反,则不复也
-          </p>
-          <p class="how-do">如何提升“身份特征”评估？</p>
-          <p class="slide-desc">
-            不到他想弄明白却不能的时候不去开导他,不到他想说明白却不说出来的时候不去启发他
-          </p>
+      <!-- SWIPER AREA -->
+      <div class="swiper-container swiper-area">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide slide1">
+            <p class="slide-title ">身份特征</p>
+            <p class="slide-desc">
+              我们会从您的实民情况、社会属性、居住环境、教育情况进行考察
+            </p>
+            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="slide-desc">
+              提供真实、完整、丰富的个人信息、有助于提升“身份”维度评估值
+            </p>
+          </div>
+          <div class="swiper-slide slide2">
+            <p class="slide-title ">大数据</p>
+            <p class="slide-desc">
+              学而时习之，不亦说乎?有朋自远方来，不亦乐乎?人不知而不悦,不亦君子乎?
+            </p>
+            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="slide-desc">
+              学习知识后时常复习它，不也是愉快的吗?有志同道合的朋友从远方来访，不也很快乐吗?
+            </p>
+          </div>
+          <div class="swiper-slide slide3">
+            <p class="slide-title ">人脉</p>
+            <p class="slide-desc">
+              默而识之,学而不厌,诲人不倦,何有于我哉!
+            </p>
+            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="slide-desc">
+              默默地记住所学的知识,学习却不感觉满足,教导他人不知疲倦,这些对我来说,有哪一点是我所具备的呢?
+            </p>
+          </div>
+          <div class="swiper-slide slide4">
+            <p class="slide-title ">履约</p>
+            <p class="slide-desc">
+              三人行,必有我师焉；择其善者而从之,其不善者而改之。
+            </p>
+            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="slide-desc">
+              几个人在一起走路,其中一定有人可以当我的老师.应当选择他们的优点去学习,
+            </p>
+          </div>
+          <div class="swiper-slide slide5">
+            <p class="slide-title ">交易</p>
+            <p class="slide-desc">
+              不愤不启,不悱不发.举一隅不以三隅反,则不复也
+            </p>
+            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="slide-desc">
+              不到他想弄明白却不能的时候不去开导他,不到他想说明白却不说出来的时候不去启发他
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </section>
 </template>
 
@@ -127,11 +127,13 @@ export default {
   components: {},
   data() {
     return {
+      scoreData: "", //信用分
       active: 0 //控制雷达图显示高亮
     };
   },
   created() {
-    // this.$tools.showLoading();
+    this.scoreData = this.$route.query.scoreData;
+    this.$tools.showLoading();
   },
   mounted() {
     let _this = this;
@@ -154,6 +156,9 @@ export default {
         }
       }
     });
+    setTimeout(() => {
+      this.$tools.hideLoading();
+    }, 300);
   },
   methods: {
     showMsg() {
@@ -169,7 +174,7 @@ export default {
 <style lang="less" scoped>
 .interpretation-page {
   position: relative;
-  height: 100%;
+  min-height: 100%;
   // BG DESC AREA
   .inter-bg-area {
     padding-top: 0.2rem;
@@ -305,7 +310,7 @@ export default {
       margin: 0.35rem auto 0;
       width: 6.9rem;
       min-height: 1.7rem;
-      padding: 0.22rem 0.05rem .22rem 0.3rem;
+      padding: 0.22rem 0.05rem 0.22rem 0.3rem;
       background-color: #fff;
       box-shadow: 0px 1px 12px 0px rgba(73, 73, 73, 0.14);
       border-radius: 0.1rem;
@@ -334,77 +339,79 @@ export default {
         line-height: 0.34rem;
       }
     }
-  }
-  .swiper-area {
-    position: absolute;
-    height: 5rem;
-    width: 100%;
-    padding-bottom: 0.2rem;
-    bottom: 0.5rem;
-    .swiper-slide {
-      width: 4.32rem;
-      height: 4.8rem;
-      overflow: hidden;
-      background-color: #fff;
-      border-radius: 0.1rem;
-      padding: 0.62rem 0.3rem 0;
-      background-position: right bottom;
-      background-size: 2.16rem 2.6rem;
-      background-repeat: no-repeat;
-      background-image: url("../assets/image/interpretation/logo@2x.png");
-      box-shadow: 0px 1px 10px 0px rgba(73, 73, 73, 0.16);
-      .slide-title {
-        position: relative;
-        padding-left: 0.52rem;
-        font-size: 0.3rem;
-        font-weight: 500;
-        line-height: 0.4rem;
-        &::before {
-          content: "";
-          width: 0.34rem;
-          height: 0.34rem;
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
+
+    // SWIPER AREA
+    .swiper-area {
+      position: relative;
+      margin-top: 0.5rem;
+      height: 5rem;
+      width: 100%;
+      padding-bottom: 0.2rem;
+      .swiper-slide {
+        width: 4.32rem;
+        height: 4.8rem;
+        overflow: hidden;
+        background-color: #fff;
+        border-radius: 0.1rem;
+        padding: 0.62rem 0.3rem 0;
+        background-position: right bottom;
+        background-size: 2.16rem 2.6rem;
+        background-repeat: no-repeat;
+        background-image: url("../assets/image/interpretation/logo@2x.png");
+        box-shadow: 0px 1px 10px 0px rgba(73, 73, 73, 0.16);
+        .slide-title {
+          position: relative;
+          padding-left: 0.52rem;
+          font-size: 0.3rem;
+          font-weight: 500;
+          line-height: 0.4rem;
+          &::before {
+            content: "";
+            width: 0.34rem;
+            height: 0.34rem;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+          }
         }
-      }
-      .slide-desc {
-        color: #666;
-        line-height: 0.36rem;
-        margin-top: 0.2rem;
-      }
-      .how-do {
-        margin-top: 0.6rem;
-        color: #f36825;
-        line-height: 0.36rem;
-      }
-      &.slide1 {
-        .slide-title::before {
-          background-image: url("../assets/image/interpretation/shenfen_slide@2x.png");
+        .slide-desc {
+          color: #666;
+          line-height: 0.36rem;
+          margin-top: 0.2rem;
         }
-      }
-      &.slide2 {
-        .slide-title::before {
-          background-image: url("../assets/image/interpretation/dashuju_slide@2x.png");
+        .how-do {
+          margin-top: 0.6rem;
+          color: #f36825;
+          line-height: 0.36rem;
         }
-      }
-      &.slide3 {
-        .slide-title::before {
-          background-image: url("../assets/image/interpretation/renmai_slide@2x.png");
+        &.slide1 {
+          .slide-title::before {
+            background-image: url("../assets/image/interpretation/shenfen_slide@2x.png");
+          }
         }
-      }
-      &.slide4 {
-        .slide-title::before {
-          background-image: url("../assets/image/interpretation/lvyue_slide@2x.png");
+        &.slide2 {
+          .slide-title::before {
+            background-image: url("../assets/image/interpretation/dashuju_slide@2x.png");
+          }
         }
-      }
-      &.slide5 {
-        .slide-title::before {
-          background-image: url("../assets/image/interpretation/jiaoyi_slide@2x.png");
+        &.slide3 {
+          .slide-title::before {
+            background-image: url("../assets/image/interpretation/renmai_slide@2x.png");
+          }
+        }
+        &.slide4 {
+          .slide-title::before {
+            background-image: url("../assets/image/interpretation/lvyue_slide@2x.png");
+          }
+        }
+        &.slide5 {
+          .slide-title::before {
+            background-image: url("../assets/image/interpretation/jiaoyi_slide@2x.png");
+          }
         }
       }
     }

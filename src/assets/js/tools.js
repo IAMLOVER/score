@@ -236,7 +236,7 @@ let tools = (function () {
     showLoading,
     hideLoading,
     addParamsForUrl,
-    isWeiXin
+    isWeiXin,
   }
 })();
 

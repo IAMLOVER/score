@@ -13,6 +13,6 @@ body {
 #app {
   margin: 0 auto;
   max-width: 750px;
-  height: 100%;
+  min-height: 100%;
 }
 </style>
