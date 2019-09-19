@@ -107,13 +107,15 @@ let tools = (function () {
  * 文件上传,异步
  */
   function uploadfile(file, callback) {
+    showLoading();
     var formFile = new FormData();
     formFile.append('file', file);
     axios.post('/file/upload', formFile).then(res => {
-      if (res.data.code == 0) {
-        callback(res.data.data)
+      if (res.code == 0) {
+        hideLoading();
+        callback(res.data)
       } else {
-        showMsg(res.data.msg)
+        showMsg(res.msg)
       }
     }).catch(error => {
     })

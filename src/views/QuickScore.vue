@@ -10,7 +10,10 @@
     <section class="friend-tips-area mb8">
       <p class="friend-tip">- 以下内容有助于更好的评估您的信用 -</p>
       <p class="quick-title main-wrap">快速提升</p>
-      <div class="sub-wrap">
+      <div
+        class="sub-wrap"
+        @click="showMsg"
+      >
         <span class="icon ic-bigdata"></span>
         <span class="sub-title">征信大数据</span>
         <span class="ic-warning"></span>
@@ -25,6 +28,7 @@
         class="sub-wrap"
         v-for="item in ownInfoList"
         :key="item.id"
+        @click="goToEditInfo(item.enname,item.status)"
       >
         <span
           class="icon"
@@ -115,53 +119,66 @@ export default {
     };
   },
   created() {
+    this.$tools.showLoading();
     let { scoreData } = this.$route.query;
     this.scoreData = scoreData;
     this.getOwnInfoList();
     this.getJobList();
     this.getCreditList();
   },
+  mounted() {
+    setTimeout(() => {
+      this.$tools.hideLoading();
+    }, 500);
+  },
   methods: {
     getOwnInfoList() {
       this.ownInfoList = [
         {
           id: 1, //用于循环key值
+          enname: "IdCard",
           name: "身份证",
           status: 1, //1表示完成，0表示未完成
           style: "ic-card"
         },
         {
           id: 2,
+          enname: "PassPort",
           name: "护照",
           status: 0, //1表示完成，0表示未完成
           style: "ic-passport"
         },
         {
           id: 3,
+          enname: "StudentInfo",
           name: "学籍信息",
           status: 0, //1表示完成，0表示未完成
           style: "ic-info"
         },
         {
           id: 4,
+          enname: "EMail",
           name: "单位邮箱",
           status: 0, //1表示完成，0表示未完成
           style: "ic-mail"
         },
         {
           id: 5,
+          enname: "Drive",
           name: "驾驶证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-drive"
         },
         {
           id: 6,
+          enname: "CarInfo",
           name: "车辆信息",
           status: 0, //1表示完成，0表示未完成
           style: "ic-carinfo"
         },
         {
           id: 7,
+          enname: "HouseInfo",
           name: "房产信息",
           status: 0, //1表示完成，0表示未完成
           style: "ic-houseinfo"
@@ -211,6 +228,16 @@ export default {
           style: "ic-jingdong"
         }
       ];
+    },
+    goToEditInfo(info, status) {
+      if (status) {
+        this.$tools.showMsg("信息已填写完成");
+        return;
+      }
+      this.$router.push({ path: `EditInfo/${info}`, query: { info: info } });
+    },
+    showMsg() {
+      this.$tools.showMsg("功能正在开发，敬请期待...");
     }
   }
 };
