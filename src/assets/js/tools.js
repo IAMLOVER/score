@@ -1,44 +1,37 @@
 
 import axios from 'axios';
 axios.defaults.timeout = 180000;
+// axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://m.dazhongdianjin.cn';
-const ERR_OK = 0;
+axios.interceptors.response.use(response => {   //响应拦截器
+  return response.data
+}, error => {
+  return Promise.reject(error)
+});
+
 let tools = (function () {
   // 请求数据
-  function callServer(url, params, type) {
+  function callServer(type, url, params) {
     if (!url) return;
-    if (type == 'get') {
+    type = type.toUpperCase();
+    if (type == 'GET') {
       url = addParamsForUrl(url, params);
-      return new Promise((resolve, reject) => {
-        axios.get(url, {}).then(res => {
-          if (res.data.code == ERR_OK) {
-            resolve(res.data.data)
-          }
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      return axios.get(url, {})
     } else {
-      return new Promise((resolve, reject) => {
-        axios.post(url, params).then(res => {
-          if (res.data.code == ERR_OK) {
-            resolve(res.data.data)
-          }
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      return axios.post(url, params)
     }
   };
   // 把参数添加到url上
   function addParamsForUrl(url, params) {
-    if (!params) return url
+    if (typeof params !== "object") return url
     for (var key in params) {
-      if (params[key] && params[key] != 'undefined') {
-        if (url.indexOf('?') != -1) {
-          url += '&' + '' + key + '=' + params[key] || '' + ''
-        } else {
-          url += '?' + '' + key + '=' + params[key] || '' + ''
+      if (params.hasOwnProperty(key)) {
+        if (params[key] && params[key] != 'undefined') {
+          if (url.indexOf('?') != -1) {
+            url += '&' + '' + key + '=' + params[key] || '' + ''
+          } else {
+            url += '?' + '' + key + '=' + params[key] || '' + ''
+          }
         }
       }
     }
@@ -117,7 +110,7 @@ let tools = (function () {
     var formFile = new FormData();
     formFile.append('file', file);
     axios.post('/file/upload', formFile).then(res => {
-      if (res.data.code == ERR_OK) {
+      if (res.data.code == 0) {
         callback(res.data.data)
       } else {
         showMsg(res.data.msg)

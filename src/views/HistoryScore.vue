@@ -139,23 +139,23 @@ export default {
     upCallback(page, mescroll) {
       // 发送请求
       this.$tools
-        .callServer(
-          "/djh/edit_info/list",
-          {
-            pageNo: page.num,
-            pageSize: page.size
-          },
-          "post"
-        )
+        .callServer("POST", "/djh/edit_info/list", {
+          pageNo: page.num,
+          pageSize: page.size
+        })
         .then(res => {
-          let arr = res.list;
-          // 如果是第一页需手动置空列表
-          if (page.num === 0) this.dataList = [];
-          this.dataList = this.dataList.concat(arr);
-          // 数据渲染成功后,隐藏下拉刷新的状态
-          this.$nextTick(() => {
-            mescroll.endSuccess(arr.length);
-          });
+          if (res.code == 0) {
+            let arr = res.data.list;
+            // 如果是第一页需手动置空列表
+            if (page.num === 0) this.dataList = [];
+            this.dataList = this.dataList.concat(arr);
+            // 数据渲染成功后,隐藏下拉刷新的状态
+            this.$nextTick(() => {
+              mescroll.endSuccess(arr.length);
+            });
+          } else {
+            this.$tools.showMsg(res.msg);
+          }
         })
         .catch(error => {
           mescroll.endErr();

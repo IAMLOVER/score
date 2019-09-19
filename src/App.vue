@@ -3,6 +3,14 @@
     <router-view />
   </div>
 </template>
+<script>
+document.body.addEventListener("touchstart", function() {});
+export default {
+  data() {
+    return {};
+  }
+};
+</script> 
 
 <style lang="less">
 html,
