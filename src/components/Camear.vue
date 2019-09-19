@@ -54,8 +54,10 @@ export default {
       this.$tools.uploadfile(file, res => {
         // 上传到服务器，返回图片路径
         this.isUpload = true;
+
         // 图片回显到界面
-        this.successPicPath = location.origin + res.path;
+        this.successPicPath = this.$tools.getObjectURL(file);
+
         // 上传时间显示
         let nowDate = new Date(),
           year = nowDate.getFullYear(),

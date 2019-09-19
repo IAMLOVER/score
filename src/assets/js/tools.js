@@ -73,6 +73,11 @@ let tools = (function () {
     var regPhone = /^1[3|4|5|6|7|8][0-9]{9}$/;
     return regPhone.test(phone)
   };
+  // 邮箱验证正则
+  function regEmail(email) {
+    var regEmail = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
+    return regEmail.test(email)
+  };
 
 
   //从 canvas 提取图片 base64 image
@@ -218,6 +223,24 @@ let tools = (function () {
     }
   };
 
+  /**
+   * 获取临时URL地址，用于图片回显
+   */
+  function getObjectURL(file) {
+    var url = null;
+    if (window.createObjectURL != undefined) {
+      // 正常浏览器
+      url = window.createObjectURL(file)
+    } else if (window.URL != undefined) {
+      // mozilla firefox
+      url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) {
+      // webkit chrome
+      url = window.webkitURL.createObjectURL(file);
+    }
+    return url
+  };
+
   return {
     callServer,
     isEmpty,
@@ -232,6 +255,8 @@ let tools = (function () {
     hideLoading,
     addParamsForUrl,
     isWeiXin,
+    getObjectURL,
+    regEmail
   }
 })();
 
