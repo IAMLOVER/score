@@ -14,7 +14,7 @@
       </div>
       <p class="updatetime-area">
         <span>评估时间：</span>
-        <span class="updatetime">{{nowTime}}</span>
+        <span class="updatetime">{{nowTime|dataFm}}</span>
       </p>
 
     </section>
@@ -171,14 +171,14 @@ export default {
   components: {},
   data() {
     return {
-      nowTime: "", // 当前评估时间
+      nowTime: new Date(), // 当前评估时间
       scoreData: 400, //信用分默认400
       areaIcon: "icon4" //仪表盘背景图
     };
   },
   created() {
     this.$tools.showLoading();
-    this.getNowDate();
+    this.getScoreData();
   },
   mounted() {
     setTimeout(() => {
@@ -186,17 +186,7 @@ export default {
     }, 300);
   },
   methods: {
-    getNowDate() {
-      let nowDate = new Date(),
-        year = nowDate.getFullYear(),
-        month = (nowDate.getMonth() + 1).toString().padStart(2, "0"),
-        day = nowDate
-          .getDate()
-          .toString()
-          .padStart(2, "0"),
-        ymd = year + "-" + month + "-" + day;
-      this.nowTime = ymd;
-
+    getScoreData() {
       // 测试用例，随机生成大于500的数
       let random = Math.ceil(Math.random() * 1000);
       this.scoreData = random <= 400 ? 400 : random;

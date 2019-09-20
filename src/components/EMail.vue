@@ -13,6 +13,7 @@
               type="eamil"
               placeholder="所在单位的个人邮箱地址"
               v-model="email"
+              v-focus
             >
           </div>
         </div>

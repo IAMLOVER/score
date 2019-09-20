@@ -241,6 +241,25 @@ let tools = (function () {
     return url
   };
 
+  /**
+   * 时间格式化
+   */
+  function dateFormat(value,format) {
+    let nowDate = new Date(value),
+      year = nowDate.getFullYear(),
+      month = (nowDate.getMonth() + 1).toString().padStart(2, "0"),
+      day = (nowDate.getDate()).toString().padStart(2, "0"),
+      ymd = null;
+    if (format == "yyyy-mm-dd") {
+      ymd = year + "-" + month + "-" + day;
+    } else if (format == "yyyy-mm") {
+      ymd = year + "-" + month;
+    } else {
+      ymd = year + "年" + month + "月" + day + "日";
+    }
+    return ymd
+  };
+
   return {
     callServer,
     isEmpty,
@@ -256,7 +275,8 @@ let tools = (function () {
     addParamsForUrl,
     isWeiXin,
     getObjectURL,
-    regEmail
+    regEmail,
+    dateFormat
   }
 })();
 

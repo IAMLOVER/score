@@ -14,6 +14,7 @@ export default {};
   line-height: 0.94rem;
   text-align: center;
   color: #9a9a9a;
+  background-color: #F7F7F7;
   &::before {
     content: "";
     position: absolute;
