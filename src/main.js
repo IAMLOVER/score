@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
+import store from './store/index';
 
 import './assets/css/reset.min.css'; //导入公共样式
 import tools from './assets/js/tools'; //导入工具包
@@ -44,5 +45,6 @@ router.beforeEach((to, from, next) => { // 路由守卫改变title
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

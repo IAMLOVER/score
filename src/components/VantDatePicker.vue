@@ -1,4 +1,5 @@
 <template>
+<!-- 日期选择组件 -->
   <section class="date-picker-area">
     <span class="date-picker-label">{{label}}</span>
     <div class="data-picker-select-area" :class="active?'active':null" @click="selectDatePicker">
