@@ -5,6 +5,7 @@ import Interpretation from './views/Interpretation.vue';
 import HistoryScore from './views/HistoryScore.vue';
 import QuickScore from './views/QuickScore.vue';
 import EditInfo from './views/EditInfo.vue';
+import IdCard from './components/IdCard.vue';
 import PassPort from './components/PassPort.vue';
 import StudentInfo from './components/StudentInfo.vue';
 import EMail from './components/EMail.vue';
@@ -22,6 +23,7 @@ const routes = [
   {
     path: '/EditInfo', component: EditInfo, name: 'EditInfo',
     children: [
+      {path:'IdCard',component:IdCard,name:'IdCard',meta: { title:'添加身份证' }},
       { path: 'PassPort', component: PassPort, name: 'PassPort', meta: { title: '添加护照' } },
       { path: 'StudentInfo', component: StudentInfo, name: 'StudentInfo', meta: { title: '学历学籍' } },
       { path: 'EMail', component: EMail, name: 'EMail', meta: { title: '单位邮箱' } },

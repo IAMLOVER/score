@@ -86,7 +86,7 @@
       <!-- FOOTER TIP AREA -->
       <Footertip></Footertip>
       <!-- BTN AREA -->
-      <div class="btn-area button" :class="isActive?'active':null" @click="submitInfo">提交</div>
+      <div class="submit-info button" :class="isActive?'active':null" @click="submitInfo">提交</div>
     </section>
     <!-- SUCCESS -->
     <section v-else>
@@ -351,27 +351,7 @@ export default {
       margin-bottom: 0.3rem;
     }
   }
-  .btn-area {
-    margin: 0.5rem auto 0;
-    width: 6.8rem;
-    height: 0.92rem;
-    line-height: 0.92rem;
-    text-align: center;
-    border-radius: 0.08rem;
-    background-color: #dedede;
-    color: #9a9a9a;
-    pointer-events: none;
-    font-size: 0.36rem;
-    &.active {
-      background-color: #f4552c;
-      color: #fff;
-      pointer-events: auto;
-      &:active {
-        background: #f3802b;
-        -webkit-tap-highlight-color: transparent;
-      }
-    }
-  }
+  
 
   // 成功回显样式
   .success-main-area {

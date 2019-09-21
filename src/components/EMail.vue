@@ -21,11 +21,10 @@
           </div>
         </div>
       </section>
+
+      <Footertip class="mt20"></Footertip>
       <!-- BTN AREA -->
-      <section class="btn-area">
-        <Footertip></Footertip>
-        <div class="submit button" :class="isActive?'isActive':null" @click="submitInfo">绑定</div>
-      </section>
+      <div class="submit-info button" :class="isActive?'isActive':null" @click="submitInfo">绑定</div>
     </template>
     <!-- 绑定成功时显示 -->
     <template v-else>
@@ -169,30 +168,6 @@ export default {
           background-color: #dedede;
           color: #9a9a9a;
           user-select: none;
-        }
-      }
-    }
-  }
-  .btn-area {
-    margin-top: 0.6rem;
-    .submit {
-      margin: 0.28rem auto 0;
-      width: 6.8rem;
-      height: 0.92rem;
-      line-height: 0.92rem;
-      text-align: center;
-      background-color: #dedede;
-      color: #9a9a9a;
-      font-size: 0.36rem;
-      border-radius: 0.08rem;
-      pointer-events: none;
-      &.isActive {
-        pointer-events: auto;
-        background-color: #f4552c;
-        color: #fff;
-        &:active {
-          background: #f3802b;
-          -webkit-tap-highlight-color: transparent;
         }
       }
     }

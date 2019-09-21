@@ -138,7 +138,7 @@ export default {
           id: 1, //用于循环key值
           enname: "IdCard",
           name: "身份证",
-          status: 1, //1表示完成，0表示未完成
+          status: 0, //1表示完成，0表示未完成
           style: "ic-card"
         },
         {
