@@ -8,32 +8,19 @@
         <div class="form-group">
           <span class="label">证号</span>
           <div class="input-area">
-            <input
-              v-focus
-              type="text"
-              v-model="driverNum"
-              placeholder="请输入您的驾驶证号"
-            >
+            <input v-focus type="text" v-model="driverNum" placeholder="请输入您的驾驶证号" />
           </div>
         </div>
         <span class="form-group">
           <span class="label">姓名</span>
           <div class="input-area">
-            <input
-              type="text"
-              v-model="userName"
-              placeholder="请输入您的姓名"
-            >
+            <input type="text" v-model="userName" placeholder="请输入您的姓名" />
           </div>
         </span>
         <div class="form-group">
           <span class="label">准驾车型</span>
           <div class="input-area">
-            <input
-              type="text"
-              v-model="carModel"
-              placeholder="请输入您的准驾车型"
-            >
+            <input type="text" v-model="carModel" placeholder="请输入您的准驾车型" />
           </div>
         </div>
         <div class="form-group-picker">
@@ -57,11 +44,7 @@
         <div class="form-group">
           <span class="label">档案编号</span>
           <div class="input-area">
-            <input
-              type="text"
-              v-model="fileNumber"
-              placeholder="请输入您的档案编号"
-            >
+            <input type="text" v-model="fileNumber" placeholder="请输入您的档案编号" />
           </div>
         </div>
         <div class="form-group-picker">
@@ -77,11 +60,7 @@
         <div class="form-group">
           <span class="label">国籍（选填）</span>
           <div class="input-area">
-            <input
-              type="text"
-              v-model="citizenship"
-              placeholder="请输入您的国籍"
-            >
+            <input type="text" v-model="citizenship" placeholder="请输入您的国籍" />
           </div>
         </div>
         <div class="form-group-picker">
@@ -98,26 +77,16 @@
       <div class="pic-area">
         <p class="pic-title">证件图片</p>
         <div class="pic-1">
-          <Camear
-            tip="拍摄驾驶证主页"
-            @savePicPath="picFront"
-          ></Camear>
+          <Camear tip="拍摄驾驶证主页" @savePicPath="picFront"></Camear>
         </div>
         <div class="pic-2">
-          <Camear
-            tip="拍摄驾驶证副业"
-            @savePicPath="picRear"
-          ></Camear>
+          <Camear tip="拍摄驾驶证副业" @savePicPath="picRear"></Camear>
         </div>
       </div>
       <!-- FOOTER TIP AREA -->
       <Footertip></Footertip>
       <!-- BTN AREA -->
-      <div
-        class="btn-area button"
-        :class="isActive?'active':null"
-        @click="submitInfo"
-      > 提交</div>
+      <div class="btn-area button" :class="isActive?'active':null" @click="submitInfo">提交</div>
     </section>
     <!-- SUCCESS -->
     <section v-else>
@@ -169,17 +138,11 @@
             <span class="item-lable">证件图片</span>
           </div>
           <div class="item-pic-area">
-            <div class="pic-area">
-              <img
-                :src="mainPic"
-                alt=""
-              >
+            <div class="suc-pic-area">
+              <img :src="mainPic" alt />
             </div>
-            <div class="pic-area">
-              <img
-                :src="subPic"
-                alt=""
-              >
+            <div class="suc-pic-area">
+              <img :src="subPic" alt />
             </div>
           </div>
         </div>
@@ -187,17 +150,12 @@
         <!-- DEL AREA -->
         <div class="del-area">
           <span class="sub-time">提交时间：{{null|dataFm("年-月-日")}}</span>
-          <span
-            class="del button"
-            @click="delInfo"
-          >删除</span>
+          <span class="del button" @click="delInfo">删除</span>
         </div>
-
       </div>
       <!-- FOOTER TIP AREA -->
       <Footertip></Footertip>
     </section>
-
   </section>
 </template>
 
@@ -361,8 +319,8 @@ export default {
         font-weight: 500;
         line-height: 0.42rem;
       }
-      .input-area{
-        height: .4rem;
+      .input-area {
+        height: 0.4rem;
       }
       input {
         font-size: 0.28rem;
@@ -444,7 +402,7 @@ export default {
         padding-left: 0.4rem;
         height: 0.8rem;
         display: grid;
-        grid-template-columns: 30% 70%;
+        grid-template-columns: 35% 65%;
         align-items: center;
         font-size: 0.32rem;
         span {
@@ -457,9 +415,15 @@ export default {
         .item-desc {
           padding-left: 0.1rem;
         }
-        .pic-area {
+      }
+      .item-pic-area {
+        .suc-pic-area {
           margin-bottom: 0.3rem;
           padding: 0 0.2rem;
+          img {
+            height: 3.8rem;
+            border: 0.02rem dashed #979797;
+          }
         }
       }
     }
