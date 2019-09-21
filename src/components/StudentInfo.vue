@@ -1,10 +1,10 @@
 <template>
   <section class="student-info-area">
     <Security></Security>
-    <div class="form-group">
+    <router-link to="/VantIndexAnchor" class="form-group">
       <span class="form-title">地区</span>
       <i data-v-13d26bc6 class="van-icon van-icon-arrow"></i>
-    </div>
+    </router-link>
     <div class="form-group">
       <span class="form-title">院校名称</span>
       <i data-v-13d26bc6 class="van-icon van-icon-arrow"></i>
