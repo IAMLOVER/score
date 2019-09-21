@@ -1,20 +1,12 @@
 <template>
   <section class="picker-area">
-    <span class="label">{{label}}</span>
-    <div
-      class="input-area"
-      :class="active?'active':null"
-      @click="selectPicker"
-    >
-      {{placeVal}}
+    <span class="picker-label">{{label}}</span>
+    <div class="picker-select-area" :class="active?'active':null" @click="selectPicker">
+      <span class="place-val">{{placeVal}}</span>
       <i class="van-icon van-icon-arrow right-icon"></i>
     </div>
     <!-- 弹出层 -->
-    <van-popup
-      v-model="showPopup"
-      position="bottom"
-      :style="{ height }"
-    >
+    <van-popup v-model="showPopup" position="bottom" :style="{ height }">
       <van-picker
         show-toolbar
         :columns="columns"
@@ -80,22 +72,28 @@ export default {
   display: grid;
   grid-template-columns: 30% 70%;
   align-items: center;
-  .label {
+  .picker-label {
     font-size: 0.3rem;
     font-weight: 500;
     line-height: 0.42rem;
   }
-  .input-area {
+  .picker-select-area {
     position: relative;
-    line-height: 0.4rem;
+    height: 0.4rem;
     color: #9a9a9a;
     text-align: right;
-    font-size: 0.3rem;
+    font-size: 0.28rem;
     &.active {
       color: #333;
     }
+    .place-val {
+      line-height: 0.4rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
     .right-icon {
-      top: 5%;
+      line-height: 0.4rem;
+      vertical-align: middle;
     }
   }
 }

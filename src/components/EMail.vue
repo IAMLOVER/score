@@ -9,44 +9,22 @@
         <div class="input-wrap">
           <span>单位邮箱</span>
           <div class="email">
-            <input
-              type="eamil"
-              placeholder="所在单位的个人邮箱地址"
-              v-model="email"
-              v-focus
-            >
+            <input type="eamil" placeholder="所在单位的个人邮箱地址" v-model="email" v-focus />
           </div>
         </div>
         <div class="input-wrap">
           <span>校验码</span>
           <div class="check-code">
-            <input
-              type="number"
-              placeholder="点击输入"
-              v-model="checkCode"
-            >
-            <div
-              class="send-code "
-              @click="sendCode"
-              v-if="!hassent"
-            >发送校验码</div>
-            <div
-              class="wait-code"
-              v-else
-            >
-              重新发送({{totalTime}})
-            </div>
+            <input type="number" placeholder="点击输入" v-model="checkCode" />
+            <div class="send-code" @click="sendCode" v-if="!hassent">发送校验码</div>
+            <div class="wait-code" v-else>重新发送({{totalTime}})</div>
           </div>
         </div>
       </section>
       <!-- BTN AREA -->
       <section class="btn-area">
         <Footertip></Footertip>
-        <div
-          class="submit button"
-          :class="isActive?'isActive':null"
-          @click="submitInfo"
-        >绑定</div>
+        <div class="submit button" :class="isActive?'isActive':null" @click="submitInfo">绑定</div>
       </section>
     </template>
     <!-- 绑定成功时显示 -->
@@ -57,17 +35,13 @@
         <p class="success-email">{{email}}</p>
         <p class="success-footer">
           <span>提交时间：2019年06月21日</span>
-          <span
-            class="button del"
-            @click="delInfo"
-          >删除</span>
+          <span class="button del" @click="delInfo">删除</span>
         </p>
       </section>
       <footer>
         <Footertip />
       </footer>
     </template>
-
   </section>
 </template>
 
@@ -162,8 +136,9 @@ export default {
         font-weight: 500;
       }
       input {
+        height: 0.4rem;
         line-height: 0.4rem;
-        font-size: 0.3rem;
+        font-size: 0.28rem;
       }
       .check-code {
         display: flex;

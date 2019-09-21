@@ -361,9 +361,12 @@ export default {
         font-weight: 500;
         line-height: 0.42rem;
       }
+      .input-area{
+        height: .4rem;
+      }
       input {
-        font-size: 0.3rem;
-        line-height: 0.42rem;
+        font-size: 0.28rem;
+        line-height: 0.4rem;
         text-align: right;
       }
       &:last-child {

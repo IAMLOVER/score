@@ -1,20 +1,12 @@
 <template>
   <section class="date-picker-area">
-    <span class="label">{{label}}</span>
-    <div
-      class="input-area"
-      :class="active?'active':null"
-      @click="selectDatePicker"
-    >
-      {{placeVal}}
+    <span class="date-picker-label">{{label}}</span>
+    <div class="data-picker-select-area" :class="active?'active':null" @click="selectDatePicker">
+      <span class="place-val">{{placeVal}}</span>
       <i class="van-icon van-icon-arrow right-icon"></i>
     </div>
     <!-- 弹出层 -->
-    <van-popup
-      v-model="showPopup"
-      position="bottom"
-      :style="{ height: '40%' }"
-    >
+    <van-popup v-model="showPopup" position="bottom" :style="{ height: '40%' }">
       <van-datetime-picker
         v-model="currentDate"
         type="date"
@@ -81,22 +73,28 @@ export default {
   display: grid;
   grid-template-columns: 30% 70%;
   align-items: center;
-  .label {
+  .date-picker-label {
     font-size: 0.3rem;
     font-weight: 500;
     line-height: 0.42rem;
   }
-  .input-area {
+  .data-picker-select-area {
     position: relative;
-    line-height: 0.4rem;
+    height: 0.4rem;
     color: #9a9a9a;
     text-align: right;
-    font-size: 0.3rem;
+    font-size: 0.28rem;
     &.active {
       color: #333;
     }
+    .place-val {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 0.4rem;
+    }
     .right-icon {
-      top: 5%;
+      line-height: 0.4rem;
+      vertical-align: middle;
     }
   }
 }
