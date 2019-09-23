@@ -2,7 +2,7 @@
 import axios from 'axios';
 axios.defaults.timeout = 180000;
 // axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://m.dazhongdianjin.cn';
+axios.defaults.baseURL = 'http://192.168.0.106:8080';
 axios.interceptors.response.use(response => {   //响应拦截器
   return response.data
 }, error => {

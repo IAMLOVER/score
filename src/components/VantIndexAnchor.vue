@@ -1,16 +1,16 @@
 <template>
   <section class="vant-index-anchor-area">
     <van-index-bar :index-list="indexList">
-      <template v-for="item in dataList">
+      <template v-for="(item,name) in dataList">
         <van-index-anchor
-          :index="item.index"
-          :key="item.index"
+          :index="name"
+          :key="name"
         />
-        <template v-if="item.list&&item.list.length>0">
+        <template v-if="item&&item.length>0">
           <VantCell
-            v-for="item2 in item.list"
-            :key="item2.id"
-            :title="item2.name"
+            v-for="item2 in item"
+            :key="item2.provinceId"
+            :title="item2.provinceName"
             @selectFn="selectFn"
           ></VantCell>
         </template>
@@ -44,49 +44,12 @@ export default {
     },
     // 获取地区数据
     getRegionList() {
-      this.dataList = [
-        {
-          index: "A",
-          list: [{ id: 1, name: "安徽" }, { id: 2, name: "安庆" }]
-        },
-        {
-          index: "B",
-          list: [{ id: 3, name: "北京" }, { id: 4, name: "北海" }]
-        },
-        {
-          index: "C",
-          list: [{ id: 5, name: "重庆" }, { id: 6, name: "长安" }]
-        },
-        {
-          index: "D",
-          list: [{ id: 7, name: "大连" }]
-        },
-        {
-          index: "E",
-          list: [
-            { id: 8, name: "大连" },
-            { id: 9, name: "大连" },
-            { id: 10, name: "大连" },
-            { id: 11, name: "大连" },
-            { id: 12, name: "大连" },
-            { id: 13, name: "大连" }
-          ]
-        },
-        {
-          index: "F",
-          list: [
-            { id: 14, name: "大连" },
-            { id: 15, name: "大连" },
-            { id: 16, name: "大连" },
-            { id: 17, name: "大连" },
-            { id: 18, name: "大连" },
-            { id: 19, name: "大连" }
-          ]
+      this.$tools.callServer("post", "/djh/province/list", {}).then(res => {
+        if (res.code == 0) {
+          this.dataList = res.data.map;
+          // 过滤数据获得索引
+          this.indexList = Object.keys(this.dataList);
         }
-      ];
-      // 过滤数据获得索引
-      this.dataList.forEach(item => {
-        this.indexList.push(item.index);
       });
     },
 
@@ -100,13 +63,10 @@ export default {
 };
 </script>
 
-<style lang="less">
-body{
-  height: auto;
-}
+<style lang="less" scoped>
 .vant-index-anchor-area {
-
   background-color: #eceded;
   padding-bottom: 0.4rem;
+  padding-top: 0.1rem;
 }
 </style>
