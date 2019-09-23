@@ -34,7 +34,7 @@ export default {
   text-align: center;
   color: #9a9a9a;
 }
-.pic-car{
-  margin-bottom: .3rem;
+.pic-car {
+  margin-bottom: 0.3rem;
 }
 </style>

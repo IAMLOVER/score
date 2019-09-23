@@ -1,5 +1,5 @@
 <template>
-  <section class="camear-area">
+  <section class="camear-area" :style="{height:height}">
     <div class="camear-box">
 
       <!-- 拍照遮罩图 -->
@@ -38,7 +38,15 @@
 <script>
 export default {
   name: "Camear",
-  props: ["tip"],
+  props: {
+    tip: {
+      type: String
+    },
+    height:{
+      type:String,
+      default:'4.2rem'
+    }
+  },
   data() {
     return {
       isUpload: false,
@@ -59,7 +67,7 @@ export default {
         this.successPicPath = this.$tools.getObjectURL(file);
 
         // 把地址提交出去
-        this.$emit('savePicPath',this.successPicPath);
+        this.$emit("savePicPath", this.successPicPath);
 
         // 上传时间显示
         let nowDate = new Date(),
@@ -81,7 +89,7 @@ export default {
 .camear-area {
   padding: 0 0.3rem;
   .camear-box {
-    height: 4.2rem;
+    height: 100%;
     border: 0.02rem dashed #979797;
     border-radius: 0.08rem;
     padding: 0.2rem;

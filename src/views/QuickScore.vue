@@ -55,6 +55,7 @@
         class="sub-wrap"
         v-for="item in jobList"
         :key="item.id"
+        @click="showMsg"
       >
         <span
           class="icon"
@@ -81,6 +82,7 @@
         class="sub-wrap"
         v-for="item in jobList"
         :key="item.id"
+        @click="showMsg"
       >
         <span
           class="icon"
@@ -239,6 +241,9 @@ export default {
     showMsg() {
       this.$tools.showMsg("功能正在开发，敬请期待...");
     }
+  },
+  computed: {
+    
   }
 };
 </script>

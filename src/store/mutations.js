@@ -8,6 +8,7 @@ const mutations = {
   SET_STUDENT_INFO(state, studentInfo) {
     state.studentName = studentInfo.title;
     state.studentId = studentInfo.id
-  }
+  },
+
 }
 export default mutations

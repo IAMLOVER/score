@@ -7,9 +7,12 @@ const studentRegion = (state) => {
 // 获取学籍信息对应的选中的学校名字
 const studentInfo = (state) => {
   return { studentName: state.studentName, studentId: state.studentId }
-}
+};
+
+
+
 
 export default {
   studentRegion,
-  studentInfo
+  studentInfo,
 }
