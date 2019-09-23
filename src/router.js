@@ -15,6 +15,9 @@ import CarInfo from './components/CarInfo.vue';
 import HouseInfo from './components/HouseInfo.vue';
 import VantIndexAnchor from './components/VantIndexAnchor.vue';
 
+import ZhiMaInfo from './components/ZhiMaInfo.vue';
+import JDInfo from './components/JDInfo.vue';
+
 Vue.use(Router);
 // 创建路由规则
 const routes = [
@@ -35,6 +38,8 @@ const routes = [
       { path: 'CarInfo', component: CarInfo, name: 'CarInfo', meta: { title: '车辆信息' } },
       { path: 'HouseInfo', component: HouseInfo, name: 'HouseInfo', meta: { title: '房产信息' } },
       {path:'VantIndexAnchor',component:VantIndexAnchor,name:'VantIndexAnchor'},
+      { path: 'ZhiMaInfo', component: ZhiMaInfo, name: 'ZhiMaInfo', meta: { title: '芝麻信用' } },
+      { path: 'JDInfo', component: JDInfo, name: 'JDInfo', meta: { title: '京东信用' } },
     ]
   }
 ]

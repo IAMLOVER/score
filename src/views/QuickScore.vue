@@ -80,9 +80,9 @@
       <p class="main-wrap">信用</p>
       <div
         class="sub-wrap"
-        v-for="item in jobList"
+        v-for="item in creditList"
         :key="item.id"
-        @click="showMsg"
+        @click="goToEditInfo(item.enname,item.status)"
       >
         <span
           class="icon"
@@ -191,24 +191,28 @@ export default {
       this.jobList = [
         {
           id: 1, //用于循环key值
+          enname: "BosssInfo",
           name: "BOSS直聘认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-boss"
         },
         {
           id: 2,
+          enname:"MaiMaiInfo",
           name: "脉脉认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-maimai"
         },
         {
           id: 3,
+          enname:"LinInfo",
           name: "领英认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-in"
         },
         {
           id: 4,
+          enname:"LiePinInfo",
           name: "猎聘认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-liepin"
@@ -219,12 +223,14 @@ export default {
       this.creditList = [
         {
           id: 1, //用于循环key值
+          enname:"ZhiMaInfo",
           name: "芝麻信用",
           status: 0, //1表示完成，0表示未完成
           style: "ic-zhima"
         },
         {
           id: 2,
+          enname:"JDInfo",
           name: "京东信用",
           status: 0, //1表示完成，0表示未完成
           style: "ic-jingdong"

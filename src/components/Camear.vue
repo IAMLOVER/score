@@ -1,5 +1,8 @@
 <template>
-  <section class="camear-area" :style="{height:height}">
+  <section
+    class="camear-area"
+    :style="{height:height}"
+  >
     <div class="camear-box">
 
       <!-- 拍照遮罩图 -->
@@ -8,11 +11,20 @@
         v-if="!isUpload"
       >
         <div class="icon-camear">
+
           <input
+            v-if="multiple=='false'"
             @change="upLoadPic"
             type="file"
-            accept="image/*"
+            accept="image/png,image/jpeg,image/jpg"
             capture="camera"
+          >
+          <input
+            v-else
+            @change="upLoadPic"
+            type="file"
+            accept="image/png,image/jpeg,image/jpg"
+            multiple="multiple"
           >
         </div>
         <p class="camear-tip">{{tip}}</p>
@@ -26,6 +38,7 @@
         <img
           :src="successPicPath"
           alt=""
+          :style="{height:imgHeight}"
         >
         <div class="icon-success"></div>
         <p class="upload-time">提交时间：{{nowTime}}</p>
@@ -42,9 +55,17 @@ export default {
     tip: {
       type: String
     },
-    height:{
-      type:String,
-      default:'4.2rem'
+    multiple: {
+      type: String,
+      default: "false"
+    },
+    height: {
+      type: String,
+      default: "4.2rem"
+    },
+    imgHeight: {
+      type: String,
+      default: "100%"
     }
   },
   data() {
@@ -126,6 +147,7 @@ export default {
       position: relative;
       width: 100%;
       height: 100%;
+      overflow: hidden;
       .icon-success {
         position: absolute;
         left: 50%;
