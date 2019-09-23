@@ -196,6 +196,13 @@
       <!-- FOOTER TIP AREA -->
       <Footertip></Footertip>
     </section>
+
+    <DeleteToast
+      v-if="isShowDeletConfirm"
+      @closeFn="closeFn"
+      @sure="sureFn"
+    ></DeleteToast>
+
   </section>
 </template>
 
@@ -205,9 +212,17 @@ import Footertip from "./Footertip";
 import Camear from "./Camear";
 import VantDatePicker from "./VantDatePicker";
 import VantPicker from "./VantPicker";
+import DeleteToast from "./DeleteToast";
 export default {
   name: "Drive",
-  components: { Security, Footertip, Camear, VantDatePicker, VantPicker },
+  components: {
+    Security,
+    Footertip,
+    Camear,
+    VantDatePicker,
+    VantPicker,
+    DeleteToast
+  },
   data() {
     return {
       minDate: new Date(Date.parse("1959-01-01")), //最小可选时间，默认是10年前
@@ -223,7 +238,8 @@ export default {
       mainPic: "", //主页照片
       subPic: "", //副页照片
       initDate: "", //初次领证日期
-      isSuccess: false // 判断信息是否提交成功
+      isSuccess: false, // 判断信息是否提交成功
+      isShowDeletConfirm: false //是否显示删除确认框
     };
   },
   created() {},
@@ -317,14 +333,22 @@ export default {
       this.subPic = "";
       this.initDate = "";
       this.isSuccess = false;
+      this.isShowDeletConfirm = false;
     },
     delInfo() {
-      // 删除提交成功的信息所有信息还原
+      this.isShowDeletConfirm = true;
+    },
+    // 关闭删除确认
+    closeFn(val) {
+      this.isShowDeletConfirm = val;
+    },
+    // 确认删除
+    sureFn() {
       this.$tools.showLoading();
       setTimeout(() => {
         this.resetForm();
         this.$tools.hideLoading();
-      },400);
+      });
     }
   },
   computed: {

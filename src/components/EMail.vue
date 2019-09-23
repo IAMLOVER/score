@@ -9,22 +9,42 @@
         <div class="input-wrap">
           <span>单位邮箱</span>
           <div class="email">
-            <input type="eamil" placeholder="所在单位的个人邮箱地址" v-model="email" v-focus />
+            <input
+              type="eamil"
+              placeholder="所在单位的个人邮箱地址"
+              v-model="email"
+              v-focus
+            />
           </div>
         </div>
         <div class="input-wrap">
           <span>校验码</span>
           <div class="check-code">
-            <input type="number" placeholder="点击输入" v-model="checkCode" />
-            <div class="send-code" @click="sendCode" v-if="!hassent">发送校验码</div>
-            <div class="wait-code" v-else>重新发送({{totalTime}})</div>
+            <input
+              type="number"
+              placeholder="点击输入"
+              v-model="checkCode"
+            />
+            <div
+              class="send-code"
+              @click="sendCode"
+              v-if="!hassent"
+            >发送校验码</div>
+            <div
+              class="wait-code"
+              v-else
+            >重新发送({{totalTime}})</div>
           </div>
         </div>
       </section>
 
       <Footertip class="mt20"></Footertip>
       <!-- BTN AREA -->
-      <div class="submit-info button" :class="isActive?'isActive':null" @click="submitInfo">绑定</div>
+      <div
+        class="submit-info button"
+        :class="isActive?'isActive':null"
+        @click="submitInfo"
+      >绑定</div>
     </template>
     <!-- 绑定成功时显示 -->
     <template v-else>
@@ -33,30 +53,42 @@
         <p class="success-title">绑定成功</p>
         <p class="success-email">{{email}}</p>
         <p class="success-footer">
-          <span>提交时间：2019年06月21日</span>
-          <span class="button del" @click="delInfo">删除</span>
+          <span>提交时间：{{null|dataFm("年-月-日")}}</span>
+          <span
+            class="button del"
+            @click="delInfo"
+          >删除</span>
         </p>
       </section>
       <footer>
         <Footertip />
       </footer>
     </template>
+
+    <DeleteToast
+      v-if="isShowDeletConfirm"
+      @closeFn="closeFn"
+      @sure="sureFn"
+    ></DeleteToast>
+
   </section>
 </template>
 
 <script>
 import Security from "./Security";
 import Footertip from "./Footertip";
+import DeleteToast from "./DeleteToast";
 export default {
   name: "EMail",
-  components: { Security, Footertip },
+  components: { Security, Footertip, DeleteToast },
   data() {
     return {
       email: "",
       checkCode: "",
       hassent: false, //控制校验码按钮是否可以点击 false表示未发送，ture表示已发送
       totalTime: 60, //倒计时
-      isSuccess: false //控制是否绑定成功
+      isSuccess: false, //控制是否绑定成功
+      isShowDeletConfirm: false //是否显示删除确认框
     };
   },
   created() {},
@@ -103,12 +135,28 @@ export default {
         this.hassent = false;
       }, 1000);
     },
-    delInfo() {
+    resetForm() {
       //删除邮箱，复原初始设置
       this.email = "";
       this.hassent = false;
       this.isSuccess = false;
       this.totalTime = 60;
+      this.isShowDeletConfirm = false;
+    },
+    delInfo() {
+      this.isShowDeletConfirm = true;
+    },
+    // 关闭删除确认
+    closeFn(val) {
+      this.isShowDeletConfirm = val;
+    },
+    // 确认删除
+    sureFn() {
+      this.$tools.showLoading();
+      setTimeout(() => {
+        this.resetForm();
+        this.$tools.hideLoading();
+      });
     }
   }
 };

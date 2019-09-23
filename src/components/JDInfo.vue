@@ -85,6 +85,12 @@
       </div>
     </template>
 
+    <DeleteToast
+      v-if="isShowDeletConfirm"
+      @closeFn="closeFn"
+      @sure="sureFn"
+    ></DeleteToast>
+
   </section>
 </template>
 
@@ -92,18 +98,21 @@
 import Security from "./Security";
 import Camear from "./Camear";
 import Footertip from "./Footertip";
+import DeleteToast from "./DeleteToast";
 export default {
   name: "jdScore",
   components: {
     Security,
     Camear,
-    Footertip
+    Footertip,
+    DeleteToast
   },
   data() {
     return {
-      jdScore: "", //芝麻分
+      jdScore: "", //京东分
       successPicPath: "", //截图上传成功的照片
-      isSuccess: false //判断信息是否提交成功
+      isSuccess: false, //判断信息是否提交成功
+      isShowDeletConfirm: false //是否显示删除确认框
     };
   },
   created() {},
@@ -119,16 +128,25 @@ export default {
       }, 1000);
     },
     delInfo() {
+      this.isShowDeletConfirm = true;
+    },
+    resetForm() {
+      this.jdScore = "";
+      this.successPicPath = "";
+      this.isSuccess = false;
+      this.isShowDeletConfirm = false;
+    },
+    // 关闭删除确认
+    closeFn(val) {
+      this.isShowDeletConfirm = val;
+    },
+    // 确认删除
+    sureFn() {
       this.$tools.showLoading();
       setTimeout(() => {
         this.resetForm();
         this.$tools.hideLoading();
       });
-    },
-    resetForm() {
-      this.zhimaScore = "";
-      this.successPicPath = "";
-      this.isSuccess = false;
     }
   },
   computed: {
