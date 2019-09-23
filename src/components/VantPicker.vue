@@ -1,12 +1,23 @@
 <template>
   <section class="picker-area">
     <span class="picker-label">{{label}}</span>
-    <div class="picker-select-area" :class="active?'active':null" @click="selectPicker">
-      <span class="place-val">{{placeVal}}</span>
-      <i class="van-icon van-icon-arrow right-icon"></i>
+    <div
+      class="picker-select-area"
+      :class="active?'active':null"
+      @click="selectPicker"
+    >
+      <span class="place-val">{{placeVal}} </span>
+      <i
+        class="van-icon van-icon-arrow right-icon"
+        :style="{color:arrowColor}"
+      ></i>
     </div>
     <!-- 弹出层 -->
-    <van-popup v-model="showPopup" position="bottom" :style="{ height }">
+    <van-popup
+      v-model="showPopup"
+      position="bottom"
+      :style="{ height }"
+    >
       <van-picker
         show-toolbar
         :columns="columns"
@@ -35,6 +46,9 @@ export default {
     height: {
       type: String,
       default: "40%"
+    },
+    arrowColor: {
+      type: String
     },
     columns: {
       type: Array

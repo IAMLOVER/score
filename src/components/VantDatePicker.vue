@@ -1,13 +1,24 @@
 <template>
-<!-- 日期选择组件 -->
+  <!-- 日期选择组件 -->
   <section class="date-picker-area">
     <span class="date-picker-label">{{label}}</span>
-    <div class="data-picker-select-area" :class="active?'active':null" @click="selectDatePicker">
+    <div
+      class="data-picker-select-area"
+      :class="active?'active':null"
+      @click="selectDatePicker"
+    >
       <span class="place-val">{{placeVal}}</span>
-      <i class="van-icon van-icon-arrow right-icon"></i>
+      <i
+        class="van-icon van-icon-arrow right-icon"
+        :style="{color:arrowColor}"
+      ></i>
     </div>
     <!-- 弹出层 -->
-    <van-popup v-model="showPopup" position="bottom" :style="{ height: '40%' }">
+    <van-popup
+      v-model="showPopup"
+      position="bottom"
+      :style="{ height: '40%' }"
+    >
       <van-datetime-picker
         v-model="currentDate"
         type="date"
@@ -33,6 +44,9 @@ export default {
     placeholder: {
       type: String,
       default: "请选择"
+    },
+    arrowColor: {
+      type: String
     },
     minDate: {
       type: Date
