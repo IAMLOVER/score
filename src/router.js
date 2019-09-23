@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Login from "./views/Login.vue";
 import CreditScore from "./views/CreditScroe.vue";
 import Interpretation from './views/Interpretation.vue';
 import HistoryScore from './views/HistoryScore.vue';
@@ -21,7 +22,8 @@ import JDInfo from './components/JDInfo.vue';
 Vue.use(Router);
 // 创建路由规则
 const routes = [
-  { path: '/', redirect: '/CreditScore' },
+  { path: '/', redirect: '/Login' },
+  {path:'/Login',component:Login,name:'Login',meta:{title:'登录'}},
   { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
   { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
   { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用历史' } },
