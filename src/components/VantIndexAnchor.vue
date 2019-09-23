@@ -1,26 +1,22 @@
 <template>
-  <van-index-bar :index-list="indexList">
-    <template v-for="item in dataList">
-      <van-index-anchor :index="item.index" :key="item.index" />
-      <template v-if="item.list&&item.list.length>0">
-        <VantCell
-          v-for="item2 in item.list"
-          :key="item2.id"
-          :title="item2.name"
-          @selectFn="selectFn"
-        ></VantCell>
+  <section class="vant-index-anchor-area">
+    <van-index-bar :index-list="indexList">
+      <template v-for="item in dataList">
+        <van-index-anchor
+          :index="item.index"
+          :key="item.index"
+        />
+        <template v-if="item.list&&item.list.length>0">
+          <VantCell
+            v-for="item2 in item.list"
+            :key="item2.id"
+            :title="item2.name"
+            @selectFn="selectFn"
+          ></VantCell>
+        </template>
       </template>
-    </template>
-
-    <!-- <van-index-anchor index="B" />
-    <VantCell title="北京" @selectFn="selectFn"></VantCell>
-    <van-index-anchor index="C" />
-    <VantCell title="重庆" @selectFn="selectFn"></VantCell>
-    <van-index-anchor index="D" />
-    <VantCell title="东莞" @selectFn="selectFn"></VantCell>
-    <van-index-anchor index="H" />
-    <VantCell title="海南省" @selectFn="selectFn"></VantCell>-->
-  </van-index-bar>
+    </van-index-bar>
+  </section>
 </template>
 
 <script>
@@ -59,11 +55,33 @@ export default {
         },
         {
           index: "C",
-          list: [{ id: 5, name: "重庆" },{id:6,name:"长安"}]
+          list: [{ id: 5, name: "重庆" }, { id: 6, name: "长安" }]
         },
         {
           index: "D",
           list: [{ id: 7, name: "大连" }]
+        },
+        {
+          index: "E",
+          list: [
+            { id: 8, name: "大连" },
+            { id: 9, name: "大连" },
+            { id: 10, name: "大连" },
+            { id: 11, name: "大连" },
+            { id: 12, name: "大连" },
+            { id: 13, name: "大连" }
+          ]
+        },
+        {
+          index: "F",
+          list: [
+            { id: 14, name: "大连" },
+            { id: 15, name: "大连" },
+            { id: 16, name: "大连" },
+            { id: 17, name: "大连" },
+            { id: 18, name: "大连" },
+            { id: 19, name: "大连" }
+          ]
         }
       ];
       // 过滤数据获得索引
@@ -82,8 +100,13 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-/deep/ .van-index-anchor {
+<style lang="less">
+body{
+  height: auto;
+}
+.vant-index-anchor-area {
+
   background-color: #eceded;
+  padding-bottom: 0.4rem;
 }
 </style>

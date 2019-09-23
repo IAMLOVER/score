@@ -246,7 +246,7 @@ export default {
 <style lang="less" scoped>
 .quick-score-page {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   background-color: #f7f7f7;
   // 公共样式
   .mb8 {

@@ -77,7 +77,7 @@ export default {
 
 <style lang="less" scoped>
 .student-info-area {
-  height: 100%;
+  min-height: 100vh;
   background-color: #f7f7f7;
   .form-group {
     display: grid;

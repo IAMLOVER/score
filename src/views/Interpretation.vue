@@ -174,7 +174,7 @@ export default {
 <style lang="less" scoped>
 .interpretation-page {
   position: relative;
-  min-height: 100%;
+  min-height: 100vh;
   // BG DESC AREA
   .inter-bg-area {
     padding-top: 0.2rem;

@@ -21,7 +21,7 @@ body {
 #app {
   margin: 0 auto;
   max-width: 750px;
-  height: 100%;
+  min-height: 100vh;
 }
 // 修改vant插件在ios10.3.3下面 picker组件无法拖动问题
 .van-popup {
