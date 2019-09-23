@@ -109,11 +109,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "QuickScore",
   components: {},
   data() {
     return {
+      token: "",
+      userId: "",
       scoreData: "", //分数
       ownInfoList: [], //个人信息数据
       jobList: [], //职业数据
@@ -121,12 +124,11 @@ export default {
     };
   },
   created() {
-    this.$tools.showLoading();
     let { scoreData } = this.$route.query;
     this.scoreData = scoreData;
-    this.getOwnInfoList();
-    this.getJobList();
-    this.getCreditList();
+    this.token = this.userInfo.token;
+    this.userId = this.userInfo.userId;
+    this.getUserInfo();
   },
   mounted() {
     setTimeout(() => {
@@ -134,55 +136,71 @@ export default {
     }, 500);
   },
   methods: {
+    getUserInfo() {
+      const { showLoading, callServer, showMsg } = this.$tools;
+      showLoading();
+      this.getOwnInfoList();
+      this.getJobList();
+      this.getCreditList();
+    },
     getOwnInfoList() {
+      let {
+        idCardInfo,
+        passPortInfo,
+        studentsInfo,
+        eMailInfo,
+        driveInfo,
+        carInfo,
+        houseInfo
+      } = this.userInfo;
       this.ownInfoList = [
         {
           id: 1, //用于循环key值
           enname: "IdCard",
           name: "身份证",
-          status: 0, //1表示完成，0表示未完成
+          status: idCardInfo, //1表示完成，0表示未完成
           style: "ic-card"
         },
         {
           id: 2,
           enname: "PassPort",
           name: "护照",
-          status: 0, //1表示完成，0表示未完成
+          status: passPortInfo, //1表示完成，0表示未完成
           style: "ic-passport"
         },
         {
           id: 3,
           enname: "StudentInfo",
           name: "学籍信息",
-          status: 0, //1表示完成，0表示未完成
+          status: studentsInfo, //1表示完成，0表示未完成
           style: "ic-info"
         },
         {
           id: 4,
           enname: "EMail",
           name: "单位邮箱",
-          status: 0, //1表示完成，0表示未完成
+          status: eMailInfo, //1表示完成，0表示未完成
           style: "ic-mail"
         },
         {
           id: 5,
           enname: "Drive",
           name: "驾驶证",
-          status: 0, //1表示完成，0表示未完成
+          status: driveInfo, //1表示完成，0表示未完成
           style: "ic-drive"
         },
         {
           id: 6,
           enname: "CarInfo",
           name: "车辆信息",
-          status: 0, //1表示完成，0表示未完成
+          status: carInfo, //1表示完成，0表示未完成
           style: "ic-carinfo"
         },
         {
           id: 7,
           enname: "HouseInfo",
           name: "房产信息",
-          status: 0, //1表示完成，0表示未完成
+          status: houseInfo, //1表示完成，0表示未完成
           style: "ic-houseinfo"
         }
       ];
@@ -198,21 +216,21 @@ export default {
         },
         {
           id: 2,
-          enname:"MaiMaiInfo",
+          enname: "MaiMaiInfo",
           name: "脉脉认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-maimai"
         },
         {
           id: 3,
-          enname:"LinInfo",
+          enname: "LinInfo",
           name: "领英认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-in"
         },
         {
           id: 4,
-          enname:"LiePinInfo",
+          enname: "LiePinInfo",
           name: "猎聘认证",
           status: 0, //1表示完成，0表示未完成
           style: "ic-liepin"
@@ -223,14 +241,14 @@ export default {
       this.creditList = [
         {
           id: 1, //用于循环key值
-          enname:"ZhiMaInfo",
+          enname: "ZhiMaInfo",
           name: "芝麻信用",
           status: 0, //1表示完成，0表示未完成
           style: "ic-zhima"
         },
         {
           id: 2,
-          enname:"JDInfo",
+          enname: "JDInfo",
           name: "京东信用",
           status: 0, //1表示完成，0表示未完成
           style: "ic-jingdong"
@@ -249,7 +267,7 @@ export default {
     }
   },
   computed: {
-    
+    ...mapGetters(["userInfo"])
   }
 };
 </script>

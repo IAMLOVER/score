@@ -2,10 +2,16 @@
   <section class="car-info-area">
     <p class="car-info-title">- 请拍摄行驶证，并录入信息 -</p>
     <div class="pic-car">
-      <Camear tip="拍摄行驶证主页"></Camear>
+      <Camear
+        tip="拍摄行驶证主页"
+        @savePicPath="savePicPathF"
+      ></Camear>
     </div>
     <div class="pic-car">
-      <Camear tip="拍摄行驶证副页"></Camear>
+      <Camear
+        tip="拍摄行驶证副页"
+        @savePicPath="savePicPathB"
+      ></Camear>
     </div>
   </section>
 </template>
@@ -18,10 +24,27 @@ export default {
     Camear
   },
   data() {
-    return {};
+    return {
+      idcardF: "", //正面
+      idcardB: "" //背面
+    };
   },
   created() {},
-  methods: {}
+  methods: {
+    savePicPathF(successPicPath) {
+      this.idcardF = successPicPath;
+      this.successLoad ? this.$store.commit("SET_CAR_INFO_STATUS", 1) : null;
+    },
+    savePicPathB(successPicPath) {
+      this.idcardB = successPicPath;
+      this.successLoad ? this.$store.commit("SET_CAR_INFO_STATUS", 1) : null;
+    }
+  },
+  computed: {
+    successLoad() {
+      return this.idcardF && this.idcardB;
+    }
+  }
 };
 </script>
 

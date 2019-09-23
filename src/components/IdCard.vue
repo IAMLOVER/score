@@ -2,10 +2,16 @@
   <section class="id-card-area">
     <p class="id-card-title">- 请拍摄身份证，并录入信息 -</p>
     <div class="pic-id-card">
-      <Camear tip="拍摄身份证正面"></Camear>
+      <Camear
+        tip="拍摄身份证正面"
+        @savePicPath="savePicPathF"
+      ></Camear>
     </div>
     <div class="pic-id-card">
-      <Camear tip="拍摄身份证背面"></Camear>
+      <Camear
+        tip="拍摄身份证背面"
+        @savePicPath="savePicPathB"
+      ></Camear>
     </div>
   </section>
 </template>
@@ -18,10 +24,27 @@ export default {
     Camear
   },
   data() {
-    return {};
+    return {
+      idcardF: "", //正面
+      idcardB: "" //背面
+    };
   },
   created() {},
-  methods: {}
+  methods: {
+    savePicPathF(successPicPath) {
+      this.idcardF = successPicPath;
+      this.successLoad ? this.$store.commit("SET_IDCARD_STATUS", 1) : null;
+    },
+    savePicPathB(successPicPath) {
+      this.idcardB = successPicPath;
+      this.successLoad ? this.$store.commit("SET_IDCARD_STATUS", 1) : null;
+    }
+  },
+  computed: {
+    successLoad() {
+      return this.idcardF && this.idcardB;
+    }
+  }
 };
 </script>
 

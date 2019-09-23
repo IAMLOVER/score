@@ -1,7 +1,10 @@
 <template>
   <section class="passport-area">
     <p class="passport-title">- 请拍摄实体护照，并录入信息 -</p>
-    <Camear tip="拍摄护照主页"></Camear>
+    <Camear
+      tip="拍摄护照主页"
+      @savePicPath="savePicPathF"
+    ></Camear>
   </section>
 </template>
 
@@ -13,10 +16,16 @@ export default {
     Camear
   },
   data() {
-    return {};
+    return {
+      idcardF: "" //正面
+    };
   },
-  created() {
-    
+  created() {},
+  methods: {
+    savePicPathF(successPicPath) {
+      this.idcardF = successPicPath;
+      this.$store.commit("SET_PASSPORT_STATUS", 1);
+    }
   }
 };
 </script>

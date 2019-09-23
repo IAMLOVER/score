@@ -165,7 +165,7 @@
 
 <script>
 // @ is an alias to /src
-
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "CreditScore",
   components: {},
@@ -173,11 +173,14 @@ export default {
     return {
       nowTime: new Date(), // 当前评估时间
       scoreData: 400, //信用分默认400
-      areaIcon: "icon4" //仪表盘背景图
+      areaIcon: "icon4", //仪表盘背景图
+      token: "", //用户token
+      userId: "" //用户id
     };
   },
   created() {
-    this.$tools.showLoading();
+    this.token = this.userInfo.token;
+    this.userId = this.userInfo.userId;
     this.getScoreData();
   },
   mounted() {
@@ -186,10 +189,40 @@ export default {
     }, 300);
   },
   methods: {
+    ...mapMutations([
+      "SET_IDCARD_STATUS",
+      "SET_PASSPORT_STATUS",
+      "SET_STUDENT_INFO_STATUS",
+      "SET_EMAIL_STATUS",
+      "SET_DRIVE_STATUS",
+      "SET_CAR_INFO_STATUS",
+      "SET_HOUSE_INFO_STATUS"
+    ]),
     getScoreData() {
-      // 测试用例，随机生成大于500的数
-      let random = Math.ceil(Math.random() * 1000);
-      this.scoreData = random <= 400 ? 400 : random;
+      const { showLoading, callServer, showMsg } = this.$tools;
+      showLoading();
+      callServer("post", "/djh/user_info/detail", {
+        userId: this.userId,
+        token: this.token,
+        infotype: 0 //基本信息是0
+      }).then(res => {
+        if (res.code == 0) {
+          let { creditScore } = res.data;
+          this.scoreData = creditScore;
+          // 设置表盘和对应的级别
+          this.setGrade();
+          // 设置个人信息状态
+          this.setUserInfoStatus(res.data);
+        } else {
+          showMsg(res.msg, 500);
+          this.$router.push({ name: "Login" });
+        }
+      });
+    },
+    showMsg() {
+      this.$tools.showMsg("功能正在开发中，敬请期待...");
+    },
+    setGrade() {
       if (this.scoreData >= 400 && this.scoreData < 550) {
         this.areaIcon = "icon4";
         sessionStorage.grade = 4; // 存入sessionstorage对应的级别
@@ -221,9 +254,25 @@ export default {
         return;
       }
     },
-    showMsg() {
-      this.$tools.showMsg("功能正在开发中，敬请期待...");
+    setUserInfoStatus(data) {
+      const {
+        driverLicenseStatus,
+        drivingLicenseStatus,
+        educationStatus,
+        emailStatus,
+        idCardStatus,
+        passportStatus,
+        deedStatus
+      } = data;
+      this.SET_IDCARD_STATUS(idCardStatus);
+      this.SET_PASSPORT_STATUS(passportStatus);
+      this.SET_STUDENT_INFO_STATUS(educationStatus);
+      this.SET_EMAIL_STATUS(emailStatus);
+      this.SET_DRIVE_STATUS(driverLicenseStatus);
+      this.SET_CAR_INFO_STATUS(drivingLicenseStatus);
+      this.SET_HOUSE_INFO_STATUS(deedStatus);
     },
+
     goToInterpretation() {
       this.$router.push({
         name: "Interpretation",
@@ -236,6 +285,9 @@ export default {
         query: { scoreData: this.scoreData }
       });
     }
+  },
+  computed: {
+    ...mapGetters(["userInfo"])
   }
 };
 </script>

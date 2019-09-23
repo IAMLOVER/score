@@ -65,7 +65,7 @@ export default {
     // 发送验证码
     sendVerifyCode() {
       clearInterval(this.timerId);
-      let { isEmpty, showMsg, regPhone } = this.$tools;
+      let { isEmpty, showMsg, regPhone, callServer } = this.$tools;
       if (isEmpty(this.mobile)) {
         showMsg("手机号码未填写");
         return;
@@ -83,10 +83,19 @@ export default {
           this.totalTime = 60;
         }
       }, 1000);
+      callServer("post", "/djh/user_info/authcode", {
+        mobile: this.mobile,
+        type: 1
+      }).then(res => {
+        if (res.code == 0) {
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
     // 登录
     login() {
-      let { isEmpty, showMsg, regPhone } = this.$tools;
+      let { isEmpty, showMsg, regPhone, callServer } = this.$tools;
       if (isEmpty(this.mobile)) {
         showMsg("手机号码不能为空");
         return;
@@ -99,7 +108,25 @@ export default {
         showMsg("验证码不能为空");
         return;
       }
-      this.$router.push({name:'CreditScore'})
+      callServer("post", "/djh/user_info/login", {
+        // mobile: this.mobile,
+        // authcode: this.verifyCode
+        customerId: 123123,
+        mark: "bianlimao"
+      }).then(res => {
+        if (res.code == 0) {
+          // 设置token
+          this.$store.commit("SET_TOKEN_USERID", {
+            token: res.data.token,
+            userId: res.data.userId
+          });
+          this.$router.push({
+            name: "CreditScore"
+          });
+        } else {
+          showMsg(res.msg);
+        }
+      });
     }
   }
 };

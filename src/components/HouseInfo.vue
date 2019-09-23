@@ -5,6 +5,7 @@
     <Camear
       tip="房屋所有权页"
       height="10rem"
+      @savePicPath="savePicPathF"
     ></Camear>
   </section>
 </template>
@@ -17,10 +18,17 @@ export default {
     Camear
   },
   data() {
-    return {};
+    return {
+      idcardF: "" //正面
+    };
   },
   created() {},
-  methods: {}
+  methods: {
+    savePicPathF(successPicPath) {
+      this.idcardF = successPicPath;
+      this.$store.commit("SET_HOUSE_INFO_STATUS", 1);
+    }
+  }
 };
 </script>
 
