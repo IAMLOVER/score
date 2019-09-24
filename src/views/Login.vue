@@ -109,10 +109,8 @@ export default {
         return;
       }
       callServer("post", "/djh/user_info/login", {
-        // mobile: this.mobile,
-        // authcode: this.verifyCode
-        customerId: 123123,
-        mark: "bianlimao"
+        mobile: this.mobile,
+        authcode: this.verifyCode
       }).then(res => {
         if (res.code == 0) {
           // 设置token

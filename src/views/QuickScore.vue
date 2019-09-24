@@ -4,7 +4,7 @@
     <section class="bg-area">
       <p class="score-data">{{scoreData}}</p>
       <p class="now-score">当前信用</p>
-      <p class="next-time">距下次评估:20天 16时 : 43分 : 52秒</p>
+      <p class="next-time">距下次评估:{{differenceTime.day}}天 {{differenceTime.hours}}时 : {{differenceTime.minutes}}分 : {{differenceTime.seconds}}秒</p>
     </section>
     <!-- FRIEND TIPS AREA -->
     <section class="friend-tips-area mb8">
@@ -124,8 +124,10 @@ export default {
     };
   },
   created() {
-    let { scoreData } = this.$route.query;
+    const { scoreData } = this.$route.query,
+      differenceTime = JSON.parse(localStorage.getItem("differenceTime"));
     this.scoreData = scoreData;
+    this.differenceTime = differenceTime;
     this.token = this.userInfo.token;
     this.userId = this.userInfo.userId;
     this.getUserInfo();

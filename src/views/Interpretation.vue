@@ -76,41 +76,41 @@
           <div class="swiper-slide slide2">
             <p class="slide-title ">大数据</p>
             <p class="slide-desc">
-              学而时习之，不亦说乎?有朋自远方来，不亦乐乎?人不知而不悦,不亦君子乎?
+              我们会从你所授权的信息查询服务、信息验证服务、征信服务、网络爬虫等渠道进行考察
             </p>
-            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="how-do">如何提升“大数据”评估？</p>
             <p class="slide-desc">
-              学习知识后时常复习它，不也是愉快的吗?有志同道合的朋友从远方来访，不也很快乐吗?
+              合法、适度、有效地使用个人大数据，有助于提高个人数据的质量
             </p>
           </div>
           <div class="swiper-slide slide3">
             <p class="slide-title ">人脉</p>
             <p class="slide-desc">
-              默而识之,学而不厌,诲人不倦,何有于我哉!
+              通过对关系圈朋友圈、信用水平和社交影响力等多维度的量化，建立的个人人脉关系网络
             </p>
-            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="how-do">如何提升“人脉”评估？</p>
             <p class="slide-desc">
-              默默地记住所学的知识,学习却不感觉满足,教导他人不知疲倦,这些对我来说,有哪一点是我所具备的呢?
+              人脉关系的相对稳定性等因素，是综合评估的考量因子
             </p>
           </div>
           <div class="swiper-slide slide4">
             <p class="slide-title ">履约</p>
             <p class="slide-desc">
-              三人行,必有我师焉；择其善者而从之,其不善者而改之。
+              综合考虑你各方面的资产信息里判断你的履约能力，如信用卡账单、动产及不动产等
             </p>
-            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="how-do">如何提升“履约”评估？</p>
             <p class="slide-desc">
-              几个人在一起走路,其中一定有人可以当我的老师.应当选择他们的优点去学习,
+              保持良好的履约行为，有助提高个人信用水平和履约能力评估
             </p>
           </div>
           <div class="swiper-slide slide5">
             <p class="slide-title ">交易</p>
             <p class="slide-desc">
-              不愤不启,不悱不发.举一隅不以三隅反,则不复也
+              你消费、缴费、转账、还款等活动中体现出来的交易特征，如消费档次
             </p>
-            <p class="how-do">如何提升“身份特征”评估？</p>
+            <p class="how-do">如何提升“交易”评估？</p>
             <p class="slide-desc">
-              不到他想弄明白却不能的时候不去开导他,不到他想说明白却不说出来的时候不去启发他
+              使用电子交易，会通过系统更加了解你的交易行为
             </p>
           </div>
         </div>
@@ -162,7 +162,7 @@ export default {
   },
   methods: {
     goToHistory() {
-      this.$router.push({name:'HistoryScore'});
+      this.$router.push({ name: "HistoryScore" });
     },
     slideTo(index) {
       this.swiper.slideToLoop(index, 300, false);

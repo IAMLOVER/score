@@ -237,10 +237,11 @@ export default {
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
-          let { creditScore } = res.data;
+          let { creditScore, differenceTime } = res.data;
+          // 设置分数
           this.scoreData = creditScore;
-          // 设置表盘和对应的级别
-          this.setGrade();
+          // 设置表盘和对应的级别和时间差
+          this.setGrade(differenceTime);
           // 设置个人信息状态
           this.setUserInfoStatus(res.data);
         } else {
@@ -252,7 +253,15 @@ export default {
     showMsg() {
       this.$tools.showMsg("功能正在开发中，敬请期待...");
     },
-    setGrade() {
+    setGrade(mss) {
+      // 设置时间差毫秒
+      const differenceTime = {
+        day: parseInt(mss / (1000 * 60 * 60 * 24)),
+        hours: parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: parseInt((mss % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.round((mss % (1000 * 60)) / 1000)
+      };
+      localStorage.setItem("differenceTime", JSON.stringify(differenceTime));
       if (this.scoreData >= 400 && this.scoreData < 550) {
         this.areaIcon = "icon4";
         sessionStorage.grade = 4; // 存入sessionstorage对应的级别

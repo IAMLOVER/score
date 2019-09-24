@@ -11,8 +11,8 @@
       <!-- BG AREA -->
       <section class="bg-area">
         <p class="his-title">信用分需要慢慢积累哦，亲保持好习惯</p>
-        <p class="month-data">本月765，上月700</p>
-        <p class="update">更新时间：2019-06</p>
+        <p class="month-data">本月{{creditScore}}{{lastCreditScore?'，上月'+lastCreditScore:null}}</p>
+        <p class="update">更新时间：{{createTime}}</p>
         <!-- GRADE AREA -->
         <section class="grade-area">
           <div class="slide">
@@ -62,10 +62,10 @@
               v-for="item in dataList"
               :key="item.id"
             >
-              <p class="list-title">2019-05 评估</p>
+              <p class="list-title">{{item.createTime}} 评估</p>
               <div class="list-desc">
                 <p class="desc-title">信用分已更新</p>
-                <p class="desc-result">本月结果765分</p>
+                <p class="desc-result">本月结果{{item.creditScore}}分</p>
               </div>
             </li>
           </ul>
@@ -79,12 +79,16 @@
 
 <script>
 import MescrollVue from "mescroll.js/mescroll.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "HistoryScore",
   components: { MescrollVue },
   data() {
     return {
       active: 4, // 滑动条激活的样式
+      creditScore: "", //本月分数
+      lastCreditScore: "", //上月分数
+      createTime: "", //更新时间
       mescroll: null,
       mescrollDown: {
         use: false
@@ -139,9 +143,11 @@ export default {
     upCallback(page, mescroll) {
       // 发送请求
       this.$tools
-        .callServer("POST", "/djh/edit_info/list", {
+        .callServer("POST", "/djh/user_credit_score/list", {
           pageNo: page.num,
-          pageSize: page.size
+          pageSize: page.size,
+          userId: this.userIdToken.userId,
+          token: this.userIdToken.token
         })
         .then(res => {
           if (res.code == 0) {
@@ -149,6 +155,11 @@ export default {
             // 如果是第一页需手动置空列表
             if (page.num === 0) this.dataList = [];
             this.dataList = this.dataList.concat(arr);
+            this.creditScore = res.data.creditScore;
+            this.createTime = res.data.createTime;
+            this.lastCreditScore = res.data.lastCreditScore
+              ? res.data.lastCreditScore
+              : 0;
             // 数据渲染成功后,隐藏下拉刷新的状态
             this.$nextTick(() => {
               mescroll.endSuccess(arr.length);
@@ -177,6 +188,9 @@ export default {
         };
       }
     }
+  },
+  computed: {
+    ...mapGetters(["userIdToken"])
   }
 };
 </script>
