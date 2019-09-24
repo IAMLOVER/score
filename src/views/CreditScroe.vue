@@ -55,7 +55,10 @@
     <section class="hot-recommend-area p24 mb32">
       <p class="title">热门推荐</p>
       <ul class="hot-recommend-wrap">
-        <li class="recommend-item heimingdan">
+        <li
+          class="recommend-item heimingdan"
+          @click="showMsg"
+        >
           <a href="javascript:;">
             <img
               src="../assets/image/creditScore/heimingdan@2x.png"
@@ -63,7 +66,10 @@
             >
           </a>
         </li>
-        <li class="recommend-item sifashuju">
+        <li
+          class="recommend-item sifashuju"
+          @click="showMsg"
+        >
           <a href="javascript:;">
             <img
               src="../assets/image/creditScore/sifashuju@2x.png"
@@ -71,7 +77,10 @@
             >
           </a>
         </li>
-        <li class="recommend-item xinyongxiaozhishi">
+        <li
+          class="recommend-item xinyongxiaozhishi"
+          @click="showMsg"
+        >
           <a href="javascript:;">
             <img
               src="../assets/image/creditScore/xinyongxiaozhishi@2x.png"
@@ -85,7 +94,7 @@
     <section class="task-area p24 mb32">
       <p class="title">任务中心</p>
       <ul class="task-wrap">
-        <li>
+        <li @click="showMsg">
           <div class="left">
             <p class="task-icon daily"></p>
             <div class="task-desc">
@@ -100,7 +109,7 @@
             <span>已完成</span>
           </div>
         </li>
-        <li>
+        <li @click="showMsg">
           <div class="left">
             <p class="task-icon vip"></p>
             <div class="task-desc">
@@ -116,7 +125,7 @@
             <span>未完成</span>
           </div>
         </li>
-        <li>
+        <li @click="showMsg">
           <div class="left">
             <p class="task-icon repayment"></p>
             <div class="task-desc">
@@ -138,20 +147,29 @@
     <!-- ACTIVITY -->
     <section class="activity-area p24 mb32">
       <p class="title">精选活动</p>
-      <div class="activity-main-img">
+      <div
+        class="activity-main-img"
+        @click="showMsg"
+      >
         <img
           src="../assets/image/creditScore/activity_main@2x.png"
           alt=""
         >
       </div>
       <div class="activity-sub-imgs">
-        <div class="left">
+        <div
+          class="left"
+          @click="showMsg"
+        >
           <img
             src="../assets/image/creditScore/activity_sub_1@2x.png"
             alt=""
           >
         </div>
-        <div class="right">
+        <div
+          class="right"
+          @click="showMsg"
+        >
           <img
             src="../assets/image/creditScore/activity_sub_2@2x.png"
             alt=""
@@ -196,7 +214,9 @@ export default {
       "SET_EMAIL_STATUS",
       "SET_DRIVE_STATUS",
       "SET_CAR_INFO_STATUS",
-      "SET_HOUSE_INFO_STATUS"
+      "SET_HOUSE_INFO_STATUS",
+      "SET_ZHIMA_INFO_STATUS",
+      "SET_JD_INFO_STATUS"
     ]),
     getScoreData() {
       const { showLoading, callServer, showMsg } = this.$tools;
@@ -262,7 +282,9 @@ export default {
         emailStatus,
         idCardStatus,
         passportStatus,
-        deedStatus
+        deedStatus,
+        sesameStatus,
+        jingdongStatus
       } = data;
       this.SET_IDCARD_STATUS(idCardStatus);
       this.SET_PASSPORT_STATUS(passportStatus);
@@ -271,6 +293,8 @@ export default {
       this.SET_DRIVE_STATUS(driverLicenseStatus);
       this.SET_CAR_INFO_STATUS(drivingLicenseStatus);
       this.SET_HOUSE_INFO_STATUS(deedStatus);
+      this.SET_ZHIMA_INFO_STATUS(sesameStatus);
+      this.SET_JD_INFO_STATUS(jingdongStatus);
     },
 
     goToInterpretation() {

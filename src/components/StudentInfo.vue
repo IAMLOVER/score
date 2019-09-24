@@ -136,8 +136,13 @@
       <div class="footer-position">
         <Footertip></Footertip>
       </div>
-
     </template>
+
+    <DeleteToast
+      v-if="isShowDeletConfirm"
+      @closeFn="closeFn"
+      @sure="sureFn"
+    ></DeleteToast>
   </section>
 </template>
 
@@ -146,10 +151,11 @@ import Security from "./Security";
 import Footertip from "./Footertip";
 import VantPicker from "./VantPicker";
 import VantDatePicker from "./VantDatePicker";
-import { mapGetters } from "vuex";
+import DeleteToast from "./DeleteToast";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "StudentInfo",
-  components: { Security, Footertip, VantPicker, VantDatePicker },
+  components: { Security, Footertip, VantPicker, VantDatePicker, DeleteToast },
   data() {
     return {
       region: "", //地区
@@ -159,6 +165,7 @@ export default {
       admissionTime: "", //入学时间
       graduationTime: "", //毕业时间
       isSuccess: false, //判断信息是否提交成功
+      isShowDeletConfirm: false, //是否显示删除确认框
       statusList: ["在读", "毕业"], //当前状态列表
       educationList: [
         "初中及以下",
@@ -180,6 +187,7 @@ export default {
     this.studentName = this.studentInfo.studentName;
   },
   methods: {
+    ...mapMutations(["SET_STUDENT_INFO_STATUS"]),
     // 选择院校
     goToStudentName() {
       if (this.region && this.regionId) {
@@ -213,18 +221,27 @@ export default {
     },
     // 提交信息
     submitInfo() {
-      this.$tools.showLoading();
-      setTimeout(() => {
-        this.isSuccess = true;
-      }, 1000);
-    },
-    // 删除信息
-    delInfo() {
-      this.$tools.showLoading();
-      setTimeout(() => {
-        this.resetForm();
-        this.$tools.hideLoading();
-      }, 400);
+      const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+      showLoading();
+      callServer("post", "/djh/user_info/update_education", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        area: this.region,
+        institutionName: this.studentName,
+        education: this.education,
+        enrollmentTime: this.admissionTime?this.admissionTime:null,
+        graduationTime: this.graduationTime?this.graduationTime:null,
+        studentStatus: this.status == "在读" ? 1 : 2,
+        educationStatus: 1
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          this.isSuccess = true;
+          this.SET_STUDENT_INFO_STATUS(1);
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
     // 还原表单信息
     resetForm() {
@@ -235,6 +252,38 @@ export default {
       this.admissionTime = "";
       this.graduationTime = "";
       this.isSuccess = false;
+      this.isShowDeletConfirm = false;
+    },
+    // 删除信息
+    delInfo() {
+      this.isShowDeletConfirm = true;
+    },
+    // 关闭删除确认
+    closeFn(val) {
+      this.isShowDeletConfirm = val;
+    },
+    // 确认删除
+    sureFn() {
+      const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+      showLoading();
+      // 提交状态信息
+      callServer("post", "/djh/user_info/update_education", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        area: this.region,
+        institutionName: this.studentName,
+        education: this.education,
+        enrollmentTime: this.admissionTime,
+        graduationTime: this.graduationTime,
+        studentStatus: this.status,
+        educationStatus: 0
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          this.resetForm();
+          this.SET_STUDENT_INFO_STATUS(0);
+        }
+      });
     }
   },
   // 从vuex的store中获取topMusicList的id 使用this.$store.getters.****方法
@@ -243,7 +292,7 @@ export default {
   // 由于getters 相当于vuex中的computed 当依赖发生变化时getter中也会发生变化,
   // 所以通过对象拓展的方法,把getter混入到computed中
   computed: {
-    ...mapGetters(["studentRegion", "studentInfo"]),
+    ...mapGetters(["studentRegion", "studentInfo", "userInfo"]),
     isActive() {
       let { isEmpty } = this.$tools;
       if (

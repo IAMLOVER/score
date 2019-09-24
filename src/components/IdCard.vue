@@ -200,7 +200,6 @@ export default {
     delInfo() {
       this.isShowDeletConfirm = true;
     },
-    // 提交状态信息
     // 关闭删除确认
     closeFn(val) {
       this.isShowDeletConfirm = val;
@@ -209,6 +208,7 @@ export default {
     sureFn() {
       const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
       showLoading();
+      // 提交状态信息
       callServer("post", "/djh/user_info/update_id_card", {
         userId: this.userInfo.userId,
         token: this.userInfo.token,

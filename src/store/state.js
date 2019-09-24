@@ -12,7 +12,9 @@ const state = {
   eMailStatus: '',//邮箱状态
   driveStatus: '',//驾驶证状态
   carInfoStatus: '',//行驶证状态
-  houseInfoStatus: ''//房产信息状态
+  houseInfoStatus: '',//房产信息状态
+  zhimaInfoStatus:'',//芝麻信息状态
+  jdInfoStatus:''//京东信息状态
 }
 
 export default state

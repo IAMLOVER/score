@@ -57,5 +57,16 @@ const mutations = {
     setLocalStorage({ studentName: studentInfo.title, studentId: studentInfo.id });
   },
 
+  // 设置芝麻信用信息状态方法
+  SET_ZHIMA_INFO_STATUS(state, info) {
+    state.zhimaInfoStatus = info;
+    setLocalStorage({ zhimaInfoStatus: info });
+  },
+  // 设置京东信用信息状态方法
+  SET_JD_INFO_STATUS(state, info) {
+    state.jdInfoStatus = info;
+    setLocalStorage({ jdInfoStatus: info });
+  }
+
 }
 export default mutations

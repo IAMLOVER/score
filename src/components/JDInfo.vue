@@ -99,6 +99,7 @@ import Security from "./Security";
 import Camear from "./Camear";
 import Footertip from "./Footertip";
 import DeleteToast from "./DeleteToast";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "jdScore",
   components: {
@@ -117,18 +118,9 @@ export default {
   },
   created() {},
   methods: {
+    ...mapMutations(["SET_JD_INFO_STATUS"]),
     savePicPath(successPicPath) {
       this.successPicPath = successPicPath;
-    },
-    submitInfo() {
-      this.$tools.showLoading();
-      setTimeout(() => {
-        this.$tools.hideLoading();
-        this.isSuccess = true;
-      }, 1000);
-    },
-    delInfo() {
-      this.isShowDeletConfirm = true;
     },
     resetForm() {
       this.jdScore = "";
@@ -136,20 +128,68 @@ export default {
       this.isSuccess = false;
       this.isShowDeletConfirm = false;
     },
+    checkForm(noShow = true) {
+      const { isEmpty, showMsg } = this.$tools;
+      if (isEmpty(this.jdScore)) {
+        noShow && showMsg("京东分不能为空");
+        return false;
+      }
+      if (isEmpty(this.successPicPath)) {
+        noShow && showMsg("图片不能为空");
+        return false;
+      }
+      return true;
+    },
+    submitInfo() {
+      if (this.checkForm()) {
+        const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+        showLoading();
+        callServer("post", "/djh/user_info/update_jingdong", {
+          userId: this.userInfo.userId,
+          token: this.userInfo.token,
+          jingdongCreditScore: this.jdScore,
+          jingdongCreditImg: this.successPicPath,
+          jingdongStatus: 1
+        }).then(res => {
+          hideLoading();
+          if (res.code == 0) {
+            this.isSuccess = true;
+            this.SET_JD_INFO_STATUS(1);
+          } else {
+            showMsg(res.msg);
+          }
+        });
+      }
+    },
+    delInfo() {
+      this.isShowDeletConfirm = true;
+    },
+
     // 关闭删除确认
     closeFn(val) {
       this.isShowDeletConfirm = val;
     },
     // 确认删除
     sureFn() {
-      this.$tools.showLoading();
-      setTimeout(() => {
-        this.resetForm();
-        this.$tools.hideLoading();
+      const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+      showLoading();
+      callServer("post", "/djh/user_info/update_jingdong", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        jingdongCreditScore: this.jdScore,
+        jingdongCreditImg: this.successPicPath,
+        jingdongStatus: 0
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          this.resetForm();
+          this.SET_JD_INFO_STATUS(0);
+        }
       });
     }
   },
   computed: {
+    ...mapGetters(["userInfo"]),
     isActive() {
       let { isEmpty } = this.$tools;
       if (isEmpty(this.jdScore)) {

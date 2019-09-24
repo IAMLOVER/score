@@ -213,6 +213,7 @@ import Camear from "./Camear";
 import VantDatePicker from "./VantDatePicker";
 import VantPicker from "./VantPicker";
 import DeleteToast from "./DeleteToast";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Drive",
   components: {
@@ -244,6 +245,7 @@ export default {
   },
   created() {},
   methods: {
+    ...mapMutations(["SET_DRIVE_STATUS"]),
     effectiveDates(val) {
       // 生效日期选择的值
       this.effectiveDate = val;
@@ -268,19 +270,9 @@ export default {
       //副页照片
       this.subPic = val;
     },
-    submitInfo() {
-      // 提交信息
-      if (this.checkForm()) {
-        this.$tools.showLoading();
-        setTimeout(() => {
-          this.$tools.hideLoading();
-          this.isSuccess = true;
-        }, 1000);
-      }
-    },
     checkForm(noShow = true) {
       // 信息验证
-      let { isEmpty, showMsg } = this.$tools;
+      const { isEmpty, showMsg } = this.$tools;
       if (isEmpty(this.driverNum)) {
         noShow && showMsg("驾驶证号不能为空");
         return false;
@@ -335,6 +327,37 @@ export default {
       this.isSuccess = false;
       this.isShowDeletConfirm = false;
     },
+    submitInfo() {
+      // 提交信息
+      if (this.checkForm()) {
+        const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+        showLoading();
+        callServer("post", "/djh/user_info/update_driver_license", {
+          userId: this.userInfo.userId,
+          token: this.userInfo.token,
+          licenseNo: this.driverNum,
+          name: this.userName,
+          driveType: this.carModel,
+          effectiveTime: this.effectiveDate,
+          invalidTime: this.expirationDate,
+          fileNumber: this.fileNumber,
+          gender: this.sex ? (this.sex == "男" ? 1 : 2) : null,
+          country: this.citizenship ? this.citizenship : null,
+          receiveTime: this.initDate,
+          driverLicenseHomepage: this.mainPic,
+          driverLicenseSecondary: this.subPic,
+          driverLicenseStatus: 1
+        }).then(res => {
+          hideLoading();
+          if (res.code == 0) {
+            this.isSuccess = true;
+            this.SET_DRIVE_STATUS(1);
+          } else {
+            showMsg(res.msg);
+          }
+        });
+      }
+    },
     delInfo() {
       this.isShowDeletConfirm = true;
     },
@@ -344,14 +367,34 @@ export default {
     },
     // 确认删除
     sureFn() {
-      this.$tools.showLoading();
-      setTimeout(() => {
-        this.resetForm();
-        this.$tools.hideLoading();
+      const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+      showLoading();
+      callServer("post", "/djh/user_info/update_driver_license", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        licenseNo: this.driverNum,
+        name: this.userName,
+        driveType: this.carModel,
+        effectiveTime: this.effectiveDate,
+        invalidTime: this.expirationDate,
+        fileNumber: this.fileNumber,
+        gender: this.sex ? (this.sex == "男" ? 1 : 2) : null,
+        country: this.citizenship ? this.citizenship : null,
+        receiveTime: this.initDate,
+        driverLicenseHomepage: this.mainPic,
+        driverLicenseSecondary: this.subPic,
+        driverLicenseStatus: 0
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          this.resetForm();
+          this.SET_DRIVE_STATUS(0);
+        }
       });
     }
   },
   computed: {
+    ...mapGetters(["userInfo"]),
     isActive() {
       if (this.checkForm(false)) {
         return true;

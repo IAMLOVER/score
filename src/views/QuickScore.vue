@@ -144,7 +144,7 @@ export default {
       this.getCreditList();
     },
     getOwnInfoList() {
-      let {
+      const {
         idCardInfo,
         passPortInfo,
         studentsInfo,
@@ -238,19 +238,20 @@ export default {
       ];
     },
     getCreditList() {
+      const { zhimaInfo, jdInfo } = this.userInfo;
       this.creditList = [
         {
           id: 1, //用于循环key值
           enname: "ZhiMaInfo",
           name: "芝麻信用",
-          status: 0, //1表示完成，0表示未完成
+          status: zhimaInfo, //1表示完成，0表示未完成
           style: "ic-zhima"
         },
         {
           id: 2,
           enname: "JDInfo",
           name: "京东信用",
-          status: 0, //1表示完成，0表示未完成
+          status: jdInfo, //1表示完成，0表示未完成
           style: "ic-jingdong"
         }
       ];

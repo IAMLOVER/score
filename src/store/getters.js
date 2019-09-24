@@ -12,7 +12,9 @@ const userInfo = (state) => {
     eMailInfo: state.eMailStatus || (store.eMailStatus ? store.eMailStatus : 0),
     driveInfo: state.driveStatus || (store.driveStatus ? store.driveStatus : 0),
     carInfo: state.carInfoStatus || (store.carInfoStatus ? store.carInfoStatus : 0),
-    houseInfo: state.houseInfoStatus || (store.houseInfoStatus ? store.houseInfoStatus : 0)
+    houseInfo: state.houseInfoStatus || (store.houseInfoStatus ? store.houseInfoStatus : 0),
+    zhimaInfo: state.zhimaInfoStatus || (store.zhimaInfoStatus ? store.zhimaInfoStatus : 0),
+    jdInfo: state.jdInfoStatus || (store.jdInfoStatus ? store.jdInfoStatus : 0)
   }
 };
 
@@ -24,21 +26,35 @@ const idCardInfo = (state) => {
 const passPortInfo = (state) => {
   return state.passPortStatus || (store.passPortStatus ? store.passPortStatus : 0)
 };
+// 获取学籍信息
 const studentsInfo = (state) => {
   return state.studentInfoStatus || (store.studentInfoStatus ? store.studentInfoStatus : 0)
 };
+// 获取邮箱信息
 const eMailInfo = (state) => {
   return state.eMailStatus || (store.eMailStatus ? store.eMailStatus : 0)
 };
+// 获取驾驶证信息
 const driveInfo = (state) => {
   return state.driveStatus || (store.driveStatus ? store.driveStatus : 0)
 };
+// 获取行驶证信息
 const carInfo = (state) => {
   return state.carInfoStatus || (store.carInfoStatus ? store.carInfoStatus : 0)
 };
+// 获取房产信息
 const houseInfo = (state) => {
   return state.houseInfoStatus || (store.houseInfoStatus ? store.houseInfoStatus : 0)
 };
+// 获取芝麻信用信息
+const zhimaInfo = (state) => {
+  return state.zhimaInfoStatus || (store.zhimaInfoStatus ? store.zhimaInfoStatus : 0)
+};
+// 获取京东信用信息
+const jdInfo = (state) => {
+  return state.jdInfoStatus || (store.jdInfoStatus ? store.jdInfoStatus : 0)
+};
+
 
 // 获取学籍信息中的地区
 const studentRegion = (state) => {
@@ -46,7 +62,6 @@ const studentRegion = (state) => {
     studentRegionName: state.studentRegionName || (store.studentRegionName ? store.studentRegionName : null), studentRedionId: state.studentRedionId || (store.studentRedionId ? store.studentRedionId : null)
   }
 };
-
 // 获取学籍信息对应的选中的学校名字
 const studentInfo = (state) => {
   return {
@@ -68,5 +83,7 @@ export default {
   eMailInfo,
   driveInfo,
   carInfo,
-  houseInfo
+  houseInfo,
+  zhimaInfo,
+  jdInfo
 }
