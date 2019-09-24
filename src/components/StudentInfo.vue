@@ -224,8 +224,8 @@ export default {
       const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
       showLoading();
       callServer("post", "/djh/user_info/update_education", {
-        userId: this.userInfo.userId,
-        token: this.userInfo.token,
+        userId: this.userIdToken.userId,
+        token: this.userIdToken.token,
         area: this.region,
         institutionName: this.studentName,
         education: this.education,
@@ -268,8 +268,8 @@ export default {
       showLoading();
       // 提交状态信息
       callServer("post", "/djh/user_info/update_education", {
-        userId: this.userInfo.userId,
-        token: this.userInfo.token,
+        userId: this.userIdToken.userId,
+        token: this.userIdToken.token,
         area: this.region,
         institutionName: this.studentName,
         education: this.education,
@@ -292,7 +292,7 @@ export default {
   // 由于getters 相当于vuex中的computed 当依赖发生变化时getter中也会发生变化,
   // 所以通过对象拓展的方法,把getter混入到computed中
   computed: {
-    ...mapGetters(["studentRegion", "studentInfo", "userInfo"]),
+    ...mapGetters(["studentRegion", "studentInfo", "userIdToken"]),
     isActive() {
       let { isEmpty } = this.$tools;
       if (
