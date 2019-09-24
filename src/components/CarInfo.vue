@@ -32,7 +32,7 @@ export default {
   },
   created() {},
   methods: {
-    ...mapGetters(["SET_CAR_INFO_STATUS"]),
+    ...mapMutations(["SET_CAR_INFO_STATUS"]),
     savePicPathF(successPicPath) {
       this.idcardF = successPicPath;
       this.successLoad && this.submitStatus();
