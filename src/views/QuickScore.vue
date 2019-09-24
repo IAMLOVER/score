@@ -133,11 +133,7 @@ export default {
     this.userId = this.userIdToken.userId;
     this.getUserInfo();
   },
-  mounted() {
-    setTimeout(() => {
-      this.$tools.hideLoading();
-    }, 500);
-  },
+  mounted() {},
   methods: {
     ...mapMutations([
       "SET_IDCARD_STATUS",
@@ -161,38 +157,38 @@ export default {
         hideLoading();
         if (res.code == 0) {
           let { creditScore, differenceTime } = res.data,
-            differenceTimeObj = {
-              day: parseInt(differenceTime / (1000 * 60 * 60 * 24)),
-              hours: parseInt(
-                (differenceTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-              ),
-              minutes: parseInt(
-                (differenceTime % (1000 * 60 * 60)) / (1000 * 60)
-              ),
-              seconds: Math.round((differenceTime % (1000 * 60)) / 1000)
-            };
+            differenceTimeObj = this.setDifferenceTimeObj(differenceTime);
           // 设置分数
           this.scoreData = creditScore;
           // 设置时间差
           this.differenceTime = differenceTimeObj;
-          // 设置个人信息状态
-          // this.setUserInfoStatus(res.data);
-          this.getOwnInfoList();
-          this.getJobList();
-          this.getCreditList();
+          // 设置个人信息状态到vuex
+          this.setUserInfoStatus(res.data);
+          // 根据返回的数据设置状态
+          this.getOwnInfoList(res.data);
+          this.getJobList(res.data);
+          this.getCreditList(res.data);
         } else {
           showMsg(res.msg);
         }
       });
     },
+    setDifferenceTimeObj(date) {
+      return {
+        day: parseInt(date / (1000 * 60 * 60 * 24)),
+        hours: parseInt((date % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: parseInt((date % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.round((date % (1000 * 60)) / 1000)
+      };
+    },
     setUserInfoStatus(data) {
       const {
-        driverLicenseStatus,
-        drivingLicenseStatus,
-        educationStatus,
-        emailStatus,
         idCardStatus,
         passportStatus,
+        educationStatus,
+        emailStatus,
+        driverLicenseStatus,
+        drivingLicenseStatus,
         deedStatus,
         sesameStatus,
         jingdongStatus
@@ -209,67 +205,67 @@ export default {
     },
     getOwnInfoList(data) {
       const {
-        idCardInfo,
-        passPortInfo,
-        studentsInfo,
-        eMailInfo,
-        driveInfo,
-        carInfo,
-        houseInfo
-      } = this.userInfo;
+        idCardStatus,
+        passportStatus,
+        educationStatus,
+        emailStatus,
+        driverLicenseStatus,
+        drivingLicenseStatus,
+        deedStatus
+      } = data;
       this.ownInfoList = [
         {
           id: 1, //用于循环key值
           enname: "IdCard",
           name: "身份证",
-          status: idCardInfo, //1表示完成，0表示未完成
+          status: idCardStatus, //1表示完成，0表示未完成
           style: "ic-card"
         },
         {
           id: 2,
           enname: "PassPort",
           name: "护照",
-          status: passPortInfo, //1表示完成，0表示未完成
+          status: passportStatus, //1表示完成，0表示未完成
           style: "ic-passport"
         },
         {
           id: 3,
           enname: "StudentInfo",
           name: "学籍信息",
-          status: studentsInfo, //1表示完成，0表示未完成
+          status: educationStatus, //1表示完成，0表示未完成
           style: "ic-info"
         },
         {
           id: 4,
           enname: "EMail",
           name: "单位邮箱",
-          status: eMailInfo, //1表示完成，0表示未完成
+          status: emailStatus, //1表示完成，0表示未完成
           style: "ic-mail"
         },
         {
           id: 5,
           enname: "Drive",
           name: "驾驶证",
-          status: driveInfo, //1表示完成，0表示未完成
+          status: driverLicenseStatus, //1表示完成，0表示未完成
           style: "ic-drive"
         },
         {
           id: 6,
           enname: "CarInfo",
           name: "车辆信息",
-          status: carInfo, //1表示完成，0表示未完成
+          status: drivingLicenseStatus, //1表示完成，0表示未完成
           style: "ic-carinfo"
         },
         {
           id: 7,
           enname: "HouseInfo",
           name: "房产信息",
-          status: houseInfo, //1表示完成，0表示未完成
+          status: deedStatus, //1表示完成，0表示未完成
           style: "ic-houseinfo"
         }
       ];
     },
-    getJobList() {
+    getJobList(data) {
       this.jobList = [
         {
           id: 1, //用于循环key值
@@ -301,21 +297,21 @@ export default {
         }
       ];
     },
-    getCreditList() {
-      const { zhimaInfo, jdInfo } = this.userInfo;
+    getCreditList(data) {
+      const { sesameStatus, jingdongStatus } = data;
       this.creditList = [
         {
           id: 1, //用于循环key值
           enname: "ZhiMaInfo",
           name: "芝麻信用",
-          status: zhimaInfo, //1表示完成，0表示未完成
+          status: sesameStatus, //1表示完成，0表示未完成
           style: "ic-zhima"
         },
         {
           id: 2,
           enname: "JDInfo",
           name: "京东信用",
-          status: jdInfo, //1表示完成，0表示未完成
+          status: jingdongStatus, //1表示完成，0表示未完成
           style: "ic-jingdong"
         }
       ];
@@ -332,7 +328,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo", "userIdToken"])
+    ...mapGetters(["userIdToken"])
   }
 };
 </script>
