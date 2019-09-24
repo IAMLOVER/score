@@ -197,15 +197,13 @@ export default {
     };
   },
   created() {
-    this.token = this.userInfo.token;
-    this.userId = this.userInfo.userId;
-    this.getScoreData();
+    if (this.checkLogin()) {
+      this.token = this.userIdToken.token;
+      this.userId = this.userIdToken.userId;
+      this.getScoreData();
+    }
   },
-  mounted() {
-    setTimeout(() => {
-      this.$tools.hideLoading();
-    }, 300);
-  },
+  mounted() {},
   methods: {
     ...mapMutations([
       "SET_IDCARD_STATUS",
@@ -218,14 +216,26 @@ export default {
       "SET_ZHIMA_INFO_STATUS",
       "SET_JD_INFO_STATUS"
     ]),
+    checkLogin() {
+      const store = JSON.parse(
+          localStorage.getItem("store") ? localStorage.getItem("store") : null
+        ),
+        userId = store ? store.userId : null;
+      if (!userId) {
+        this.$router.push({ name: "Login" });
+        return false;
+      }
+      return true;
+    },
     getScoreData() {
-      const { showLoading, callServer, showMsg } = this.$tools;
+      const { showLoading, hideLoading, callServer, showMsg } = this.$tools;
       showLoading();
       callServer("post", "/djh/user_info/detail", {
         userId: this.userId,
         token: this.token,
         infotype: 0 //基本信息是0
       }).then(res => {
+        hideLoading();
         if (res.code == 0) {
           let { creditScore } = res.data;
           this.scoreData = creditScore;
@@ -311,7 +321,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo"])
+    ...mapGetters(["userIdToken"])
   }
 };
 </script>
