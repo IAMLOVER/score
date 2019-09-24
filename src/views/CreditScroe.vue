@@ -10,7 +10,7 @@
         :class="areaIcon"
       >
         <p class="score">{{scoreData}}</p>
-        <p>信用良好</p>
+        <p>信用{{gradeStr}}</p>
       </div>
       <p class="updatetime-area">
         <span>评估时间：</span>
@@ -193,7 +193,8 @@ export default {
       scoreData: 400, //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
       token: "", //用户token
-      userId: "" //用户id
+      userId: "", //用户id
+      gradeStr: "" //级别
     };
   },
   created() {
@@ -265,31 +266,37 @@ export default {
       if (this.scoreData >= 400 && this.scoreData < 550) {
         this.areaIcon = "icon4";
         sessionStorage.grade = 4; // 存入sessionstorage对应的级别
+        this.gradeStr = "较差";
         return;
       }
       if (this.scoreData >= 550 && this.scoreData < 650) {
         this.areaIcon = "icon5";
         sessionStorage.grade = 5;
+        this.gradeStr = "中等";
         return;
       }
       if (this.scoreData >= 650 && this.scoreData < 750) {
         this.areaIcon = "icon6";
         sessionStorage.grade = 6;
+        this.gradeStr = "良好";
         return;
       }
       if (this.scoreData >= 750 && this.scoreData < 850) {
         this.areaIcon = "icon7";
         sessionStorage.grade = 7;
+        this.gradeStr = "优秀";
         return;
       }
       if (this.scoreData >= 850 && this.scoreData < 950) {
         this.areaIcon = "icon8";
         sessionStorage.grade = 8;
+        this.gradeStr = "极好";
         return;
       }
       if (this.scoreData >= 950) {
         this.areaIcon = "icon9";
         sessionStorage.grade = 9;
+        this.gradeStr = "极好";
         return;
       }
     },

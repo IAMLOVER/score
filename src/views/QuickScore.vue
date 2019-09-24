@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "QuickScore",
   components: {},
@@ -120,7 +120,8 @@ export default {
       scoreData: "", //分数
       ownInfoList: [], //个人信息数据
       jobList: [], //职业数据
-      creditList: [] //信用数据
+      creditList: [], //信用数据
+      differenceTime: "" //时间
     };
   },
   created() {
@@ -138,14 +139,75 @@ export default {
     }, 500);
   },
   methods: {
+    ...mapMutations([
+      "SET_IDCARD_STATUS",
+      "SET_PASSPORT_STATUS",
+      "SET_STUDENT_INFO_STATUS",
+      "SET_EMAIL_STATUS",
+      "SET_DRIVE_STATUS",
+      "SET_CAR_INFO_STATUS",
+      "SET_HOUSE_INFO_STATUS",
+      "SET_ZHIMA_INFO_STATUS",
+      "SET_JD_INFO_STATUS"
+    ]),
     getUserInfo() {
-      const { showLoading, callServer, showMsg } = this.$tools;
+      const { showLoading, callServer, showMsg, hideLoading } = this.$tools;
       showLoading();
-      this.getOwnInfoList();
-      this.getJobList();
-      this.getCreditList();
+      callServer("post", "/djh/user_info/detail", {
+        userId: this.userId,
+        token: this.token,
+        infotype: 0 //基本信息是0
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          let { creditScore, differenceTime } = res.data,
+            differenceTimeObj = {
+              day: parseInt(differenceTime / (1000 * 60 * 60 * 24)),
+              hours: parseInt(
+                (differenceTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+              ),
+              minutes: parseInt(
+                (differenceTime % (1000 * 60 * 60)) / (1000 * 60)
+              ),
+              seconds: Math.round((differenceTime % (1000 * 60)) / 1000)
+            };
+          // 设置分数
+          this.scoreData = creditScore;
+          // 设置时间差
+          this.differenceTime = differenceTimeObj;
+          // 设置个人信息状态
+          // this.setUserInfoStatus(res.data);
+          this.getOwnInfoList();
+          this.getJobList();
+          this.getCreditList();
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
-    getOwnInfoList() {
+    setUserInfoStatus(data) {
+      const {
+        driverLicenseStatus,
+        drivingLicenseStatus,
+        educationStatus,
+        emailStatus,
+        idCardStatus,
+        passportStatus,
+        deedStatus,
+        sesameStatus,
+        jingdongStatus
+      } = data;
+      this.SET_IDCARD_STATUS(idCardStatus);
+      this.SET_PASSPORT_STATUS(passportStatus);
+      this.SET_STUDENT_INFO_STATUS(educationStatus);
+      this.SET_EMAIL_STATUS(emailStatus);
+      this.SET_DRIVE_STATUS(driverLicenseStatus);
+      this.SET_CAR_INFO_STATUS(drivingLicenseStatus);
+      this.SET_HOUSE_INFO_STATUS(deedStatus);
+      this.SET_ZHIMA_INFO_STATUS(sesameStatus);
+      this.SET_JD_INFO_STATUS(jingdongStatus);
+    },
+    getOwnInfoList(data) {
       const {
         idCardInfo,
         passPortInfo,

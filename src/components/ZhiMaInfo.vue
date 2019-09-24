@@ -7,7 +7,7 @@
         <span class="form-label">芝麻信用分</span>
         <div class="form-desc">
           <input
-            type="text"
+            type="number"
             placeholder="请输入您的芝麻信用分"
             v-model="zhimaScore"
           >

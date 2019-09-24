@@ -7,7 +7,7 @@
         <span class="form-label">京东信用分</span>
         <div class="form-desc">
           <input
-            type="text"
+            type="number"
             placeholder="请输入您的京东信用分"
             v-model="jdScore"
           >
