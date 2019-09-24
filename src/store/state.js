@@ -1,6 +1,7 @@
+
 const state = {
-  token: "",//登录时记录的token
-  userId: "",//登录时记录的userId
+  token: '',//登录时记录的token
+  userId: '',//登录时记录的userId
   studentRegionName: '', // 学籍选择的地区信息
   studentRedionId: '', // 学籍选择地区id
   studentName: '',//学籍地区对应的选中学校名字

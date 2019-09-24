@@ -18,6 +18,7 @@
 
 <script>
 import Camear from "./Camear";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "CarInfo",
   components: {
@@ -31,19 +32,39 @@ export default {
   },
   created() {},
   methods: {
+    ...mapGetters(["SET_CAR_INFO_STATUS"]),
     savePicPathF(successPicPath) {
       this.idcardF = successPicPath;
-      this.successLoad ? this.$store.commit("SET_CAR_INFO_STATUS", 1) : null;
+      this.successLoad && this.submitStatus();
     },
     savePicPathB(successPicPath) {
       this.idcardB = successPicPath;
-      this.successLoad ? this.$store.commit("SET_CAR_INFO_STATUS", 1) : null;
+      this.successLoad && this.submitStatus();
+    },
+    // 提交状态给后台
+    submitStatus() {
+      const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
+      callServer("post", "/djh/user_info/update_driving_license", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        drivingLicenseHomepage: this.idcardF,
+        drivingLicenseSecondary: this.idcardB,
+        drivingLicenseStatus: 1
+      }).then(res => {
+        if (res.code == 0) {
+          showMsg("状态更新成功");
+          this.SET_CAR_INFO_STATUS(1);
+        } else {
+          showMsg(res.msg);
+        }
+      });
     }
   },
   computed: {
     successLoad() {
       return this.idcardF && this.idcardB;
-    }
+    },
+    ...mapGetters(["userInfo"])
   }
 };
 </script>

@@ -42,7 +42,7 @@
       <!-- BTN AREA -->
       <div
         class="submit-info button"
-        :class="isActive?'isActive':null"
+        :class="isActive?'active':null"
         @click="submitInfo"
       >绑定</div>
     </template>
@@ -78,6 +78,7 @@
 import Security from "./Security";
 import Footertip from "./Footertip";
 import DeleteToast from "./DeleteToast";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "EMail",
   components: { Security, Footertip, DeleteToast },
@@ -102,11 +103,13 @@ export default {
         return false;
       }
       return true;
-    }
+    },
+    ...mapGetters(["userInfo"])
   },
   methods: {
+    ...mapMutations(["SET_EMAIL_STATUS"]),
     sendCode() {
-      let { isEmpty, showMsg, regEmail } = this.$tools;
+      let { isEmpty, showMsg, regEmail, callServer } = this.$tools;
       if (isEmpty(this.email)) {
         showMsg("邮箱不能为空");
         return;
@@ -126,14 +129,46 @@ export default {
         }
         this.totalTime--;
       }, 1000);
+      // 发送验证码
+      callServer("post", "/djh/user_info/email_authcode", {
+        email: this.email,
+        type: 1
+      }).then(res => {
+        if (res.code == 0) {
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
     submitInfo() {
-      this.checkCode = null;
-      setTimeout(() => {
-        this.isSuccess = true;
-        this.checkCode = null;
-        this.hassent = false;
-      }, 1000);
+      const {
+        isEmpty,
+        showMsg,
+        showLoading,
+        hideLoading,
+        callServer
+      } = this.$tools;
+      if (isEmpty(this.email) || isEmpty(this.checkCode)) {
+        showMsg("请检查信息是否填写完整");
+        return;
+      }
+      callServer("post", "/djh/user_info/update_email", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        email: this.email,
+        authcode: this.checkCode,
+        emailStatus: 1
+      }).then(res => {
+        if (res.code == 0) {
+          this.isSuccess = true;
+          this.checkCode = null;
+          this.hassent = false;
+          this.totalTime = 60;
+          this.SET_EMAIL_STATUS(1);
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
     resetForm() {
       //删除邮箱，复原初始设置

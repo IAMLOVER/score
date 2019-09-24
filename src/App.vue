@@ -8,7 +8,8 @@ document.body.addEventListener("touchstart", function() {});
 export default {
   data() {
     return {};
-  }
+  },
+  created() {}
 };
 </script> 
 

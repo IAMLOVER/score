@@ -12,6 +12,7 @@
 
 <script>
 import Camear from "./Camear";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "HouseInfo",
   components: {
@@ -24,10 +25,29 @@ export default {
   },
   created() {},
   methods: {
+    ...mapMutations(["SET_HOUSE_INFO_STATUS"]),
     savePicPathF(successPicPath) {
+      const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
       this.idcardF = successPicPath;
-      this.$store.commit("SET_HOUSE_INFO_STATUS", 1);
+      showLoading();
+      callServer("post", "/djh/user_info/update_deed", {
+        userId: this.userInfo.userId,
+        token: this.userInfo.token,
+        deedImg: this.idcardF,
+        deedStatus: 1
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          showMsg("状态更新成功");
+          this.SET_HOUSE_INFO_STATUS(1);
+        } else {
+          showMsg(res.msg);
+        }
+      });
     }
+  },
+  computed: {
+    ...mapGetters(["userInfo"])
   }
 };
 </script>

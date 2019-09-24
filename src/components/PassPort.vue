@@ -10,6 +10,7 @@
 
 <script>
 import Camear from "./Camear";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "PassPort",
   components: {
@@ -23,9 +24,29 @@ export default {
   created() {},
   methods: {
     savePicPathF(successPicPath) {
+      const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
       this.idcardF = successPicPath;
-      this.$store.commit("SET_PASSPORT_STATUS", 1);
-    }
+      showLoading();
+      // 提交状态给后台
+      callServer("post", "/djh/user_info/update_passport", {
+        token: this.userInfo.token,
+        userId: this.userInfo.userId,
+        passportImg: this.idcardF,
+        passportStatus: 1
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          showMsg("状态更新成功");
+          this.SET_PASSPORT_STATUS(1);
+        } else {
+          showMsg(res.msg);
+        }
+      });
+    },
+    ...mapMutations(["SET_PASSPORT_STATUS"])
+  },
+  computed: {
+    ...mapGetters(["userInfo"])
   }
 };
 </script>

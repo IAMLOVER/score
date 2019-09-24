@@ -16,7 +16,7 @@
             />
           </div>
         </div>
-        <span class="form-group">
+        <div class="form-group">
           <span class="label">姓名</span>
           <div class="input-area">
             <input
@@ -25,7 +25,7 @@
               placeholder="请输入您的姓名"
             />
           </div>
-        </span>
+        </div>
         <div class="form-group">
           <span class="label">准驾车型</span>
           <div class="input-area">
