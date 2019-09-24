@@ -128,8 +128,8 @@ export default {
       differenceTime = JSON.parse(localStorage.getItem("differenceTime"));
     this.scoreData = scoreData;
     this.differenceTime = differenceTime;
-    this.token = this.userInfo.token;
-    this.userId = this.userInfo.userId;
+    this.token = this.userIdToken.token;
+    this.userId = this.userIdToken.userId;
     this.getUserInfo();
   },
   mounted() {
@@ -270,7 +270,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo"])
+    ...mapGetters(["userInfo", "userIdToken"])
   }
 };
 </script>

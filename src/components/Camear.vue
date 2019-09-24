@@ -83,12 +83,10 @@ export default {
       this.$tools.uploadfile(file, res => {
         // 上传到服务器，返回图片路径
         this.isUpload = true;
-
         // 图片回显到界面
         this.successPicPath = this.$tools.getObjectURL(file);
-
         // 把地址提交出去
-        this.$emit("savePicPath", this.successPicPath);
+        this.$emit("savePicPath", res.path);
 
         // 上传时间显示
         let nowDate = new Date(),

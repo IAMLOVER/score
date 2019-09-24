@@ -1,20 +1,21 @@
 // 唯一获取store中的state的数据,相当于computed属性, 第一个参数是state,需要返回状态中的某一个数据
 import { getLocalStorage } from './localStorage'
 const store = getLocalStorage();
+console.log(store)
 // 获取USERINFO信息
 const userInfo = (state) => {
   return {
-    token: state.token || (store.token ? store.token : null),
-    userId: state.userId || (store.userId ? store.userId : null),
-    idCardInfo: state.idCardInfoStatus || (store.idCardInfoStatus ? store.idCardInfoStatus : 0),
-    passPortInfo: state.passPortStatus || (store.passPortStatus ? store.passPortStatus : 0),
-    studentsInfo: state.studentInfoStatus || (store.studentInfoStatus ? store.studentInfoStatus : 0),
-    eMailInfo: state.eMailStatus || (store.eMailStatus ? store.eMailStatus : 0),
-    driveInfo: state.driveStatus || (store.driveStatus ? store.driveStatus : 0),
-    carInfo: state.carInfoStatus || (store.carInfoStatus ? store.carInfoStatus : 0),
-    houseInfo: state.houseInfoStatus || (store.houseInfoStatus ? store.houseInfoStatus : 0),
-    zhimaInfo: state.zhimaInfoStatus || (store.zhimaInfoStatus ? store.zhimaInfoStatus : 0),
-    jdInfo: state.jdInfoStatus || (store.jdInfoStatus ? store.jdInfoStatus : 0)
+    token: state.token,
+    userId: state.userId,
+    idCardInfo: state.idCardInfoStatus,
+    passPortInfo: state.passPortStatus,
+    studentsInfo: state.studentInfoStatus,
+    eMailInfo: state.eMailStatus,
+    driveInfo: state.driveStatus,
+    carInfo: state.carInfoStatus,
+    houseInfo: state.houseInfoStatus,
+    zhimaInfo: state.zhimaInfoStatus,
+    jdInfo: state.jdInfoStatus
   }
 };
 // 获取userId和token

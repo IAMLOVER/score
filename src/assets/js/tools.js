@@ -115,7 +115,7 @@ let tools = (function () {
     showLoading();
     var formFile = new FormData();
     formFile.append('file', file);
-    axios.post('/file/upload', formFile).then(res => {
+    axios.post('/file_xyf/upload', formFile).then(res => {
       if (res.code == 0) {
         hideLoading();
         callback(res.data)
