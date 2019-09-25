@@ -168,7 +168,7 @@
         </div>
         <div
           class="right"
-          @click="showMsg"
+          @click="showMsg('delLocalStorage')"
         >
           <img
             src="../assets/image/creditScore/activity_sub_2@2x.png"
@@ -251,7 +251,10 @@ export default {
         }
       });
     },
-    showMsg() {
+    showMsg(param) {
+      if (param == "delLocalStorage") {
+        localStorage.clear();
+      }
       this.$tools.showMsg("功能正在开发中，敬请期待...");
     },
     setGrade(mss) {

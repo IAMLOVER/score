@@ -16,14 +16,14 @@
             v-if="multiple=='false'"
             @change="upLoadPic"
             type="file"
-            accept="image/png,image/jpeg,image/jpg"
+            accept="image/*"
             capture="camera"
           >
           <input
             v-else
             @change="upLoadPic"
             type="file"
-            accept="image/png,image/jpeg,image/jpg"
+            accept="image/*"
             multiple="multiple"
           >
         </div>
