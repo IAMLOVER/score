@@ -97,8 +97,9 @@ export default {
         //上拉加载配置
         callback: this.upCallback, //上拉回调
         isBounce: false,
-        warpId: "upscrollWarp",
         empty: {
+          warpId: "upscrollWarp",
+          icon:require('../assets/image/mescrolloptions/mescroll-empty.png'),
           tip: "暂无相关数据"
         },
         page: {

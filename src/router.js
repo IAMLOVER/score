@@ -2,22 +2,21 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import CreditScore from "./views/CreditScroe.vue";
-import Interpretation from './views/Interpretation.vue';
-import HistoryScore from './views/HistoryScore.vue';
-import QuickScore from './views/QuickScore.vue';
-import EditInfo from './views/EditInfo.vue';
+const Interpretation = () => import('./views/Interpretation.vue');
+const HistoryScore = () => import('./views/HistoryScore.vue');
+const QuickScore = () => import('./views/QuickScore.vue');
+const EditInfo = () => import('./views/EditInfo.vue');
+const IdCard = () => import('./components/IdCard.vue');
+const PassPort = () => import('./components/PassPort.vue');
+const StudentInfo = () => import('./components/StudentInfo.vue');
+const EMail = () => import('./components/EMail.vue');
+const Drive = () => import('./components/Drive.vue');
+const CarInfo = () => import('./components/CarInfo.vue');
+const HouseInfo = () => import('./components/HouseInfo.vue');
+const VantIndexAnchor = () => import('./components/VantIndexAnchor.vue');
 
-import IdCard from './components/IdCard.vue';
-import PassPort from './components/PassPort.vue';
-import StudentInfo from './components/StudentInfo.vue';
-import EMail from './components/EMail.vue';
-import Drive from './components/Drive.vue';
-import CarInfo from './components/CarInfo.vue';
-import HouseInfo from './components/HouseInfo.vue';
-import VantIndexAnchor from './components/VantIndexAnchor.vue';
-
-import ZhiMaInfo from './components/ZhiMaInfo.vue';
-import JDInfo from './components/JDInfo.vue';
+const ZhiMaInfo = () => import('./components/ZhiMaInfo.vue');
+const JDInfo = () => import('./components/JDInfo.vue');
 
 Vue.use(Router);
 
@@ -48,7 +47,14 @@ const routes = [
   }
 ];
 const router = new Router({
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 });
 
 // 路由守卫
