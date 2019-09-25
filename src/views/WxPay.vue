@@ -1,7 +1,6 @@
 <template>
-  <div>
-
-  </div>
+  <section class="wxpay-area">
+  </section>
 </template>
 
 <script>
@@ -13,7 +12,7 @@ export default {
     return {};
   },
   created() {
-    this.$tools.showLoading();
+    // this.$tools.showLoading();
     console.dir(this.myWXPay);
     this.myWXPay(res => {}, err => {}, cancel => {});
   },
@@ -22,4 +21,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.wxpay-area {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

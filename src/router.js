@@ -16,9 +16,9 @@ const Drive = () => import('./components/Drive.vue');
 const CarInfo = () => import('./components/CarInfo.vue');
 const HouseInfo = () => import('./components/HouseInfo.vue');
 const VantIndexAnchor = () => import('./components/VantIndexAnchor.vue');
-
 const ZhiMaInfo = () => import('./components/ZhiMaInfo.vue');
 const JDInfo = () => import('./components/JDInfo.vue');
+const CreditLife=()=>import('./views/CreditLife.vue');
 
 Vue.use(Router);
 
@@ -33,7 +33,6 @@ const routes = [
   { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
   { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用历史' } },
   { path: '/QuickScore', component: QuickScore, name: 'QuickScore', meta: { title: '快速提分' } },
-
   {
     path: '/EditInfo', component: EditInfo, name: 'EditInfo',
     children: [
@@ -48,7 +47,8 @@ const routes = [
       { path: 'ZhiMaInfo', component: ZhiMaInfo, name: 'ZhiMaInfo', meta: { title: '芝麻信用' } },
       { path: 'JDInfo', component: JDInfo, name: 'JDInfo', meta: { title: '京东信用' } },
     ]
-  }
+  },
+  { path: '/CreditLife', component: CreditLife,name:"CreditLife",meta:{title:'信用生活'} }
 ];
 const router = new Router({
   routes,

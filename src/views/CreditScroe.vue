@@ -44,7 +44,7 @@
         </li>
         <li
           class="four-item"
-          @click="showMsg"
+          @click="goToCreditLife"
         >
           <span class="item-icon xinyongshenghuo"></span>
           <span class="item-title">信用生活</span>
@@ -255,6 +255,8 @@ export default {
     showMsg(param) {
       if (param == "delLocalStorage") {
         localStorage.clear();
+        this.$router.push({name:'Login'})
+        return
       }
       this.$tools.showMsg("功能正在开发中，敬请期待...");
     },
@@ -326,12 +328,14 @@ export default {
       this.SET_ZHIMA_INFO_STATUS(sesameStatus);
       this.SET_JD_INFO_STATUS(jingdongStatus);
     },
+    // 去信用解读
     goToInterpretation() {
       this.$router.push({
         name: "Interpretation",
         query: { scoreData: this.scoreData }
       });
     },
+    // 去快速提分
     goToQuickScore() {
       this.$router.push({
         name: "QuickScore",
@@ -340,11 +344,19 @@ export default {
     },
     // 去信用报告
     goToCreditReport() {
+      this.$router.push({ name: "WxPay" });
       if (this.$tools.isWeiXin()) {
-        this.$router.push({ name: "WxPay" });
+        // this.$router.push({ name: "WxPay" });
       } else {
-        this.$tools.showMsg("功能正在开发敬请期待...");
+        // this.$tools.showMsg("功能正在开发敬请期待...");
       }
+    },
+    // 去信用生活
+    goToCreditLife() {
+      this.$router.push({
+        name: "CreditLife",
+        query: { scoreData: this.scoreData }
+      });
     }
   },
   computed: {

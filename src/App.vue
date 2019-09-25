@@ -44,6 +44,21 @@ body {
     position: relative;
   }
 }
+// 修改swiper 样式
+// banner分页器样式
+.banner-pagination {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 100%;
+  background: #fff;
+  opacity: 0.5;
+  margin: 0 4px;
+}
+.banner-pagination-active {
+  opacity: 1;
+}
+
 // 公共提交按钮样式
 .submit-info {
   margin: 0.5rem auto 0;

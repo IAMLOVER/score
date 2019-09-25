@@ -25,6 +25,8 @@
           type="text"
           name="authcode"
           placeholder="请输入验证码"
+          autocomplete="off"
+          pattern="[0-9]*"
           v-model="verifyCode"
           class="verify-code"
         >
