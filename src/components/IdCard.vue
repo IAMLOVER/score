@@ -13,6 +13,7 @@
               type="text"
               v-model="userName"
               placeholder="请输入您的姓名"
+              v-focus
             />
           </div>
         </div>

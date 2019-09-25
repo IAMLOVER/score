@@ -36,12 +36,6 @@ Vue.directive('focus', {
 
 Vue.config.productionTip = false;
 
-router.beforeEach((to, from, next) => { // 路由守卫改变title
-  if (to.meta.title) {
-    document.title = to.meta.title;
-  }
-  next();
-});
 
 new Vue({
   router,

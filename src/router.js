@@ -2,6 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import CreditScore from "./views/CreditScroe.vue";
+import WxAuth from "./views/WxAuth.vue";
+const WxPay = () => import('./views/WxPay.vue');
 const Interpretation = () => import('./views/Interpretation.vue');
 const HistoryScore = () => import('./views/HistoryScore.vue');
 const QuickScore = () => import('./views/QuickScore.vue');
@@ -24,6 +26,8 @@ Vue.use(Router);
 // 创建路由规则
 const routes = [
   { path: '/', redirect: '/CreditScore' },
+  { path: '/WxAuth', component: WxAuth, name: 'WxAuth' },
+  { path: '/WxPay', component: WxPay, name: 'WxPay', meta: { title: '支付' } },
   { path: '/Login', component: Login, name: 'Login', meta: { title: '登录' } },
   { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
   { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
@@ -48,6 +52,7 @@ const routes = [
 ];
 const router = new Router({
   routes,
+  // 路由滚动行为，用于路由跳转时跳回到顶部位置
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -58,29 +63,35 @@ const router = new Router({
 });
 
 // 路由守卫
-// router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
+  // 路由守卫改变title
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  };
+  // 判断是否是微信浏览器环境,不是微信环境就直接通过
+  if (!/micromessenger/i.test(navigator.userAgent)) {
+    next()
+    return
+  };
+  //不对 WxAuth 路由进行拦截，不进入 WxAuth 路由就拿不到微信返回的授权 code
+  if (to.name === 'WxAuth') {
+    next()
+    return
+  };
+  let wxUserInfo = localStorage.getItem('wxUserInfo');
+  if (!wxUserInfo) {
+    // 保存当前路由地址，授权后跳回到此地址
+    sessionStorage.setItem('wxRedirectUrl', to.fullPath)
+    // 请求微信授权，并跳转到 /WxAuth 路由
+    let appId = 'wx67f82d608be81246';
+    let redirectUrl = encodeURIComponent(`${window.location.host}/WxAuth`);
+    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`
+  } else {
+    next();
+  }
 
-//   // 保存想要前往的页面
-//   // if (to.fullPath != '/Login') {
-//   //   localStorage.setItem('lastVisitPath', to.fullPath)
-//   // }
+});
 
-//   if (to.meta.needLogin) { // 需要先进行登录判断
-
-//     // 如果localStorage中有userId和token表示登录过
-//     const store = JSON.parse(localStorage.getItem("store") ? localStorage.getItem("store") : null),
-//       userId = store ? store.userId : null;
-//     if (userId) {
-//       next()
-//     } else {
-//       router.push({ name: 'Login' })
-//     }
-//   } else { // 不需要验证是否登录
-//     next()
-//   }
-
-
-// })
 
 
 

@@ -30,7 +30,7 @@
         </li>
         <li
           class="four-item"
-          @click="showMsg"
+          @click="goToCreditReport"
         >
           <span class="item-icon xinyongbaogao"></span>
           <span class="item-title">信用报告</span>
@@ -184,6 +184,7 @@
 <script>
 // @ is an alias to /src
 import { mapGetters, mapMutations } from "vuex";
+
 export default {
   name: "CreditScore",
   components: {},
@@ -325,7 +326,6 @@ export default {
       this.SET_ZHIMA_INFO_STATUS(sesameStatus);
       this.SET_JD_INFO_STATUS(jingdongStatus);
     },
-
     goToInterpretation() {
       this.$router.push({
         name: "Interpretation",
@@ -337,6 +337,14 @@ export default {
         name: "QuickScore",
         query: { scoreData: this.scoreData }
       });
+    },
+    // 去信用报告
+    goToCreditReport() {
+      if (this.$tools.isWeiXin()) {
+        this.$router.push({ name: "WxPay" });
+      } else {
+        this.$tools.showMsg("功能正在开发敬请期待...");
+      }
     }
   },
   computed: {
