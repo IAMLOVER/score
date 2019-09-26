@@ -344,12 +344,7 @@ export default {
     },
     // 去信用报告
     goToCreditReport() {
-      this.$router.push({ name: "WxPay" });
-      if (this.$tools.isWeiXin()) {
-        // this.$router.push({ name: "WxPay" });
-      } else {
-        // this.$tools.showMsg("功能正在开发敬请期待...");
-      }
+      this.$router.push({ name: "CreditReport" });
     },
     // 去信用芝士
     goToCreditCheese(){
