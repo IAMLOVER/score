@@ -27,6 +27,7 @@ function getTicket() {
           signature: _signature,// 必填，签名
           jsApiList: jsApiList // 必填，需要使用的JS接口列表
         })
+        this.$tools.hideLoading();
       }
     })
   })
@@ -38,6 +39,7 @@ export default {
     myWXPay(params, successCallBack, failCallBack, cancelCallBack) {
       // getTicket 获取凭证 注入权限验证配置
       getTicket.call(this, params);
+      
       wx.ready(() => {
         wx.chooseWXPay({
           timestamp: params.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符

@@ -7,7 +7,7 @@
       :up="mescrollUp"
       @init="mescrollInit"
     >
-
+      项目正在开发中，敬请期待....
     </MescrollVue>
   </section>
 </template>

@@ -92,7 +92,7 @@
         :class="active?'active':null"
         id="submitPlay"
         @click="submitInfo"
-      > 支付（¥19）</div>
+      > 支付（¥{{money/100}}）</div>
     </div>
     <!-- DECLARATION -->
     <div class="declaration">
@@ -113,30 +113,31 @@ export default {
   data() {
     return {
       openid: "",
+      money: "1",
+      userId: "",
       username: "",
       idcard: "",
       mobile: "",
       agree: true,
-      agreeVal: 1, //1为同意授权协议，
-      // 支付订单相关
-      appId: "",
-      timeStamp: "",
-      nonceStr: "",
-      package: "",
-      signType: "",
-      prepay_id: "",
-      sign: ""
+      agreeVal: 1 //1为同意授权协议，
     };
   },
   created() {
+    // 从本地获取微信用户信息
     const wxUserInfo = JSON.parse(
       localStorage.getItem("wxUserInfo")
         ? localStorage.getItem("wxUserInfo")
         : null
     );
+    // 从本地获取userId
+    const store = JSON.parse(
+      localStorage.getItem("store") ? localStorage.getItem("store") : null
+    );
     this.openid = wxUserInfo ? wxUserInfo.openid : null;
+    this.userId = store ? store.userId : null;
   },
   methods: {
+    //是否同意
     changeAgree() {
       if (this.agree) {
         this.agree = false;
@@ -177,23 +178,18 @@ export default {
     submitInfo() {
       if (this.checkForm()) {
         const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
+        showLoading();
         callServer("post", "/djh/wx_pay/prepay_info", {
-          money: 1,
+          money: this.money,
           openid: this.openid,
           body: "报告查询",
+          userId: this.userId,
           name: this.username,
           mobile: this.mobile,
           idcard: this.idcard
         }).then(res => {
           if (res.code == 0) {
-            this.appId = res.data.appId;
-            this.timeStamp = res.data.timeStamp;
-            this.nonceStr = res.data.nonceStr;
-            this.package = res.data.package;
-            this.signType = res.data.signType;
-            this.prepay_id = res.data.prepay_id;
-            this.sign = res.data.sign;
-            let params = {
+            const params = {
               appId: res.data.appId,
               timeStamp: res.data.timeStamp,
               nonceStr: res.data.nonceStr,
@@ -202,20 +198,25 @@ export default {
               prepay_id: res.data.prepay_id,
               sign: res.data.sign
             };
+            const token = res.data.token;
             this.myWXPay(
               params,
               res => {
-                console.log(res);
+                window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${token}`;
               },
               err => {
-                console.log(err);
+                showMsg("支付失败，请重新支付", 3000);
               },
               cancel => {
-                console.log(cancel);
+                showMsg("支付已取消", 3000);
               }
             );
+          } else if (res.code == 110) {
+            // 已经支付过了
+            window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${token}`;
           } else {
-            showMsg(res.msg);
+            hideLoading();
+            showMsg(res.msg + "</br>请确保在微信浏览器中打开", 3000);
           }
         });
       }
@@ -375,6 +376,7 @@ export default {
       line-height: 0.65rem;
       margin: 0.5rem auto 0;
       border-radius: 0.33rem;
+      user-select: none;
       pointer-events: none;
 
       &.active {
@@ -397,6 +399,10 @@ export default {
         );
         color: #fff;
         pointer-events: auto;
+      }
+      &:active {
+        background: #f3802b;
+        -webkit-tap-highlight-color: transparent;
       }
     }
   }

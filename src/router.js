@@ -3,7 +3,6 @@ import Router from "vue-router";
 import Login from "./views/Login.vue";
 import CreditScore from "./views/CreditScroe.vue";
 import WxAuth from "./views/WxAuth.vue";
-const WxPay = () => import('./views/WxPay.vue');
 const Interpretation = () => import('./views/Interpretation.vue');
 const HistoryScore = () => import('./views/HistoryScore.vue');
 const QuickScore = () => import('./views/QuickScore.vue');
@@ -29,7 +28,6 @@ Vue.use(Router);
 const routes = [
   { path: '/', redirect: '/CreditScore' },
   { path: '/WxAuth', component: WxAuth, name: 'WxAuth' },
-  { path: '/WxPay', component: WxPay, name: 'WxPay', meta: { title: '支付' } },
   { path: '/Login', component: Login, name: 'Login', meta: { title: '登录' } },
   { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
   { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },

@@ -12,14 +12,11 @@
       ])[1].replace(/\+/g, '%20')) || null;
     };
 
-
-
     let type = getURLParameter('type'),
       code = getURLParameter('code');
 
     if (type == 'WxAuth') {
       window.location.replace(window.location.origin + '/#/WxAuth?code=' + code)
     }
-    console.log(url)
   }();
 </script>
