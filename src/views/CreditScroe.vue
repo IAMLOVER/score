@@ -255,8 +255,8 @@ export default {
     showMsg(param) {
       if (param == "delLocalStorage") {
         localStorage.clear();
-        this.$router.push({name:'Login'})
-        return
+        this.$router.push({ name: "Login" });
+        return;
       }
       this.$tools.showMsg("功能正在开发中，敬请期待...");
     },
@@ -344,11 +344,31 @@ export default {
     },
     // 去信用报告
     goToCreditReport() {
-      this.$router.push({ name: "CreditReport" });
+      const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
+      showLoading();
+      callServer("post", "/djh/user_info/report_token", {
+        userId: this.userId,
+        token: this.token
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          if (res.data.token) {
+            window.location.href = `http://wlm.dazhongdianjin.cn/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
+          } else {
+            this.$router.push({ name: "CreditReport" });
+          }
+        } else if (res.code == 101) {
+          // 登录超时
+          showMsg(res.msg);
+          this.$router.replace({ name: "Login" });
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
     // 去信用芝士
-    goToCreditCheese(){
-      this.$router.push({name:'CreditCheese'})
+    goToCreditCheese() {
+      this.$router.push({ name: "CreditCheese" });
     },
     // 去信用生活
     goToCreditLife() {
