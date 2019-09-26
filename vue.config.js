@@ -3,7 +3,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 };
 module.exports = {
-  publicPath:"/credit_score/",
+  publicPath:"/",
   lintOnSave: false, //关闭整个页面的eslint检查
   productionSourceMap: false,
   chainWebpack(config) {
