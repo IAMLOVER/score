@@ -37,10 +37,10 @@
         </li>
         <li
           class="four-item"
-          @click="showMsg"
+          @click="goToCreditCheese"
         >
           <span class="item-icon lishizhangdan"></span>
-          <span class="item-title">历史账单</span>
+          <span class="item-title">信用芝士</span>
         </li>
         <li
           class="four-item"
@@ -350,6 +350,10 @@ export default {
       } else {
         // this.$tools.showMsg("功能正在开发敬请期待...");
       }
+    },
+    // 去信用芝士
+    goToCreditCheese(){
+      this.$router.push({name:'CreditCheese'})
     },
     // 去信用生活
     goToCreditLife() {

@@ -1,4 +1,4 @@
-import { Lazyload, DatetimePicker, Popup, Picker,IndexBar,IndexAnchor } from "vant";
+import { Lazyload, DatetimePicker, Popup, Picker, IndexBar, IndexAnchor } from "vant";
 
 const vantComponents = {
   install(Vue) {

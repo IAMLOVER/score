@@ -19,6 +19,7 @@ const VantIndexAnchor = () => import('./components/VantIndexAnchor.vue');
 const ZhiMaInfo = () => import('./components/ZhiMaInfo.vue');
 const JDInfo = () => import('./components/JDInfo.vue');
 const CreditLife=()=>import('./views/CreditLife.vue');
+const CreditCheese=()=>import('./views/CreditCheese.vue');
 
 Vue.use(Router);
 
@@ -48,7 +49,8 @@ const routes = [
       { path: 'JDInfo', component: JDInfo, name: 'JDInfo', meta: { title: '京东信用' } },
     ]
   },
-  { path: '/CreditLife', component: CreditLife,name:"CreditLife",meta:{title:'信用生活'} }
+  { path: '/CreditLife', component: CreditLife,name:"CreditLife",meta:{title:'信用生活'} },
+  {path:'/CreditCheese',component:CreditCheese,name:"CreditCheese",meta:{title:'信用芝士'}}
 ];
 const router = new Router({
   routes,
@@ -68,28 +70,29 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   };
-  // 判断是否是微信浏览器环境,不是微信环境就直接通过
-  if (!/micromessenger/i.test(navigator.userAgent)) {
-    next()
-    return
-  };
-  //不对 WxAuth 路由进行拦截，不进入 WxAuth 路由就拿不到微信返回的授权 code
-  if (to.name === 'WxAuth') {
-    next()
-    return
-  };
-  let wxUserInfo = localStorage.getItem('wxUserInfo');
-  if (!wxUserInfo) {
-    // 保存当前路由地址，授权后跳回到此地址
-    sessionStorage.setItem('wxRedirectUrl', to.fullPath)
-    // 请求微信授权，并跳转到 /WxAuth 路由
-    let appId = 'wx67f82d608be81246';
-    let redirectUrl = encodeURIComponent(`${window.location.host}/WxAuth`);
-    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`
-  } else {
-    next();
-  }
+  // // 判断是否是微信浏览器环境,不是微信环境就直接通过
+  // if (!/micromessenger/i.test(navigator.userAgent)) {
+  //   next()
+  //   return
+  // };
+  // //不对 WxAuth 路由进行拦截，不进入 WxAuth 路由就拿不到微信返回的授权 code
+  // if (to.name === 'WxAuth') {
+  //   next()
+  //   return
+  // };
+  // let wxUserInfo = localStorage.getItem('wxUserInfo');
+  // if (!wxUserInfo) {
+  //   // 保存当前路由地址，授权后跳回到此地址
+  //   sessionStorage.setItem('wxRedirectUrl', to.fullPath)
+  //   // 请求微信授权，并跳转到 /WxAuth 路由
+  //   let appId = 'wx67f82d608be81246';
+  //   let redirectUrl = encodeURIComponent(`${window.location.host}/WxAuth`);
+  //   window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`
+  // } else {
+  //   next();
+  // }
 
+  next()
 });
 
 
