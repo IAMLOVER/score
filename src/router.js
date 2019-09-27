@@ -52,7 +52,7 @@ const routes = [
   { path: '/CreditLife', component: CreditLife, name: "CreditLife", meta: { title: '信用生活' } },
   { path: '/CreditCheese', component: CreditCheese, name: "CreditCheese", meta: { title: '信用芝士' } },
   { path: '/CreditReport', component: CreditReport, name: "CreditReport", meta: { title: '信用报告' } },
-  {path:'/Recharge',component:Recharge,name:'Recharge',meta:{title:'充值'}}
+  { path: '/Recharge', component: Recharge, name: 'Recharge', meta: { title: '充值' } }
 ];
 const router = new Router({
   routes,
@@ -82,21 +82,17 @@ router.beforeEach((to, from, next) => {
     next()
     return
   };
-  if (to.name == 'CreditReport') {
-    let wxUserInfo = localStorage.getItem('wxUserInfo');
-    if (!wxUserInfo) {
-      // 保存当前路由地址，授权后跳回到此地址
-      sessionStorage.setItem('wxRedirectUrl', to.fullPath)
-      // 请求微信授权，并跳转到 /WxAuth 路由
-      let appId = 'wx67f82d608be81246';
-      let redirectUrl = encodeURIComponent(`${window.location.host}/redirect.html?type=WxAuth`);
-      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=http://${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`
-    } else {
-      next();
-    }
-    return
+  let wxUserInfo = localStorage.getItem('wxUserInfo');
+  if (!wxUserInfo) {
+    // 保存当前路由地址，授权后跳回到此地址
+    sessionStorage.setItem('wxRedirectUrl', to.fullPath)
+    // 请求微信授权，并跳转到 /WxAuth 路由
+    let appId = 'wx67f82d608be81246';
+    let redirectUrl = encodeURIComponent(`${window.location.host}/redirect.html?type=WxAuth`);
+    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=http://${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`
+  } else {
+    next();
   }
-  next();
 
 });
 
