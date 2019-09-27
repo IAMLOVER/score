@@ -1,153 +1,222 @@
 <template>
   <section class="credit-life-area">
-    <!-- BANNER AREA -->
-    <section class="banner-area">
-      <div class="swiper-container swiper1">
-        <div class="swiper-wrapper">
-          <!-- 内容 -->
-          <div
-            class="swiper-slide swiper-slide-banner"
-            v-for="item in bannerList"
-            :key="item.id"
-          >
-            <a class="banner-link">
-              <img
-                :src="item.pictureUrl"
-                alt=""
-              >
-            </a>
+    <!-- 滚动基本结构 -->
+    <mescroll-vue
+      ref="mescroll"
+      :down="mescrollDown"
+      :up="mescrollUp"
+      @init="mescrollInit"
+    >
+      <!-- BANNER AREA -->
+      <section class="banner-area">
+        <div class="swiper-container swiper1">
+          <div class="swiper-wrapper">
+            <!-- 内容 -->
+            <div
+              class="swiper-slide swiper-slide-banner"
+              v-for="item in bannerList"
+              :key="item.id"
+            >
+              <a class="banner-link">
+                <img
+                  :src="item.pictureUrl"
+                  alt=""
+                >
+              </a>
+            </div>
           </div>
+          <!-- 分页器 -->
+          <div class="swiper-pagination "></div>
         </div>
-        <!-- 分页器 -->
-        <div class="swiper-pagination "></div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CREDIT SCOREDATA -->
-    <section class="credit-score-area">
-      <div class="score-left">
-        <span class="score-icon">您当前的信用分：</span>
-        <span class="score">{{scoreData}}</span>
-      </div>
-      <span
-        class="goMore score-right"
-        @click="goToInterpretation"
-      >去查看</span>
-    </section>
+      <!-- CREDIT SCOREDATA -->
+      <section class="credit-score-area">
+        <div class="score-left">
+          <span class="score-icon">您当前的信用分：</span>
+          <span class="score">{{scoreData}}</span>
+        </div>
+        <span
+          class="goMore score-right"
+          @click="goToInterpretation"
+        >去查看</span>
+      </section>
 
-    <!-- Private doctor AREA -->
-    <section class="private-doctor-area">
-      <div class="credit-life-title">
-        <div class="left">
-          <span class="fc201D mr5">私家医生</span>
-          <span class="fc138A">平安好医生、私人医生</span>
+      <!-- FOUR HOT AREA -->
+      <section class="four-hot-area">
+        <router-link
+          class="hot-item"
+          to="Recharge"
+        >
+          <span class="hot1 hot-icon"></span>
+          <span class="hot-item-desc">充值</span>
+        </router-link>
+        <div
+          class="hot-item"
+          @click="showMsg"
+        >
+          <span class="hot2 hot-icon"></span>
+          <span class="hot-item-desc">电影</span>
         </div>
         <div
-          class="right goMore"
-          @click="goToPingAnDoctor"
-        >更多</div>
-      </div>
-
-      <!-- swiper2 area -->
-
-      <div class="swiper-container swiper2">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a
-              class="doctor-link"
-              href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
-            >
-              <img
-                src="../assets/image/creditLife/doctor1@2x.png"
-                alt=""
-              >
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a
-              class="doctor-link"
-              href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271503"
-            >
-              <img
-                src="../assets/image/creditLife/doctor2@2x.png"
-                alt=""
-              >
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a
-              class="doctor-link"
-              href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
-            >
-              <img
-                src="../assets/image/creditLife/doctor3@2x.png"
-                alt=""
-              >
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- 分割线 -->
-    <div class="line10"></div>
-    <!-- credit life content area -->
-    <section class="credit-life-content-area">
-      <div class="credit-life-title">
-        <div class="left">
-          <span class="fc201D mr5">信用生活</span>
-          <span class="fc138A">便利生活更舒心</span>
-        </div>
-      </div>
-
-      <div class="content-list">
-        <div class="list-item card1">
-          <img
-            src="../assets/image/creditLife/card1@2x.png"
-            alt=""
-          >
-        </div>
-        <div class="list-item card2">
-          <img
-            src="../assets/image/creditLife/card2@2x.png"
-            alt=""
-          >
-        </div>
-        <a
-          class="list-item card3"
-          href="http://dkcs.dazhongdianjin.com/online_product/onlineProduct.html"
+          class="hot-item"
+          @click="showMsg"
         >
-          <img
-            src="../assets/image/creditLife/card3@2x.png"
-            alt=""
-          >
-        </a>
-        <a
-          class="list-item card4"
-          href="http://dkcs.dazhongdianjin.com/offline_product/offlineProduct.html"
+          <span class="hot3 hot-icon"></span>
+          <span class="hot-item-desc">兑换</span>
+        </div>
+        <div
+          class="hot-item"
+          @click="showMsg"
         >
-          <img
-            src="../assets/image/creditLife/card4@2x.png"
-            alt=""
-          >
-        </a>
-      </div>
+          <span class="hot4 hot-icon"></span>
+          <span class="hot-item-desc">美食</span>
+        </div>
+      </section>
 
-    </section>
+      <!-- Private doctor AREA -->
+      <section class="private-doctor-area">
+        <div class="credit-life-title">
+          <div class="left">
+            <span class="fc201D mr5">私家医生</span>
+            <span class="fc138A">平安好医生、私人医生</span>
+          </div>
+          <div
+            class="right goMore"
+            @click="goToPingAnDoctor"
+          >更多</div>
+        </div>
+
+        <!-- swiper2 area -->
+
+        <div class="swiper-container swiper2">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <a
+                class="doctor-link"
+                href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
+              >
+                <img
+                  src="../assets/image/creditLife/doctor1@2x.png"
+                  alt=""
+                >
+              </a>
+            </div>
+            <div class="swiper-slide">
+              <a
+                class="doctor-link"
+                href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271503"
+              >
+                <img
+                  src="../assets/image/creditLife/doctor2@2x.png"
+                  alt=""
+                >
+              </a>
+            </div>
+            <div class="swiper-slide">
+              <a
+                class="doctor-link"
+                href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
+              >
+                <img
+                  src="../assets/image/creditLife/doctor3@2x.png"
+                  alt=""
+                >
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 分割线 -->
+      <div class="line10"></div>
+
+      <!-- credit life content area -->
+      <section class="credit-life-content-area">
+        <div class="credit-life-title">
+          <div class="left">
+            <span class="fc201D mr5">信用生活</span>
+            <span class="fc138A">便利生活更舒心</span>
+          </div>
+        </div>
+
+        <div class="content-list">
+          <div class="list-item card1">
+            <img
+              src="../assets/image/creditLife/card1@2x.png"
+              alt=""
+            >
+          </div>
+          <div class="list-item card2">
+            <img
+              src="../assets/image/creditLife/card2@2x.png"
+              alt=""
+            >
+          </div>
+          <a
+            class="list-item card3"
+            href="http://dkcs.dazhongdianjin.com/online_product/onlineProduct.html"
+          >
+            <img
+              src="../assets/image/creditLife/card3@2x.png"
+              alt=""
+            >
+          </a>
+          <a
+            class="list-item card4"
+            href="http://dkcs.dazhongdianjin.com/offline_product/offlineProduct.html"
+          >
+            <img
+              src="../assets/image/creditLife/card4@2x.png"
+              alt=""
+            >
+          </a>
+        </div>
+      </section>
+
+    </mescroll-vue>
   </section>
 </template>
 
 <script>
 import "../assets/js/swiper.min.js";
 import "../assets/css/swiper.min.css";
+import MescrollVue from "mescroll.js/mescroll.vue";
 export default {
   name: "CreditLife",
-  components: {},
+  components: { MescrollVue },
   data() {
     return {
       scoreData: "", //信用分
-      bannerList: []
+      bannerList: [],
+      dataList: [], //信用生活列表数据
+      mescroll: null,
+      mescrollDown: {
+        use: false
+      },
+      mescrollUp: {
+        //上拉加载配置
+        callback: this.upCallback, //上拉回调
+        isBounce: false,
+        empty: {
+          warpId: "upscrollWarp",
+          icon: require("../assets/image/mescrolloptions/mescroll-empty.png"),
+          tip: "暂无相关数据"
+        },
+        page: {
+          num: -1, //默认是0，回调之后是1，所以我们是从0开始的
+          size: 5 //默认是10页，修改成5页
+        },
+        toTop: {
+          src: require("../assets/image/mescrolloptions/mescroll-totop.png"),
+          duration: 500
+        },
+        lazyLoad: {
+          use: true // 是否开启懒加载,默认false 在img标签加imgurl即可
+        },
+        htmlNodata:
+          '<p class="upwarp-nodata">我也是有底线的，没有更多数据啦～</p>'
+      }
     };
   },
   created() {
@@ -180,12 +249,23 @@ export default {
         }
       });
       this.$tools.hideLoading();
-    }, 500);
+    }, 800);
 
     this.swiper2 = new window.Swiper(".swiper2", {
       slidesPerView: 2.5,
       freeMode: true
     });
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteEnter方法
+      vm.$refs.mescroll && vm.$refs.mescroll.beforeRouteEnter(); // 进入路由时,滚动到原来的列表位置,恢复回到顶部按钮和isBounce的配置
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteLeave方法
+    this.$refs.mescroll && this.$refs.mescroll.beforeRouteLeave(); // 退出路由时,记录列表滚动的位置,隐藏回到顶部按钮和isBounce的配置
+    next();
   },
   methods: {
     getBanner() {
@@ -201,6 +281,44 @@ export default {
         }
       });
     },
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    mescrollInit(mescroll) {
+      this.mescroll = mescroll;
+    },
+    // 上拉回调 page = {num:0, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
+    upCallback(page, mescroll) {
+      // 发送请求
+      this.$tools
+        .callServer("POST", "/djh/edit_info/list", {
+          pageNo: page.num,
+          pageSize: page.size
+        })
+        .then(res => {
+          if (res.code == 0) {
+            let arr = res.data.list;
+            // 如果是第一页需手动置空列表
+            if (page.num === 0) this.dataList = [];
+            this.dataList = this.dataList.concat(arr);
+            this.creditScore = res.data.creditScore;
+            this.createTime = res.data.createTime;
+            this.lastCreditScore = res.data.lastCreditScore
+              ? res.data.lastCreditScore
+              : 0;
+            // 数据渲染成功后,隐藏下拉刷新的状态
+            this.$nextTick(() => {
+              console.log(arr.length);
+
+              mescroll.endSuccess(arr.length);
+            });
+          } else {
+            this.$tools.showMsg(res.msg);
+          }
+        })
+        .catch(error => {
+          mescroll.endErr();
+        });
+    },
+
     goToPingAnDoctor() {
       window.location.href =
         "https://jkt.jkwlx.net/wx/index.jhtml?from=singlemessage&isappinstalled=0";
@@ -210,6 +328,10 @@ export default {
         name: "Interpretation",
         query: { scoreData: this.scoreData }
       });
+    },
+    showMsg() {
+      const { showMsg } = this.$tools;
+      showMsg("功能正在开发，敬请期待...");
     }
   }
 };
@@ -218,9 +340,9 @@ export default {
 <style lang="less" scoped>
 .credit-life-area {
   width: 100%;
-  min-height: 100vh;
-  padding-bottom: 0.2rem;
+  height: 100vh;
   background-color: #fff;
+  
   // 公共样式
   .goMore {
     position: relative;
@@ -307,6 +429,52 @@ export default {
       font-size: 0.3rem;
       font-weight: 600;
       color: #333;
+    }
+  }
+
+  // four-hot-area
+  .four-hot-area {
+    height: 1.32rem;
+    border-bottom: 0.02rem solid #f5f7f8;
+    display: flex;
+    align-items: center;
+    .hot-item {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      &:active {
+        background: #f5f5f5;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .hot-icon {
+        width: 0.6rem;
+        height: 0.6rem;
+        background-size: 100% 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        &.hot1 {
+          background-image: url("../assets/image/creditLife/ic_cz@2x.png");
+        }
+        &.hot2 {
+          background-image: url("../assets/image/creditLife/ic_dy@2x.png");
+        }
+        &.hot3 {
+          background-image: url("../assets/image/creditLife/ic_dh@2x.png");
+        }
+        &.hot4 {
+          background-image: url("../assets/image/creditLife/ic_ms@2x.png");
+        }
+      }
+      .hot-item-desc {
+        line-height: 0.4rem;
+        color: #666;
+        font-size: 0.28rem;
+      }
     }
   }
 

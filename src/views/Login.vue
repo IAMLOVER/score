@@ -115,6 +115,8 @@ export default {
         authcode: this.verifyCode
       }).then(res => {
         if (res.code == 0) {
+          // 把手机号码存入本地
+          localStorage.setItem("wlmMobile", this.mobile);
           // 设置token
           this.$store.commit("SET_TOKEN_USERID", {
             token: res.data.token,

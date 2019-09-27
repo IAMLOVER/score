@@ -20,6 +20,7 @@ const JDInfo = () => import('./components/JDInfo.vue');
 const CreditLife = () => import('./views/CreditLife.vue');
 const CreditCheese = () => import('./views/CreditCheese.vue');
 const CreditReport = () => import('./views/CreditReport.vue');
+const Recharge = () => import('./views/Recharge.vue');
 
 Vue.use(Router);
 
@@ -50,7 +51,8 @@ const routes = [
   },
   { path: '/CreditLife', component: CreditLife, name: "CreditLife", meta: { title: '信用生活' } },
   { path: '/CreditCheese', component: CreditCheese, name: "CreditCheese", meta: { title: '信用芝士' } },
-  { path: '/CreditReport', component: CreditReport, name: "CreditReport", meta: { title: '信用报告' } }
+  { path: '/CreditReport', component: CreditReport, name: "CreditReport", meta: { title: '信用报告' } },
+  {path:'/Recharge',component:Recharge,name:'Recharge',meta:{title:'充值'}}
 ];
 const router = new Router({
   routes,

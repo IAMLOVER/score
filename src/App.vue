@@ -59,6 +59,11 @@ body {
   opacity: 1;
 }
 
+// 修改vant tab插件下面的线颜色
+.van-tabs__line {
+  background-color: #f17d0a !important;
+}
+
 // 公共提交按钮样式
 .submit-info {
   margin: 0.5rem auto 0;

@@ -70,9 +70,25 @@ let tools = (function () {
   };
   //号码验证正则
   function regPhone(phone) {
-    var regPhone = /^1[3|4|5|6|7|8][0-9]{9}$/;
+    var regPhone = /^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\\d{8}$/;
     return regPhone.test(phone)
   };
+  // 手机号码验证运营商
+  function regPhoneType(phone) {
+    var $CM = /(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\\d{8}$)|(^1705\\d{7}$)/,
+      $CU = /(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\\d{8}$)|(^1709\\d{7}$)/,
+      $CT = /(^1((33|53|77|8[019])[0-9]|349))|(700\\d{7}$)/;
+    if ($CM.test(phone)) {
+      return {type:'zgyd',name:'中国移动'}
+    }
+    if ($CU.test(phone)) {
+      return {type:'zglt',name:'中国联通'}
+    }
+    if ($CT.test(phone)) {
+      return {type:'zgdx',name:'中国电信'}
+    }
+  };
+
   // 邮箱验证正则
   function regEmail(email) {
     var regEmail = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
@@ -244,7 +260,7 @@ let tools = (function () {
   /**
    * 时间格式化
    */
-  function dateFormat(value,format) {
+  function dateFormat(value, format) {
     let nowDate = new Date(value),
       year = nowDate.getFullYear(),
       month = (nowDate.getMonth() + 1).toString().padStart(2, "0"),
@@ -266,6 +282,7 @@ let tools = (function () {
     iosOrAndroid,
     isIdentityCardNo,
     regPhone,
+    regPhoneType,
     convertCanvasToImage,
     dataURLtoFile,
     uploadfile,
