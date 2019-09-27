@@ -138,40 +138,36 @@
             <span class="fc201D mr5">信用生活</span>
             <span class="fc138A">便利生活更舒心</span>
           </div>
+          <div
+            class="right goMore"
+            @click="goToLifeMore"
+          >更多</div>
         </div>
 
-        <div class="content-list">
-          <div class="list-item card1">
-            <img
-              src="../assets/image/creditLife/card1@2x.png"
-              alt=""
-            >
-          </div>
-          <div class="list-item card2">
-            <img
-              src="../assets/image/creditLife/card2@2x.png"
-              alt=""
-            >
-          </div>
-          <a
-            class="list-item card3"
-            href="http://dkcs.dazhongdianjin.com/online_product/onlineProduct.html"
-          >
-            <img
-              src="../assets/image/creditLife/card3@2x.png"
-              alt=""
-            >
-          </a>
-          <a
-            class="list-item card4"
-            href="http://dkcs.dazhongdianjin.com/offline_product/offlineProduct.html"
-          >
-            <img
-              src="../assets/image/creditLife/card4@2x.png"
-              alt=""
-            >
-          </a>
-        </div>
+        <ul class="content-list">
+          <li class="list-item">
+            <div class="img life1"></div>
+          </li>
+          <li class="list-item">
+            <div class="img life2"></div>
+          </li>
+          <li class="list-item">
+            <div class="img life3"></div>
+          </li>
+          <li class="list-item">
+            <div class="img life4"></div>
+          </li>
+          <li class="list-item">
+            <div class="img life5"></div>
+          </li>
+          <li class="list-item">
+            <div class="img life1"></div>
+          </li>
+          <li class="list-item">
+            <div class="img life2"></div>
+          </li>
+
+        </ul>
       </section>
 
     </mescroll-vue>
@@ -329,6 +325,8 @@ export default {
         query: { scoreData: this.scoreData }
       });
     },
+    //信用生活更多
+    goToLifeMore() {},
     showMsg() {
       const { showMsg } = this.$tools;
       showMsg("功能正在开发，敬请期待...");
@@ -342,7 +340,7 @@ export default {
   width: 100%;
   height: 100vh;
   background-color: #fff;
-  
+
   // 公共样式
   .goMore {
     position: relative;
@@ -497,9 +495,37 @@ export default {
     .content-list {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      padding: 0 .14rem;
       .list-item {
-        width: 3.46rem;
+        width: 2.14rem;
+        
+        margin-right: 0.2rem;
+        margin-bottom: 0.2rem;
+        &:nth-of-type(3n) {
+          margin-right: 0;
+        }
+        .img {
+          width: 100%;
+          height: 1.24rem;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          &.life1 {
+            background-image: url("../assets/image/creditLife/life1_bg@2x.png");
+          }
+          &.life2 {
+            background-image: url("../assets/image/creditLife/life2_bg@2x.png");
+          }
+          &.life3 {
+            background-image: url("../assets/image/creditLife/life3_bg@2x.png");
+          }
+          &.life4 {
+            background-image: url("../assets/image/creditLife/life4_bg@2x.png");
+          }
+          &.life5 {
+            background-image: url("../assets/image/creditLife/life5_bg@2x.png");
+          }
+        }
       }
     }
   }
