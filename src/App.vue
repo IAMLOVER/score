@@ -86,6 +86,11 @@ body {
     }
   }
 }
+
+// 修改mescroll 无数据时图片样式
+.empty-icon{
+  margin: 0 auto;
+}
 // 公共样式
 .mt20 {
   margin-top: 0.4rem !important;

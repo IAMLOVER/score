@@ -99,11 +99,11 @@ export default {
         isBounce: false,
         empty: {
           warpId: "upscrollWarp",
-          icon:require('../assets/image/mescrolloptions/mescroll-empty.png'),
+          icon: require("../assets/image/mescrolloptions/mescroll-empty.png"),
           tip: "暂无相关数据"
         },
         page: {
-          num: -1, //默认是0，回调之后是1，所以我们是从0开始的
+          num: 0, //默认是0，回调之后是1
           size: 5 //默认是10页，修改成5页
         },
         toTop: {
@@ -145,7 +145,7 @@ export default {
       // 发送请求
       this.$tools
         .callServer("POST", "/djh/user_credit_score/list", {
-          pageNo: page.num,
+          pageNo: page.num - 1,
           pageSize: page.size,
           userId: this.userIdToken.userId,
           token: this.userIdToken.token
