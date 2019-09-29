@@ -12,25 +12,26 @@
         id="upscrollWarp"
       >
         <router-link
-          to="MyOrderDetail"
+          :to="`MyOrderDetail/serialNo=${item.serialNo}`"
           class="order-item"
           v-for="(item,index) in dataList"
           :key="index"
         >
           <p class="order-num">
             <span>订单号：</span>
-            <span>20190927162739</span>
+            <span>{{item.serialNo}}</span>
           </p>
           <div class="order-main">
             <div class="left">
               <span class="price">10</span>
               <img
-                src="../assets/image/creditLife/djq_20_1@2x.png"
+                src=""
+                :imgurl="item.goodsImg"
                 alt=""
               >
             </div>
             <div class="right">
-              <p class="good-title">天猫购物券10元</p>
+              <p class="good-title">{{item.goodsName}}</p>
               <p class="charge-time">下单时间：{{null|dataFm("年-月-日")}}</p>
             </div>
           </div>
@@ -50,6 +51,8 @@ export default {
   },
   data() {
     return {
+      userId: "",
+      token: "",
       dataList: [], //商品列表
       mescrollDown: {
         use: false
@@ -70,12 +73,22 @@ export default {
           src: require("../assets/image/mescrolloptions/mescroll-totop.png"),
           duration: 500
         },
+        lazyLoad: {
+          use: true // 是否开启懒加载,默认false 在img标签加imgurl即可
+        },
         htmlNodata:
           '<p class="upwarp-nodata">我也是有底线的，没有更多数据啦～</p>'
       }
     };
   },
-  created() {},
+  created() {
+    // 从本地获取userId
+    const store = JSON.parse(
+      localStorage.getItem("store") ? localStorage.getItem("store") : null
+    );
+    this.userId = store ? store.userId : null;
+    this.token = store ? store.token : null;
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteEnter方法
@@ -94,9 +107,11 @@ export default {
     upCallback(page, mescroll) {
       // 发送请求
       this.$tools
-        .callServer("POST", "/djh/edit_info/list", {
+        .callServer("POST", "/djh/zhongchenOrder/list", {
           pageNo: page.num - 1,
-          pageSize: page.size
+          pageSize: page.size,
+          userId: this.userId,
+          token: this.token
         })
         .then(res => {
           if (res.code == 0) {

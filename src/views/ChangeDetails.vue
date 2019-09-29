@@ -105,7 +105,7 @@ export default {
       callServer("POST", "/djh/wx_pay/zhongchen/prepay", {
         userId: this.userId,
         openid: this.openid,
-        money: this.money * 100,
+        money: this.goodsDetail.goodsPrice * 100,
         body: "卡券购买",
         type: 2, //1话费 2卡券
         goodsId: this.goodsId,
@@ -138,7 +138,9 @@ export default {
             }
           );
         } else {
+          hideLoading()
           showMsg(res.msg);
+          
         }
       });
     },

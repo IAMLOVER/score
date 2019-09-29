@@ -34,7 +34,7 @@
             class="list-item"
             v-for="(item,index) in dataList"
             :key="index"
-            :to="`ChangeDetails?bgc=FFBF00`"
+            :to="`ChangeDetails?goodsId=${item.goodsId}`"
           >
             <div class="img life1">
               <img

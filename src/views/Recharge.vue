@@ -268,6 +268,9 @@ export default {
               showMsg("支付已取消", 3000);
             }
           );
+        } else {
+          hideLoading();
+          showMsg(res.msg);
         }
       });
     },

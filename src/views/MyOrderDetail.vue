@@ -4,42 +4,46 @@
     <div class="order-info-area">
       <p class="order-num">
         <span>订单号：</span>
-        <span>20190927162739</span>
+        <span>{{serialNo}}</span>
       </p>
       <div class="order-info-desc">
         <div class="good-img">
           <img
-            src="../assets/image/creditLife/djq_20_1@2x.png"
+            :src="orderDetail.goodsImg"
             alt=""
           >
         </div>
         <div class="good-desc">
-          <p>天猫购物券10元</p>
+          <p>{{orderDetail.goodsName}}</p>
           <p class="deadline">（截止时间：2019年09月29日）</p>
         </div>
       </div>
     </div>
 
     <!-- ORDER CARD -->
-    <div class="order-card-area">
+    <div
+      class="order-card-area"
+      v-for="(item,index) in orderDetail.cardList"
+      :key="index"
+    >
       <div class="order-card-area">
         <p>
           <span class="label">卡号：</span>
-          <span>876376547613</span>
+          <span>{{item.cardNo}}</span>
         </p>
         <p
           class="copy"
-          @click="doCopy('876376547613')"
+          @click="doCopy(item.cardNo)"
         >复制</p>
       </div>
       <div class="order-card-password-area">
         <p>
           <span class="label">卡号密码：</span>
-          <span>876376547613</span>
+          <span>{{item.cardPwd}}</span>
         </p>
         <p
           class="copy"
-          @click="doCopy('87637654')"
+          @click="doCopy(item.cardPwd)"
         >复制</p>
       </div>
     </div>
@@ -56,9 +60,50 @@
 export default {
   name: "MyOrderDetail",
   data() {
-    return {};
+    return {
+      userId: "",
+      token: "",
+      serialNo: "", //订单编号
+      expireTime: "", //截止时间
+      orderDetail: {} //订单详情
+    };
+  },
+  created() {
+    this.serialNo = this.$router.query.serialNo;
+    // 从本地获取userId
+    const store = JSON.parse(
+      localStorage.getItem("store") ? localStorage.getItem("store") : null
+    );
+    this.userId = store ? store.userId : null;
+    this.token = store ? store.token : null;
+    // 获取订单详情
+    this.getOrderDetail();
   },
   methods: {
+    // 获取订单详情
+    getOrderDetail() {
+      const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
+      showLoading();
+      callServer("POST", "/djh/zhongchenGoods/detail", {
+        serialNo: this.serialNo,
+        userId: this.userId,
+        token: this.token
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          this.orderDetail = res.data;
+          let expireTime =
+            res.data.cardList.length > 0
+              ? res.data.cardList[0].expireTime
+              : null;
+          let strTime = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+          let timeStr = expireTime.replace(strTime, "$1年$2月$3日$4时$5分$6秒");
+          this.expireTime = this.timeStr;
+        } else {
+          showMsg(res.msg);
+        }
+      });
+    },
     doCopy(val) {
       const { showMsg } = this.$tools;
       console.log(val);
