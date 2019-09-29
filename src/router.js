@@ -22,6 +22,9 @@ const CreditCheese = () => import('./views/CreditCheese.vue');
 const CreditReport = () => import('./views/CreditReport.vue');
 const Recharge = () => import('./views/Recharge.vue');
 const ChangeDetails = () => import('./views/ChangeDetails.vue');
+const GoodShopList = () => import('./views/GoodShopList.vue');
+const MyOrder = () => import('./views/MyOrder.vue');
+const MyRecord = () => import('./views/MyRecord.vue');
 
 Vue.use(Router);
 
@@ -54,7 +57,10 @@ const routes = [
   { path: '/CreditCheese', component: CreditCheese, name: "CreditCheese", meta: { title: '信用芝士' } },
   { path: '/CreditReport', component: CreditReport, name: "CreditReport", meta: { title: '信用报告' } },
   { path: '/Recharge', component: Recharge, name: 'Recharge', meta: { title: '充值' } },
-  { path: '/ChangeDetails', component: ChangeDetails, name: 'ChangeDetails', meta: { title: '兑换详情' } }
+  { path: '/ChangeDetails', component: ChangeDetails, name: 'ChangeDetails', meta: { title: '兑换详情' } },
+  { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
+  { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { title: '我的订单' } },
+  { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } }
 ];
 const router = new Router({
   routes,

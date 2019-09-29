@@ -288,12 +288,10 @@ export default {
           if (res.code == 0) {
             let arr = res.data.list;
             // 如果是第一页需手动置空列表
-            if (page.num === 0) this.dataList = [];
+            if (page.num === 1) this.dataList = [];
             this.dataList = this.dataList.concat(arr);
             // 数据渲染成功后,隐藏下拉刷新的状态
             this.$nextTick(() => {
-              console.log(arr.length);
-
               mescroll.endSuccess(arr.length);
             });
           } else {
@@ -316,7 +314,10 @@ export default {
       });
     },
     //信用生活更多
-    goToLifeMore() {},
+    goToLifeMore() {
+      console.log('123')
+      this.$router.push({name:'GoodShopList'})
+    },
     showMsg() {
       const { showMsg } = this.$tools;
       showMsg("功能正在开发，敬请期待...");
@@ -529,19 +530,19 @@ export default {
             }
           }
           &.life1 {
-            background-image: url("../assets/image/creditLife/life1_bg@2x.png");
+            background-image: url("../assets/image/creditLife/djq_20@2x.png");
           }
           &.life2 {
-            background-image: url("../assets/image/creditLife/life2_bg@2x.png");
+            background-image: url("../assets/image/creditLife/djq_20@2x.png");
           }
           &.life3 {
-            background-image: url("../assets/image/creditLife/life3_bg@2x.png");
+            background-image: url("../assets/image/creditLife/djq_20@2x.png");
           }
           &.life4 {
-            background-image: url("../assets/image/creditLife/life4_bg@2x.png");
+            background-image: url("../assets/image/creditLife/djq_20@2x.png");
           }
           &.life5 {
-            background-image: url("../assets/image/creditLife/life5_bg@2x.png");
+            background-image: url("../assets/image/creditLife/djq_20@2x.png");
           }
         }
         .life-title {
