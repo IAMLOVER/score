@@ -3,6 +3,7 @@
     <van-tabs
       v-model="active"
       line-width="42"
+      @click="tableChange"
     >
       <van-tab title="充话费">
         <!-- 手机号填写区域 -->
@@ -29,13 +30,13 @@
           <ul class="charge-amount-area">
             <li
               v-for="(item,index) in normalChargeList"
-              :key="item.price"
+              :key="item.id"
               class="amount-item"
               :class="normalselect==index?'select':null"
-              @click="goToPay(item.sale,index)"
+              @click="goToPay(item.goodsPrice,item.volume,index,item.goodsId)"
             >
-              <span class="price">{{item.price/100}}元</span>
-              <span class="price-desc">售价：{{item.sale/100}}.00元</span>
+              <span class="price">{{item.volume}}元</span>
+              <span class="price-desc">售价：{{item.goodsPrice}}元</span>
             </li>
           </ul>
 
@@ -117,7 +118,7 @@
       title="确认支付"
       @close="closeActionSheet"
     >
-      <p class="sure-price-area">￥<span class="sure-price">{{surePrice}}.00</span></p>
+      <p class="sure-price-area">￥<span class="sure-price">{{surePrice}}</span></p>
       <div class="form-group">
         <span>手机号</span>
         <span>{{mobile}}</span>
@@ -161,29 +162,20 @@ export default {
       isShowToast: false, //成功失败弹出层显示控制
       typeIcon: "success", //成功失败弹出层线图的图标
       show: false, //action sheet显示控制
-      active: 0, //table
+      normalselect: null, //正常充值是否选中控制
+      active: 0, //table控制
       openid: "",
       userId: "",
-      mobile: "",
-      normalChargeList: [
-        { price: 2000, sale: 2000 },
-        { price: 3000, sale: 3000 },
-        { price: 5000, sale: 5000 },
-        { price: 10000, sale: 10000 },
-        { price: 20000, sale: 20000 },
-        { price: 30000, sale: 30000 },
-        { price: 50000, sale: 50000 }
-      ],
-      normalselect: null, //正常充值是否选中
-      surePrice: "", //确认充值金额
-      slowChargeList: [
-        { price: 10000, sale: 9100 },
-        { price: 20000, sale: 18200 },
-        { price: 30000, sale: 27300 },
-        { price: 50000, sale: 45500 }
-      ],
-      slowActive: 0, //慢充table切换
-      CMMARK: "rebate", //慢充移动标记 soldout：售罄 rebate：折扣
+      mobile: "", //充值号码
+      goodsId: "", //充值的产品id
+      surePrice: "", //确认支付金额
+      volume: "", //充值金额
+      chargeType: 1, //1,快充，2，慢充
+      slowChargeType: null, //慢充类型
+      normalChargeList: [], //快充电话费列表
+      slowChargeList: [], //慢充电话费列表
+      slowActive: 0, //慢充内table切换
+      CMMARK: "soldout", //慢充移动标记 soldout：售罄 rebate：折扣
       CUMARK: "soldout" //慢充联通标记
     };
   },
@@ -201,19 +193,36 @@ export default {
     this.openid = wxUserInfo ? wxUserInfo.openid : null;
     this.userId = store ? store.userId : null;
 
-    const { regPhone, regPhoneType } = this.$tools;
     // 从localstorage中获取手机号码
     this.mobile = localStorage.getItem("wlmMobile") || null;
   },
   methods: {
+    // 获取话费金额
+    getMobileAmount() {
+      const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
+      let mobileType = this.mobileType;
+      callServer("POST", "/djh/zhongchenGoods/list", {
+        bureaus: mobileType,
+        goodsType: "HF",
+        pageNo: 0, //pageNo从0开始
+        pageSize: 5
+      }).then(res => {
+        if (res.code == 0) {
+          this.normalChargeList = res.data.list;
+        } else {
+          showMsg(res.msg);
+        }
+      });
+    },
     // 调起支付actionsheet
-    goToPay(price, index) {
+    goToPay(price, volume, index, goodsId) {
       const { showMsg } = this.$tools;
       if (!this.mobileType) {
         showMsg("不支持此电话号码，请重新输入", 3000);
         return;
       }
-      this.surePrice = price / 100;
+      this.surePrice = price; //在微信支付的金额
+      this.volume = volume; //充值金额
       this.normalselect = index;
       this.show = true;
     },
@@ -221,12 +230,17 @@ export default {
     surePay() {
       const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
       showLoading();
-      callServer("post", "/djh/wx_pay/prepay_info", {
-        money: this.surePrice,
+      callServer("post", "/djh/wx_pay/zhongchen/prepay", {
+        money: this.surePrice * 100, //支付金额（单位分）
         openid: this.openid,
         body: "充值支付",
         userId: this.userId,
-        mobile: this.mobile
+        goodsId: this.goodsId, //商品ID
+        type: "1", //1话费，2卡券
+        mobile: this.mobile, // 充值号码
+        volume: this.volume * 100, //充值金额（单位分）
+        chargeType: this.chargeType, //1,快充，2，慢充
+        slowChargeType: this.slowChargeType //慢充类型：0.5（半小时到账）、4（4小时到账）、12（12小时到账）、24（24小时到账）、48（48小时到账）、72（72小时到账）（慢充必需要传值，快充的时候不传值）
       }).then(res => {
         if (res.code == 0) {
           const params = {
@@ -247,6 +261,8 @@ export default {
             },
             err => {
               showMsg("支付失败，请重新支付", 3000);
+              this.isShowToast = true;
+              this.typeIcon = "fail";
             },
             cancel => {
               showMsg("支付已取消", 3000);
@@ -254,6 +270,17 @@ export default {
           );
         }
       });
+    },
+    // 快充和慢充table切换
+    tableChange(index) {
+      if (index == 0) {
+        // 快充
+        this.chargeType = 1;
+        this.slowChargeType = null;
+      } else {
+        this.chargeType = 2;
+        this.slowChargeType = 4;
+      }
     },
 
     // 话费慢充table切换
@@ -304,11 +331,15 @@ export default {
       this.isShowToast = false;
       if (val) return;
       const { showMsg } = this.$tools;
-      showMsg("支付失败,退款功能正在开发，敬请期待...",3000);
+      showMsg("支付失败,退款功能正在开发，敬请期待...", 3000);
     }
   },
   computed: {
     mobileTypeName() {
+      // 如果电话号码变化，就重新获取电话费清单
+      if (this.$tools.regPhoneType(this.mobile).name) {
+        this.getMobileAmount();
+      }
       return this.$tools.regPhoneType(this.mobile).name;
     },
     mobileType() {

@@ -81,7 +81,7 @@ body {
     color: #fff;
     pointer-events: auto;
     &:active {
-      background: #f3802b;
+      background-color: #f3802b;
       -webkit-tap-highlight-color: transparent;
     }
   }

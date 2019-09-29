@@ -25,6 +25,7 @@ const ChangeDetails = () => import('./views/ChangeDetails.vue');
 const GoodShopList = () => import('./views/GoodShopList.vue');
 const MyOrder = () => import('./views/MyOrder.vue');
 const MyRecord = () => import('./views/MyRecord.vue');
+const MyOrderDetail=()=>import('./views/MyOrderDetail.vue');
 
 Vue.use(Router);
 
@@ -60,7 +61,8 @@ const routes = [
   { path: '/ChangeDetails', component: ChangeDetails, name: 'ChangeDetails', meta: { title: '兑换详情' } },
   { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
   { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { title: '我的订单' } },
-  { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } }
+  { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } },
+  {path:'/MyOrderDetail',component:MyOrderDetail,name:'MyOrderDetail',meta:{title:'兑换详情'}}
 ];
 const router = new Router({
   routes,

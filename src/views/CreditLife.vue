@@ -144,20 +144,30 @@
           >更多</div>
         </div>
 
-        <div class="content-list">
+        <div
+          class="content-list"
+          id="upscrollWarp"
+        >
           <router-link
             class="list-item"
             v-for="(item,index) in dataList"
             :key="index"
-            :to="`ChangeDetails?bgc=FFBF00`"
+            :to="`ChangeDetails?goodsId=${item.goodsId}`"
           >
-            <div class="img life1">
-              <span class="img-lf">45</span>
+            <div class="img">
+              <img
+                src=""
+                :imgurl="item.goodsImg"
+                alt=""
+              >
             </div>
-            <p class="life-title">爱电影45元代金券</p>
+            <p class="life-title">{{item.goodsName}}</p>
             <div class="price-area">
-              <span class="now-price">￥45</span>
-              <span class="old-price">￥50</span>
+              <span class="now-price">￥{{item.goodsPrice}}</span>
+              <span
+                class="old-price"
+                v-if="item.volume"
+              >￥{{item.volume}}</span>
             </div>
 
           </router-link>
@@ -195,7 +205,7 @@ export default {
           tip: "暂无相关数据"
         },
         page: {
-          num: -1, //默认是0，回调之后是1，所以我们是从0开始的
+          num: 0, //默认是0，回调之后是1，所以我们是从0开始的
           size: 5 //默认是10页，修改成5页
         },
         toTop: {
@@ -240,7 +250,7 @@ export default {
         }
       });
       this.$tools.hideLoading();
-    }, 800);
+    }, 1000);
 
     this.swiper2 = new window.Swiper(".swiper2", {
       slidesPerView: 2.5,
@@ -280,9 +290,10 @@ export default {
     upCallback(page, mescroll) {
       // 发送请求
       this.$tools
-        .callServer("POST", "/djh/edit_info/list", {
-          pageNo: page.num,
-          pageSize: page.size
+        .callServer("POST", "/djh/zhongchenGoods/list", {
+          pageNo: page.num - 1,
+          pageSize: page.size,
+          goodsType: "KQ"
         })
         .then(res => {
           if (res.code == 0) {
@@ -315,8 +326,8 @@ export default {
     },
     //信用生活更多
     goToLifeMore() {
-      console.log('123')
-      this.$router.push({name:'GoodShopList'})
+      console.log("123");
+      this.$router.push({ name: "GoodShopList" });
     },
     showMsg() {
       const { showMsg } = this.$tools;
@@ -502,53 +513,14 @@ export default {
         .img {
           width: 100%;
           height: 1.24rem;
-          padding-left: 0.18rem;
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-          display: flex;
-          align-items: center;
-          .img-lf {
-            font-size: 0.74rem;
-            color: #fff;
-            line-height: 1rem;
-          }
-          .img-lr {
-            .voucher {
-              font-size: 0.28rem;
-              color: #fff;
-              line-height: 0.42rem;
-            }
-            .coupon {
-              width: 0.88rem;
-              border-radius: 0.12rem;
-              padding: 0.02rem 0.08rem;
-              color: #f5a455;
-              background-color: #fff;
-              font-weight: 600;
-              font-size: 0.16rem;
-            }
-          }
-          &.life1 {
-            background-image: url("../assets/image/creditLife/djq_20@2x.png");
-          }
-          &.life2 {
-            background-image: url("../assets/image/creditLife/djq_20@2x.png");
-          }
-          &.life3 {
-            background-image: url("../assets/image/creditLife/djq_20@2x.png");
-          }
-          &.life4 {
-            background-image: url("../assets/image/creditLife/djq_20@2x.png");
-          }
-          &.life5 {
-            background-image: url("../assets/image/creditLife/djq_20@2x.png");
-          }
         }
         .life-title {
           margin-top: 0.12rem;
           line-height: 0.32rem;
           color: #1d1d1d;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         .price-area {
           text-align: center;

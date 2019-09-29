@@ -9,6 +9,9 @@ Vue.prototype.$tools = tools;
 import VantCompents from './assets/js/vantCompents'; // 按需引入有赞插件
 Vue.use(VantCompents);
 
+import VueClipboard from 'vue-clipboard2';
+Vue.use(VueClipboard);
+
 // 全局过滤时间
 Vue.filter('dataFm', (value = null, format = 'yyyy-mm-dd') => {
   value = value ? value : new Date();

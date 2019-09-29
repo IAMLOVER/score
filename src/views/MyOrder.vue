@@ -7,8 +7,12 @@
       @init="mescrollInit"
     >
       <!-- 订单列表 -->
-      <ul class="order-wrap" id="upscrollWarp">
-        <li
+      <div
+        class="order-wrap"
+        id="upscrollWarp"
+      >
+        <router-link
+          to="MyOrderDetail"
           class="order-item"
           v-for="(item,index) in dataList"
           :key="index"
@@ -27,23 +31,11 @@
             </div>
             <div class="right">
               <p class="good-title">天猫购物券10元</p>
-              <p class="charge-time">兑换时间：2019年09月27日</p>
+              <p class="charge-time">下单时间：{{null|dataFm("年-月-日")}}</p>
             </div>
           </div>
-          <div class="copy-area">
-            <div class="copy-code">
-              <span class="">兑换码：</span>
-              <span class="cf17">876376547613</span>
-              <span class="copy">复制</span>
-            </div>
-            <div class="copy-code">
-              <span class="">密码：</span>
-              <span class="cf17">876376547613</span>
-              <span class="copy">复制</span>
-            </div>
-          </div>
-        </li>
-      </ul>
+        </router-link>
+      </div>
 
     </MescrollVue>
   </section>
@@ -72,7 +64,7 @@ export default {
         },
         page: {
           num: 0, //默认是0，回调之后是1
-          size: 5 //默认是10页，修改成5页
+          size: 10 //默认是10页，修改成5页
         },
         toTop: {
           src: require("../assets/image/mescrolloptions/mescroll-totop.png"),
@@ -138,30 +130,16 @@ export default {
     top: 0;
     bottom: 0;
   }
-  // 公共样式
-  .cf17 {
-    color: #f17d0a;
-  }
-  .copy {
-    margin-left: 0.4rem;
-    padding: 0 0.2rem;
-    border-radius: 0.2rem;
-    background-color: #f17d0a;
-    color: #fff;
-    cursor: pointer;
-    user-select: none;
-    &:active {
-      background-color: #f3802b;
-      -webkit-tap-highlight-color: transparent;
-    }
-  }
-
   //
   .order-wrap {
     .order-item {
-      padding: 0.4rem 0.3rem;
+      padding: 0rem 0.3rem;
       margin-bottom: 0.1rem;
       background-color: #fff;
+      &:active {
+        background-color: #f5f5f5;
+        -webkit-tap-highlight-color: transparent;
+      }
       .order-num {
         padding: 0.1rem 0;
         border-bottom: 0.02rem solid #f7f7f7;
@@ -196,12 +174,13 @@ export default {
           }
         }
         .right {
+          position: relative;
           height: 1.2rem;
+          padding: 0.1rem 0 0.2rem 0;
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 0.1rem 0 0.2rem 0;
 
           .good-title {
             font-size: 0.28rem;
@@ -212,18 +191,16 @@ export default {
             color: #8a8a8a;
             font-weight: 500;
           }
-        }
-      }
-      .copy-area {
-        padding: 0.1rem 0;
-        span {
-          display: inline-block;
-          vertical-align: middle;
-          line-height: 0.4rem;
-          font-size: 0.28rem;
-          font-weight: 500;
-          &:nth-of-type(1) {
-            color: #8a8a8a;
+          &::after {
+            content: "";
+            position: absolute;
+            width: 0.14rem;
+            height: 0.28rem;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: url("../assets/image/quickScore/arrow_back@2x.png")
+              no-repeat center center / 100% 100%;
           }
         }
       }
