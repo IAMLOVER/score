@@ -38,7 +38,7 @@
           >
             <div class="img life1">
               <img
-                src=""
+                src="../assets/image/mescrolloptions/img_default@2x.png"
                 :imgurl="item.goodsImg"
                 alt=""
               >
