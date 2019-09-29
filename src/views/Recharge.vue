@@ -138,19 +138,30 @@
         立即支付
       </div>
     </van-action-sheet>
+
+    <!-- 支付成功或失败弹出层 -->
+    <RechagreToast
+      v-show="isShowToast"
+      :typeIcon="typeIcon"
+      @sure="sureFn"
+    ></RechagreToast>
+
   </section>
 </template>
 
 <script>
 import WX_SDK from "@/assets/js/WX_SDK.js";
+import RechagreToast from "../components/RechargeToast";
 export default {
   name: "Rechagre",
   mixins: [WX_SDK],
-  components: {},
+  components: { RechagreToast },
   data() {
     return {
-      show: false, //action sheet
-      active: 1, //table
+      isShowToast: false, //成功失败弹出层显示控制
+      typeIcon: "success", //成功失败弹出层线图的图标
+      show: false, //action sheet显示控制
+      active: 0, //table
       openid: "",
       userId: "",
       mobile: "",
@@ -231,6 +242,8 @@ export default {
             params,
             res => {
               showMsg("支付成功", 3000);
+              this.isShowToast = true;
+              this.typeIcon = "success";
             },
             err => {
               showMsg("支付失败，请重新支付", 3000);
@@ -285,6 +298,13 @@ export default {
     closeActionSheet() {
       // 取消选中
       this.normalselect = null;
+    },
+    // 关闭成功失败弹出层
+    sureFn(val) {
+      this.isShowToast = false;
+      if (val) return;
+      const { showMsg } = this.$tools;
+      showMsg("支付失败,退款功能正在开发，敬请期待...",3000);
     }
   },
   computed: {

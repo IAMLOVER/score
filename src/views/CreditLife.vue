@@ -144,30 +144,25 @@
           >更多</div>
         </div>
 
-        <ul class="content-list">
-          <li class="list-item">
-            <div class="img life1"></div>
-          </li>
-          <li class="list-item">
-            <div class="img life2"></div>
-          </li>
-          <li class="list-item">
-            <div class="img life3"></div>
-          </li>
-          <li class="list-item">
-            <div class="img life4"></div>
-          </li>
-          <li class="list-item">
-            <div class="img life5"></div>
-          </li>
-          <li class="list-item">
-            <div class="img life1"></div>
-          </li>
-          <li class="list-item">
-            <div class="img life2"></div>
-          </li>
+        <div class="content-list">
+          <router-link
+            class="list-item"
+            v-for="(item,index) in dataList"
+            :key="index"
+            :to="`ChangeDetails?bgc=FFBF00`"
+          >
+            <div class="img life1">
+              <span class="img-lf">45</span>
+            </div>
+            <p class="life-title">爱电影45元代金券</p>
+            <div class="price-area">
+              <span class="now-price">￥45</span>
+              <span class="old-price">￥50</span>
+            </div>
 
-        </ul>
+          </router-link>
+
+        </div>
       </section>
 
     </mescroll-vue>
@@ -295,11 +290,6 @@ export default {
             // 如果是第一页需手动置空列表
             if (page.num === 0) this.dataList = [];
             this.dataList = this.dataList.concat(arr);
-            this.creditScore = res.data.creditScore;
-            this.createTime = res.data.createTime;
-            this.lastCreditScore = res.data.lastCreditScore
-              ? res.data.lastCreditScore
-              : 0;
             // 数据渲染成功后,隐藏下拉刷新的状态
             this.$nextTick(() => {
               console.log(arr.length);
@@ -495,21 +485,49 @@ export default {
     .content-list {
       display: flex;
       flex-wrap: wrap;
-      padding: 0 .14rem;
+      padding: 0 0.1rem;
       .list-item {
         width: 2.14rem;
-        
-        margin-right: 0.2rem;
+        margin-right: 0.23rem;
         margin-bottom: 0.2rem;
+        cursor: pointer;
         &:nth-of-type(3n) {
           margin-right: 0;
+        }
+        &:active {
+          background-color: #f5f5f5;
+          -webkit-tap-highlight-color: transparent;
         }
         .img {
           width: 100%;
           height: 1.24rem;
+          padding-left: 0.18rem;
           background-position: center center;
           background-repeat: no-repeat;
           background-size: 100% 100%;
+          display: flex;
+          align-items: center;
+          .img-lf {
+            font-size: 0.74rem;
+            color: #fff;
+            line-height: 1rem;
+          }
+          .img-lr {
+            .voucher {
+              font-size: 0.28rem;
+              color: #fff;
+              line-height: 0.42rem;
+            }
+            .coupon {
+              width: 0.88rem;
+              border-radius: 0.12rem;
+              padding: 0.02rem 0.08rem;
+              color: #f5a455;
+              background-color: #fff;
+              font-weight: 600;
+              font-size: 0.16rem;
+            }
+          }
           &.life1 {
             background-image: url("../assets/image/creditLife/life1_bg@2x.png");
           }
@@ -524,6 +542,23 @@ export default {
           }
           &.life5 {
             background-image: url("../assets/image/creditLife/life5_bg@2x.png");
+          }
+        }
+        .life-title {
+          margin-top: 0.12rem;
+          line-height: 0.32rem;
+          color: #1d1d1d;
+        }
+        .price-area {
+          text-align: center;
+          line-height: 0.36rem;
+          .now-price {
+            color: #f17d0a;
+            margin-right: 0.08rem;
+          }
+          .old-price {
+            color: #8a8a8a;
+            text-decoration: line-through;
           }
         }
       }
