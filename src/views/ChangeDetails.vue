@@ -46,6 +46,7 @@
       v-show="isShowToast"
       :typeIcon="typeIcon"
       @sure="sureFn"
+      @goToTarget="goToTargetFn"
     ></GoodsToast>
   </section>
 </template>
@@ -144,6 +145,11 @@ export default {
     sureFn(val) {
       // 关闭弹出层
       this.isShowToast = false;
+    },
+    goToTargetFn(name) {
+      // 关闭弹出层
+      this.isShowToast = false;
+      this.$router.push({name:name})
     }
   }
 };

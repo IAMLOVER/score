@@ -71,6 +71,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 20;
   .toast-main {
     width: 4.5rem;
     height: 5.4rem;

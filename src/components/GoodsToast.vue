@@ -15,9 +15,17 @@
 
         <div
           v-if="typeIcon=='success'"
-          class="toast-btn success"
-          @click="sureSubmit('success')"
-        >确 认</div>
+          class="success-wrap"
+        >
+          <p
+            @click="sureSubmit('success')"
+            class="success-no"
+          >否</p>
+          <p
+            @click="goToMyOrder()"
+            class="success-sure"
+          >是</p>
+        </div>
         <div
           v-else
           class="toast-btn fail"
@@ -44,7 +52,7 @@ export default {
     toastDesc() {
       let toastDescStr =
         this.typeIcon == "success"
-          ? "您的卡券已经兑换成功"
+          ? "您的卡券已经兑换成功,跳转到我的订单查看"
           : "很遗憾，您的卡券兑换失败";
       return toastDescStr;
     }
@@ -53,6 +61,9 @@ export default {
     sureSubmit(status) {
       status = status == "success" ? true : false;
       this.$emit("sure", status);
+    },
+    goToMyOrder() {
+      this.$emit('goToTarget','MyOrder')
     }
   }
 };
@@ -75,12 +86,12 @@ export default {
 
   .toast-main {
     width: 4.5rem;
-    height: 5.4rem;
+    height: 5.6rem;
     background-color: #fff;
     border-radius: 0.24rem;
     overflow: hidden;
     .toast-top {
-      height: 50%;
+      height: 45%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -105,7 +116,7 @@ export default {
       }
     }
     .toast-bottom {
-      height: 50%;
+      height: 55%;
       padding: 0.32rem 0;
       display: flex;
       flex-direction: column;
@@ -118,9 +129,33 @@ export default {
         color: #333333;
       }
       .toast-desc {
-        line-height: 0.32rem;
+        width: 55%;
+        line-height: 0.36rem;
+        text-align: center;
         color: #8a8a8a;
         margin: 0.1rem 0 0.32rem 0;
+      }
+      .success-wrap {
+        display: flex;
+        align-items: center;
+        height: 0.8rem;
+        width: 80%;
+        p {
+          flex: 1;
+          height: 100%;
+          line-height: 0.8rem;
+          text-align: center;
+          cursor: pointer;
+          color: #fff;
+          font-size: 0.32rem;
+        }
+        .success-sure {
+          background-color: #00d4b5;
+        }
+        .success-no {
+          background-color: #f8f8f8;
+          color: #333;
+        }
       }
       .toast-btn {
         width: 3.28rem;
