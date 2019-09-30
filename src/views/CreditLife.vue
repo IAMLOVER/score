@@ -233,7 +233,7 @@ export default {
         slidesPerView: "auto",
         coverflowEffect: {
           rotate: 0,
-          stretch: -6, //->调整两张图片的间距
+          stretch: -9, //->调整两张图片的间距
           depth: 40,
           modifier: 3,
           slideShadows: false
@@ -384,7 +384,7 @@ export default {
     width: 100%;
 
     background-color: #fff;
-    padding: 0.1rem 0;
+    padding: 0.1rem 0 .2rem 0;
     .swiper-container {
       .swiper-slide-banner {
         width: 93%;
