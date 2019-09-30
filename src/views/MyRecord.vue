@@ -26,7 +26,7 @@
           </div>
           <div class="midel">
             <p class="goods-title">{{item.goodsName}}</p>
-            <p class="charge-time">兑换时间：{{item.orderTime}}</p>
+            <p class="charge-time">兑换时间：{{item.orderTime|dataFm("年-月-日")}}</p>
           </div>
           <div class="right">
             <span
@@ -173,14 +173,21 @@ export default {
       }
     }
     .midel {
+      flex: 1;
       height: 1.2rem;
       padding: 0.12rem 0;
       margin: 0 0.24rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      overflow: hidden;
       p {
+        width: 100%;
         line-height: 0.4rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
       }
       .goods-title {
         font-size: 0.28rem;
@@ -190,6 +197,7 @@ export default {
       }
     }
     .right {
+      width: 1.12rem;
       line-height: 0.4rem;
       font-size: 0.28rem;
       font-weight: 500;
