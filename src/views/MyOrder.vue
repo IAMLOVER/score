@@ -12,7 +12,7 @@
         id="upscrollWarp"
       >
         <router-link
-          :to="`MyOrderDetail/serialNo=${item.serialNo}`"
+          :to="`MyOrderDetail?serialNo=${item.serialNo}`"
           class="order-item"
           v-for="(item,index) in dataList"
           :key="index"
@@ -23,7 +23,6 @@
           </p>
           <div class="order-main">
             <div class="left">
-              <span class="price">10</span>
               <img
                 src="../assets/image/mescrolloptions/img_default@2x.png"
                 :imgurl="item.goodsImg"
@@ -32,7 +31,7 @@
             </div>
             <div class="right">
               <p class="good-title">{{item.goodsName}}</p>
-              <p class="charge-time">下单时间：{{null|dataFm("年-月-日")}}</p>
+              <p class="charge-time">下单时间：{{item.orderTime}}</p>
             </div>
           </div>
         </router-link>

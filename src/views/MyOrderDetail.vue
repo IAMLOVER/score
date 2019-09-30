@@ -15,7 +15,15 @@
         </div>
         <div class="good-desc">
           <p>{{orderDetail.goodsName}}</p>
-          <p class="deadline">（截止时间：2019年09月29日）</p>
+
+          <p
+            class="deadline"
+            v-if="expireTime"
+          >（截止时间：{{expireTime}}）</p>
+          <p
+            class="deadline"
+            v-else
+          >（订单时间：{{orderDetail.orderTime}}）</p>
         </div>
       </div>
     </div>
@@ -49,9 +57,12 @@
     </div>
 
     <!-- ORDER DETAIL -->
-    <div class="order-detail-area">
+    <div
+      class="order-detail-area"
+      v-if="orderDetail.goodsInfo"
+    >
       <p class="detail-title">商品详情</p>
-      1.了咖啡店三句两句开了家大方块科利达放假了； 2.拉开发动机肯德基撒； 兑换路径： 1）打卡就撒放大镜 大力开发商敬爱的发； 2）考虑到撒娇剪短发的雷克萨发就发SDK龙卷风sad了 打了卡就打卡； 3）了解对方卡发大立科技发。
+      <div v-html="orderDetail.goodsInfo"></div>
     </div>
   </section>
 </template>
@@ -69,7 +80,7 @@ export default {
     };
   },
   created() {
-    this.serialNo = this.$router.query.serialNo;
+    this.serialNo = this.$route.query.serialNo;
     // 从本地获取userId
     const store = JSON.parse(
       localStorage.getItem("store") ? localStorage.getItem("store") : null
@@ -84,7 +95,7 @@ export default {
     getOrderDetail() {
       const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
       showLoading();
-      callServer("POST", "/djh/zhongchenGoods/detail", {
+      callServer("POST", "/djh/zhongchenOrder/detail", {
         serialNo: this.serialNo,
         userId: this.userId,
         token: this.token
@@ -92,13 +103,18 @@ export default {
         hideLoading();
         if (res.code == 0) {
           this.orderDetail = res.data;
-          let expireTime =
-            res.data.cardList.length > 0
-              ? res.data.cardList[0].expireTime
-              : null;
-          let strTime = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-          let timeStr = expireTime.replace(strTime, "$1年$2月$3日$4时$5分$6秒");
-          this.expireTime = this.timeStr;
+          if (res.data.cardList) {
+            let expireTime =
+              res.data.cardList.length > 0
+                ? res.data.cardList[0].expireTime
+                : null;
+            let strTime = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+            let timeStr = expireTime.replace(
+              strTime,
+              "$1年$2月$3日$4时$5分$6秒"
+            );
+            this.expireTime = this.timeStr;
+          }
         } else {
           showMsg(res.msg);
         }
@@ -152,6 +168,7 @@ export default {
         width: 2.12rem;
         height: 1.2rem;
         margin-bottom: 0.2rem;
+        background-color: #f5f5f5;
       }
       .good-desc {
         line-height: 0.4rem;

@@ -25,7 +25,7 @@ const ChangeDetails = () => import('./views/ChangeDetails.vue');
 const GoodShopList = () => import('./views/GoodShopList.vue');
 const MyOrder = () => import('./views/MyOrder.vue');
 const MyRecord = () => import('./views/MyRecord.vue');
-const MyOrderDetail=()=>import('./views/MyOrderDetail.vue');
+const MyOrderDetail = () => import('./views/MyOrderDetail.vue');
 
 Vue.use(Router);
 
@@ -62,7 +62,7 @@ const routes = [
   { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
   { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { title: '我的订单' } },
   { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } },
-  {path:'/MyOrderDetail',component:MyOrderDetail,name:'MyOrderDetail',meta:{title:'兑换详情'}}
+  { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '兑换详情' } }
 ];
 const router = new Router({
   routes,
@@ -93,15 +93,15 @@ router.beforeEach((to, from, next) => {
     return
   };
   let wxUserInfo = localStorage.getItem('wxUserInfo');
-  if (!wxUserInfo) {
+  if (wxUserInfo && wxUserInfo.openid) {
+    next();
+  } else {
     // 保存当前路由地址，授权后跳回到此地址
     sessionStorage.setItem('wxRedirectUrl', to.fullPath)
     // 请求微信授权，并跳转到 /WxAuth 路由
     let appId = 'wx67f82d608be81246';
     let redirectUrl = encodeURIComponent(`${window.location.host}/redirect.html?type=WxAuth`);
     window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=http://${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`
-  } else {
-    next();
   }
 
 });
