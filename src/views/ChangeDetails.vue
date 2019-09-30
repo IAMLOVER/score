@@ -20,7 +20,7 @@
           class="old-price"
           v-if="goodsDetail.volume"
         ><span class="fz14">￥</span>{{goodsDetail.volume}}</span>
-        <span class="now-price"><span class="fz14">￥</span>{{goodsDetail.goodsPrice}}</span>
+        <span class="now-price"><span class="fz14">￥</span>{{goodsDetail.money}}</span>
       </p>
     </div>
     <div class="goods-content-area">
@@ -36,7 +36,7 @@
     </div>
     <div
       class="submit-info active"
-      @click="submitGoodsInfo(goodsDetail.goodsPrice)"
+      @click="submitGoodsInfo(goodsDetail.money)"
     >
       立即兑换
     </div>

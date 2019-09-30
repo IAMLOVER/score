@@ -33,10 +33,10 @@
               :key="item.id"
               class="amount-item"
               :class="normalselect==index?'select':null"
-              @click="goToPay(item.goodsPrice,item.volume,index,item.goodsId)"
+              @click="goToPay(item.money,item.volume,index,item.goodsId)"
             >
               <span class="price">{{item.volume}}元</span>
-              <span class="price-desc">售价：{{item.goodsPrice}}元</span>
+              <span class="price-desc">售价：{{item.money}}元</span>
             </li>
           </ul>
 
