@@ -113,7 +113,7 @@ export default {
   data() {
     return {
       openid: "",
-      money: "1",
+      money: 1990,
       userId: "",
       username: "",
       idcard: "",
@@ -202,7 +202,7 @@ export default {
             this.myWXPay(
               params,
               res => {
-                window.location.href = `http://wlm.dazhongdianjin.cn/creditReport/creditReportNew/creditSearchNew.html?token=${token}`;
+                window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${token}`;
               },
               err => {
                 showMsg("支付失败，请重新支付", 3000);
@@ -213,7 +213,7 @@ export default {
             );
           } else if (res.code == 110) {
             // 已经支付过了
-            window.location.href = `http://wlm.dazhongdianjin.cn/creditReport/creditReportNew/creditSearchNew.html?token=${token}`;
+            window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${token}`;
           } else {
             hideLoading();
             showMsg(res.msg + "</br>请确保在微信浏览器中打开", 3000);

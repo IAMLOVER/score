@@ -353,7 +353,7 @@ export default {
         hideLoading();
         if (res.code == 0) {
           if (res.data.token) {
-            window.location.href = `http://wlm.dazhongdianjin.cn/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
+            window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
           } else {
             this.$router.push({ name: "CreditReport" });
           }
