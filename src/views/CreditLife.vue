@@ -233,7 +233,7 @@ export default {
         slidesPerView: "auto",
         coverflowEffect: {
           rotate: 0,
-          stretch: -9, //->调整两张图片的间距
+          stretch: -6, //->调整两张图片的间距
           depth: 40,
           modifier: 3,
           slideShadows: false
