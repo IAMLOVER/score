@@ -92,7 +92,7 @@ router.beforeEach((to, from, next) => {
     next()
     return
   };
-  let wxUserInfo = localStorage.getItem('wxUserInfo');
+  let wxUserInfo = JSON.parse(localStorage.getItem('wxUserInfo') ? localStorage.getItem('wxUserInfo') : null);
   if (wxUserInfo && wxUserInfo.openid) {
     next();
   } else {
