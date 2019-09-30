@@ -26,7 +26,7 @@
           </div>
           <div class="midel">
             <p class="goods-title">{{item.goodsName}}</p>
-            <p class="charge-time">兑换时间：2019年09月27日</p>
+            <p class="charge-time">兑换时间：{{item.orderTime}}</p>
           </div>
           <div class="right">
             <span

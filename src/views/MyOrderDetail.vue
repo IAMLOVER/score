@@ -113,7 +113,7 @@ export default {
               strTime,
               "$1年$2月$3日$4时$5分$6秒"
             );
-            this.expireTime = this.timeStr;
+            this.expireTime = timeStr;
           }
         } else {
           showMsg(res.msg);

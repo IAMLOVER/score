@@ -66,11 +66,13 @@ export default {
   bottom: 0;
   width: 100%;
   height: 100vh;
+  z-index: 20;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   .toast-main {
     width: 4.5rem;
     height: 5.4rem;
