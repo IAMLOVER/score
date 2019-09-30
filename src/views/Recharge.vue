@@ -221,6 +221,7 @@ export default {
         showMsg("不支持此电话号码，请重新输入", 3000);
         return;
       }
+      this.goodsId = goodsId; //产品id
       this.surePrice = price; //在微信支付的金额
       this.volume = volume; //充值金额
       this.normalselect = index;
@@ -231,14 +232,14 @@ export default {
       const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
       showLoading();
       callServer("post", "/djh/wx_pay/zhongchen/prepay", {
-        money: this.surePrice * 100, //支付金额（单位分）
+        money: (this.surePrice * 100).toFixed(2), //支付金额（单位分）
         openid: this.openid,
         body: "充值支付",
         userId: this.userId,
         goodsId: this.goodsId, //商品ID
         type: "1", //1话费，2卡券
         mobile: this.mobile, // 充值号码
-        volume: this.volume * 100, //充值金额（单位分）
+        volume: (this.volume * 100).toFixed(2), //充值金额（单位分）
         chargeType: this.chargeType, //1,快充，2，慢充
         slowChargeType: this.slowChargeType //慢充类型：0.5（半小时到账）、4（4小时到账）、12（12小时到账）、24（24小时到账）、48（48小时到账）、72（72小时到账）（慢充必需要传值，快充的时候不传值）
       }).then(res => {

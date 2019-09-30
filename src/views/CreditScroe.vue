@@ -191,7 +191,7 @@ export default {
   data() {
     return {
       nowTime: new Date(), // 当前评估时间
-      scoreData: 400, //信用分默认400
+      scoreData: "", //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
       token: "", //用户token
       userId: "", //用户id
