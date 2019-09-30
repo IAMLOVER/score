@@ -253,15 +253,14 @@ export default {
             prepay_id: res.data.prepay_id,
             sign: res.data.sign
           };
+          this.show=false //actionsheet 隐藏
           this.myWXPay(
             params,
             res => {
-              showMsg("支付成功", 3000);
               this.isShowToast = true;
               this.typeIcon = "success";
             },
             err => {
-              showMsg("支付失败，请重新支付", 3000);
               this.isShowToast = true;
               this.typeIcon = "fail";
             },
@@ -333,9 +332,6 @@ export default {
     // 关闭成功失败弹出层
     sureFn(val) {
       this.isShowToast = false;
-      if (val) return;
-      const { showMsg } = this.$tools;
-      showMsg("支付失败,退款功能正在开发，敬请期待...", 3000);
     }
   },
   computed: {

@@ -124,12 +124,10 @@ export default {
           this.myWXPay(
             params,
             res => {
-              showMsg("支付成功", 3000);
               this.isShowToast = true;
               this.typeIcon = "success";
             },
             err => {
-              showMsg("支付失败，请重新支付", 3000);
               this.isShowToast = true;
               this.typeIcon = "fail";
             },

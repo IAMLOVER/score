@@ -7,7 +7,10 @@
       @init="mescrollInit"
     >
 
-      <ul class="record-wrap" id="upscrollWarp">
+      <ul
+        class="record-wrap"
+        id="upscrollWarp"
+      >
         <li
           class="record-item"
           v-for="(item,index) in dataList"
@@ -16,17 +19,24 @@
           <div class="left">
             <span class="record-price">10</span>
             <img
-              src="../assets/image/creditLife/djq_20@2x.png"
+              src="../assets/image/mescrolloptions/img_default@2x.png"
+              :imgurl="item.goodsImg"
               alt=""
             >
           </div>
           <div class="midel">
-            <p class="goods-title">天猫购物券10元</p>
+            <p class="goods-title">{{item.goodsName}}</p>
             <p class="charge-time">兑换时间：2019年09月27日</p>
           </div>
           <div class="right">
-            <span class="success">兑换成功</span>
-            <!-- <span class="fail">兑换失败</span> -->
+            <span
+              class="success"
+              v-if="item.status==2"
+            >兑换成功</span>
+            <span
+              class="fail"
+              v-else-if="item.status==3"
+            >兑换失败</span>
           </div>
         </li>
       </ul>
@@ -44,6 +54,8 @@ export default {
   },
   data() {
     return {
+      userId: "",
+      token: "",
       dataList: [], //订单列表
       mescrollDown: {
         use: false
@@ -64,12 +76,22 @@ export default {
           src: require("../assets/image/mescrolloptions/mescroll-totop.png"),
           duration: 500
         },
+        lazyLoad: {
+          use: true // 是否开启懒加载,默认false 在img标签加imgurl即可
+        },
         htmlNodata:
           '<p class="upwarp-nodata">我也是有底线的，没有更多数据啦～</p>'
       }
     };
   },
-  created() {},
+  created() {
+    // 从本地获取userId
+    const store = JSON.parse(
+      localStorage.getItem("store") ? localStorage.getItem("store") : null
+    );
+    this.userId = store ? store.userId : null;
+    this.token = store ? store.token : null;
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteEnter方法
@@ -88,14 +110,16 @@ export default {
     upCallback(page, mescroll) {
       // 发送请求
       this.$tools
-        .callServer("POST", "/djh/edit_info/list", {
+        .callServer("POST", "/djh/zhongchenOrder/list", {
           pageNo: page.num - 1,
-          pageSize: page.size
+          pageSize: page.size,
+          userId: this.userId,
+          token: this.token,
+          type: 2 //1-话费充值 2-卡券兑换
         })
         .then(res => {
           if (res.code == 0) {
             let arr = res.data.list;
-            arr=[];
             // 如果是第一页需手动置空列表
             if (page.num === 1) this.dataList = [];
             this.dataList = this.dataList.concat(arr);
