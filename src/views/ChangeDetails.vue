@@ -25,13 +25,10 @@
     </div>
     <div class="goods-content-area">
       <p class="goods-title">商品详情：</p>
-      <div class="goods-main">
-        {{goodsDetail.goodsInfo}}
-
-        <!-- <p class="goos-subtitle">爱电影通卡兑换规则</p>
-        <p>1. 兑换规则：持本卡1张可兑换45元及以下2D或3D电影票1张，超出45元需叠加使用；
-          <br /> 2.规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则；
-          <br />3.规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则。</p> -->
+      <div
+        class="goods-main"
+        v-html="goodsDetail.goodsInfo"
+      >
       </div>
     </div>
     <div
@@ -149,7 +146,7 @@ export default {
     goToTargetFn(name) {
       // 关闭弹出层
       this.isShowToast = false;
-      this.$router.push({name:name})
+      this.$router.push({ name: name });
     }
   }
 };
@@ -238,12 +235,6 @@ export default {
     .goods-main {
       margin-top: 0.2rem;
       color: #8a8a8a;
-      p {
-        line-height: 0.36rem;
-      }
-      .goos-subtitle {
-        margin-bottom: 0.1rem;
-      }
     }
   }
 }

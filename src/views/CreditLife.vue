@@ -163,7 +163,7 @@
             </div>
             <p class="life-title">{{item.goodsName}}</p>
             <div class="price-area">
-              <span class="now-price">￥{{item.goodsPrice}}</span>
+              <span class="now-price">￥{{item.money}}</span>
               <span
                 class="old-price"
                 v-if="item.volume"

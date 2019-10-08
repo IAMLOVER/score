@@ -24,6 +24,12 @@ body {
   max-width: 750px;
   min-height: 100vh;
 }
+
+// 公共样式
+.mt20 {
+  margin-top: 0.4rem !important;
+}
+
 // 修改vant插件在ios10.3.3下面 picker组件无法拖动问题
 .van-popup {
   overflow-y: hidden !important;
@@ -44,6 +50,11 @@ body {
     position: relative;
   }
 }
+// 修改vant tab插件下面的线颜色
+.van-tabs__line {
+  background-color: #f17d0a !important;
+}
+
 // 修改swiper 样式
 // banner分页器样式
 .banner-pagination {
@@ -57,11 +68,6 @@ body {
 }
 .banner-pagination-active {
   opacity: 1;
-}
-
-// 修改vant tab插件下面的线颜色
-.van-tabs__line {
-  background-color: #f17d0a !important;
 }
 
 // 公共提交按钮样式
@@ -88,11 +94,14 @@ body {
 }
 
 // 修改mescroll 无数据时图片样式
-.empty-icon{
+.empty-icon {
   margin: 0 auto;
 }
-// 公共样式
-.mt20 {
-  margin-top: 0.4rem !important;
+
+// 修改产品详情 渲染之后的样式
+.goods-main {
+  p {
+    line-height: 0.32rem;
+  }
 }
 </style>
