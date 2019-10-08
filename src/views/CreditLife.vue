@@ -129,7 +129,12 @@
       </section>
 
       <!-- 分割线 -->
-      <div class="line10"></div>
+      <div class="line10">
+        <router-link
+          class="convert-icon"
+          :to="{name:'MyRecord'}"
+        ></router-link>
+      </div>
 
       <!-- credit life content area -->
       <section class="credit-life-content-area">
@@ -250,7 +255,7 @@ export default {
         }
       });
       this.$tools.hideLoading();
-    }, 1000);
+    }, 800);
 
     this.swiper2 = new window.Swiper(".swiper2", {
       slidesPerView: 2.5,
@@ -348,6 +353,7 @@ export default {
     position: relative;
     padding-right: 0.16rem;
     color: #f17d0a;
+    cursor: pointer;
     &::after {
       content: "";
       width: 0.12rem;
@@ -377,6 +383,10 @@ export default {
   }
   .mr5 {
     margin-right: 0.1rem;
+  }
+
+  .right {
+    line-height: 0.32rem;
   }
 
   // BANNER AREA
@@ -481,15 +491,29 @@ export default {
   // Private doctor AREA
   .private-doctor-area {
     margin-top: 0.06rem;
+    padding-bottom: 0.3rem;
     .doctor-link {
       height: 3.44rem;
     }
   }
   // LINE 10
   .line10 {
+    position: relative;
     width: 100%;
     height: 0.2rem;
     background-color: #f5f7f8;
+    .convert-icon {
+      position: absolute;
+      width: 1.16rem;
+      height: 1.16rem;
+      right: 0.2rem;
+      top: 0;
+      transform: translateY(-55%);
+      z-index: 10;
+      border-radius: 50%;
+      background: url("../assets/image/creditLife/convert@2x.png") no-repeat
+        center center / 100% 100%;
+    }
   }
   // credit life content area
   .credit-life-content-area {
