@@ -32,10 +32,21 @@
       </div>
     </div>
     <div
+      v-if="goodsDetail.num"
       class="submit-info active"
       @click="submitGoodsInfo(goodsDetail.money)"
     >
       立即兑换
+    </div>
+    <div
+      v-else
+      class="no-exchange"
+      @click="showMsg"
+    >
+      不可兑换
+    </div>
+    <div class="now-stock">
+      （当前剩余库存<span class="stock-num">234</span>）
     </div>
 
     <!-- toast -->
@@ -147,6 +158,10 @@ export default {
       // 关闭弹出层
       this.isShowToast = false;
       this.$router.push({ name: name });
+    },
+    showMsg() {
+      const { showMsg } = this.$tools;
+      showMsg("当前库存为0，不可兑换");
     }
   }
 };
@@ -235,6 +250,38 @@ export default {
     .goods-main {
       margin-top: 0.2rem;
       color: #8a8a8a;
+    }
+  }
+
+  // 不可兑换样式
+  .no-exchange {
+    cursor: pointer;
+    margin: 0.5rem auto 0;
+    width: 6.8rem;
+    height: 0.92rem;
+    line-height: 0.92rem;
+    background-color: #dedede;
+    color: #9a9a9a;
+    text-align: center;
+    border-radius: 0.08rem;
+    font-size: 0.36rem;
+    user-select: none;
+    &:active {
+      background-color: #f5f5f5;
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+  // 剩余库存样式
+  .now-stock {
+    margin-top: 0.06rem;
+    line-height: 0.4rem;
+    text-align: center;
+    color: #8a8a8a;
+    font-size: 0.28rem;
+    .stock-num {
+      font-size: 0.32rem;
+      color: #333;
+      font-weight: 500;
     }
   }
 }
