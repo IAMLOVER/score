@@ -74,11 +74,95 @@
         </div>
       </section>
 
+      <!-- EXCELLENT LIFE AREA -->
+      <section class="excellent-life-area">
+        <div class="credit-life-title">
+          <div class="left">
+            <span class="fc201D mr5">优生活</span>
+            <span class="fc138A">便利生活更舒心</span>
+          </div>
+          <div
+            class="right goMore"
+            @click="goToLifeMore"
+          >更多</div>
+        </div>
+        <div class="content-list">
+          <router-link
+            class="list-item"
+            v-for="(item,index) in dataList"
+            :key="index"
+            :to="`ChangeDetails?goodsId=${item.goodsId}`"
+          >
+            <div class="img">
+              <img
+                src="../assets/image/mescrolloptions/img_default@2x.png"
+                :imgurl="item.goodsImg"
+                alt=""
+              >
+            </div>
+            <p class="life-title">{{item.goodsName}}</p>
+            <div class="price-area">
+              <span class="now-price">￥{{item.money}}</span>
+              <span
+                class="old-price"
+                v-if="item.volume"
+              >￥{{item.volume}}</span>
+            </div>
+
+          </router-link>
+        </div>
+      </section>
+
+      <!-- 分割线 -->
+      <div class="line10"></div>
+
+      <!-- New entertainment AREA -->
+      <section class="new-entertainment-area">
+        <div class="credit-life-title">
+          <div class="left">
+            <span class="fc201D mr5">新娱乐</span>
+            <span class="fc138A">新娱乐</span>
+          </div>
+          <div
+            class="right goMore"
+            @click="goToLifeMore"
+          >更多</div>
+        </div>
+        <div class="content-list">
+          <router-link
+            class="list-item"
+            v-for="(item,index) in dataList"
+            :key="index"
+            :to="`ChangeDetails?goodsId=${item.goodsId}`"
+          >
+            <div class="img">
+              <img
+                src="../assets/image/mescrolloptions/img_default@2x.png"
+                :imgurl="item.goodsImg"
+                alt=""
+              >
+            </div>
+            <p class="life-title">{{item.goodsName}}</p>
+            <div class="price-area">
+              <span class="now-price">￥{{item.money}}</span>
+              <span
+                class="old-price"
+                v-if="item.volume"
+              >￥{{item.volume}}</span>
+            </div>
+
+          </router-link>
+        </div>
+      </section>
+
+      <!-- 分割线 -->
+      <div class="line10"></div>
+
       <!-- Private doctor AREA -->
       <section class="private-doctor-area">
         <div class="credit-life-title">
           <div class="left">
-            <span class="fc201D mr5">私家医生</span>
+            <span class="fc201D mr5">大健康</span>
             <span class="fc138A">平安好医生、私人医生</span>
           </div>
           <div
@@ -129,19 +213,14 @@
       </section>
 
       <!-- 分割线 -->
-      <div class="line10">
-        <router-link
-          class="convert-icon"
-          :to="{name:'MyRecord'}"
-        ></router-link>
-      </div>
+      <div class="line10"></div>
 
-      <!-- credit life content area -->
+      <!-- Intellectual finance area -->
       <section class="credit-life-content-area">
         <div class="credit-life-title">
           <div class="left">
-            <span class="fc201D mr5">信用生活</span>
-            <span class="fc138A">便利生活更舒心</span>
+            <span class="fc201D mr5">智金融</span>
+            <span class="fc138A">智金融</span>
           </div>
           <div
             class="right goMore"
@@ -180,10 +259,15 @@
         </div>
       </section>
 
+      <!-- 悬浮按钮 -->
+      <router-link
+        class="convert-icon"
+        :to="{name:'MyRecord'}"
+      ></router-link>
+
     </mescroll-vue>
 
     <!-- 新用户首次登陆送优惠券，欢迎组件 -->
-
     <WelcomeToast
       v-if="isFirstLogin"
       @closeToast="closeToast"
@@ -238,7 +322,6 @@ export default {
   created() {
     this.scoreData = this.$route.query.scoreData;
     this.getBanner();
-    
   },
   mounted() {
     // 设置倒计时用于初始化第一个swiper
@@ -374,16 +457,16 @@ export default {
       width: 0.12rem;
       height: 0.24rem;
       position: absolute;
-      top: 52%;
+      top: 50%;
       right: 0;
       transform: translateY(-50%);
       background: url("../assets/image/creditLife/arrow_back@2x.png") no-repeat
         center center / 100% 100%;
     }
   }
+
   .credit-life-title {
     height: 1.04rem;
-    padding: 0 0.3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -507,6 +590,9 @@ export default {
   .private-doctor-area {
     margin-top: 0.06rem;
     padding-bottom: 0.3rem;
+    .credit-life-title {
+      padding: 0 0.2rem;
+    }
     .doctor-link {
       height: 3.44rem;
     }
@@ -517,21 +603,24 @@ export default {
     width: 100%;
     height: 0.2rem;
     background-color: #f5f7f8;
-    .convert-icon {
-      position: absolute;
-      width: 1.16rem;
-      height: 1.16rem;
-      right: 0.2rem;
-      top: 0;
-      transform: translateY(-55%);
-      z-index: 10;
-      border-radius: 50%;
-      background: url("../assets/image/creditLife/convert@2x.png") no-repeat
-        center center / 100% 100%;
-    }
   }
-  // credit life content area
-  .credit-life-content-area {
+  //悬浮按钮
+  .convert-icon {
+    position: fixed;
+    width: 1.16rem;
+    height: 1.16rem;
+    right: 0.2rem;
+    bottom: 1rem;
+    transform: translateY(-55%);
+    z-index: 10;
+    border-radius: 50%;
+    background: url("../assets/image/creditLife/convert@2x.png") no-repeat
+      center center / 100% 100%;
+  }
+  //优生活，新娱乐，智金融
+  .credit-life-content-area,
+  .new-entertainment-area,
+  .excellent-life-area {
     padding: 0 0.2rem;
     .content-list {
       display: flex;
