@@ -33,10 +33,15 @@
               class="success"
               v-if="item.status==2"
             >兑换成功</span>
-            <span
-              class="fail"
-              v-else-if="item.status==3"
-            >兑换失败</span>
+            <template v-else-if="item.status==3">
+              <span class="fail">兑换失败</span>
+              <span
+                class="refund"
+                :class="item.refundStatus==0?null:'active'"
+                @click="showConfirm(item.refundStatus)"
+              >{{item.refundStatus==0?'退款':item.refundStatus==1?'退款中':'退款成功'}}</span>
+            </template>
+
           </div>
         </li>
       </ul>
@@ -134,6 +139,35 @@ export default {
         .catch(error => {
           mescroll.endErr();
         });
+    },
+    showConfirm(status) {
+      const { showLoading, hideLoading } = this.$tools;
+      if (status) {
+        return;
+      }
+      this.$dialog
+        .confirm({
+          title: "退款确认",
+          message: "您将进行退款操作，是否继续？"
+        })
+        .then(() => {
+          // on confirm
+          // 点击确认调用接口发送退款请求
+          showLoading();
+          setTimeout(() => {
+            hideLoading();
+            // 重新获取最新列表数据
+            this.mescroll.resetUpScroll();
+            // 增加提示交互
+            this.$notify({
+              type: "success",
+              message: "您提交的退款申请正在审核请耐心等待。"
+            });
+          }, 1000);
+        })
+        .catch(() => {
+          // on cancel
+        });
     }
   }
 };
@@ -187,7 +221,6 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-
       }
       .goods-title {
         font-size: 0.28rem;
@@ -201,11 +234,22 @@ export default {
       line-height: 0.4rem;
       font-size: 0.28rem;
       font-weight: 500;
+      span {
+        display: block;
+      }
       .success {
         color: #40db58;
       }
       .fail {
         color: #ff3b17;
+      }
+      .refund {
+        margin-top: 0.16rem;
+        color: #0a84f1;
+        text-align: right;
+        &.active {
+          color: #8a8a8a;
+        }
       }
     }
   }

@@ -181,6 +181,14 @@
       </section>
 
     </mescroll-vue>
+
+    <!-- 新用户首次登陆送优惠券，欢迎组件 -->
+
+    <WelcomeToast
+      v-if="isFirstLogin"
+      @closeToast="closeToast"
+    ></WelcomeToast>
+
   </section>
 </template>
 
@@ -188,11 +196,13 @@
 import "../assets/js/swiper.min.js";
 import "../assets/css/swiper.min.css";
 import MescrollVue from "mescroll.js/mescroll.vue";
+import WelcomeToast from "../components/WelcomeToast";
 export default {
   name: "CreditLife",
-  components: { MescrollVue },
+  components: { MescrollVue, WelcomeToast },
   data() {
     return {
+      isFirstLogin: true, //是否新用户第一次登陆控制
       scoreData: "", //信用分
       bannerList: [],
       dataList: [], //信用生活列表数据
@@ -228,6 +238,7 @@ export default {
   created() {
     this.scoreData = this.$route.query.scoreData;
     this.getBanner();
+    
   },
   mounted() {
     // 设置倒计时用于初始化第一个swiper
@@ -333,6 +344,10 @@ export default {
     goToLifeMore() {
       console.log("123");
       this.$router.push({ name: "GoodShopList" });
+    },
+    // 关闭welcometoast
+    closeToast(val) {
+      this.isFirstLogin = val;
     },
     showMsg() {
       const { showMsg } = this.$tools;
