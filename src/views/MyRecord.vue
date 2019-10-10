@@ -31,15 +31,20 @@
           <div class="right">
             <span
               class="success"
-              v-if="item.status==2"
+              v-if="item.status==1||item.status==0"
+            >兑换中</span>
+            <span
+              class="success"
+              v-else-if="item.status==2"
             >兑换成功</span>
             <template v-else-if="item.status==3">
               <span class="fail">兑换失败</span>
               <span
+                v-if="item.wxStatus==2"
                 class="refund"
-                :class="item.refundStatus==0?null:'active'"
-                @click="showConfirm(item.refundStatus)"
-              >{{item.refundStatus==0?'退款':item.refundStatus==1?'退款中':'退款成功'}}</span>
+                :class="!item.refund_status?null:'active'"
+                @click="showConfirm(item.refund_status,item.refund_status_str,item.id)"
+              >{{item.refund_status_str}}</span>
             </template>
 
           </div>
@@ -127,6 +132,14 @@ export default {
             let arr = res.data.list;
             // 如果是第一页需手动置空列表
             if (page.num === 1) this.dataList = [];
+            arr.forEach(item => {
+              if (item.wxStatus == 2 && item.status == 3) {
+                // 支付成功2且下单失败3时才遍历 refund_status
+                item.refund_status_str = this.refundStatusFilter(
+                  item.refund_status
+                );
+              }
+            });
             this.dataList = this.dataList.concat(arr);
             // 数据渲染成功后,隐藏下拉刷新的状态
             this.$nextTick(() => {
@@ -140,9 +153,35 @@ export default {
           mescroll.endErr();
         });
     },
-    showConfirm(status) {
-      const { showLoading, hideLoading } = this.$tools;
+    refundStatusFilter(status) {
+      let str = "退款";
+      if (status == 1) {
+        str = "待退款";
+        return str;
+      }
+      if (status == 2) {
+        str = "退款中";
+        return str;
+      }
+      if (status == 3) {
+        str = "审核不通过";
+        return str;
+      }
+      if (status == 4) {
+        str = "退款成功";
+        return str;
+      }
+      if (status == 5) {
+        str = "退款失败";
+        return str;
+      }
+      return str;
+    },
+    showConfirm(status, statusStr, id) {
+      const { showLoading, hideLoading, showMsg, callServer } = this.$tools;
+      // 当是退款状态的时候，status是不存在的
       if (status) {
+        showMsg(statusStr);
         return;
       }
       this.$dialog
@@ -154,16 +193,29 @@ export default {
           // on confirm
           // 点击确认调用接口发送退款请求
           showLoading();
-          setTimeout(() => {
+          callServer("POST", "/djh/zhongchenOrder/refund", {
+            id: id,
+            userId: this.userId,
+            token: this.token
+          }).then(res => {
             hideLoading();
-            // 重新获取最新列表数据
-            this.mescroll.resetUpScroll();
+            let type = null,
+              message = null;
+            if (res.code == 0) {
+              // 重新获取最新列表数据
+              this.mescroll.resetUpScroll();
+              type = "success";
+              message = "您提交的退款申请正在审核请耐心等待。";
+            } else {
+              type = "danger";
+              message = res.msg;
+            }
             // 增加提示交互
             this.$notify({
-              type: "success",
-              message: "您提交的退款申请正在审核请耐心等待。"
+              type: type,
+              message: message
             });
-          }, 1000);
+          });
         })
         .catch(() => {
           // on cancel
@@ -234,6 +286,7 @@ export default {
       line-height: 0.4rem;
       font-size: 0.28rem;
       font-weight: 500;
+      text-align: right;
       span {
         display: block;
       }
@@ -246,7 +299,6 @@ export default {
       .refund {
         margin-top: 0.16rem;
         color: #0a84f1;
-        text-align: right;
         &.active {
           color: #8a8a8a;
         }

@@ -3,45 +3,19 @@
     <div class="toast-content">
       <p class="head"></p>
       <ul class="content-wrap">
-        <li class="content-list">
+        <li
+          class="content-list"
+          v-for="(item,index) in goodList"
+          :key="index"
+        >
           <div class="content-left">
             <img
-              src="../assets/image/creditLife/coupon5@2x.png"
+              :src="item.imgUrl"
               alt=""
             >
           </div>
           <div class="content-right">
-            <p class="list-title">幸福西饼满减券</p>
-            <router-link
-              class="go-use"
-              :to="{name:'MyOrder'}"
-            >查看</router-link>
-          </div>
-        </li>
-        <li class="content-list">
-          <div class="content-left">
-            <img
-              src="../assets/image/creditLife/coupon7@2x.png"
-              alt=""
-            >
-          </div>
-          <div class="content-right">
-            <p class="list-title">幸福西饼满减券</p>
-            <router-link
-              class="go-use"
-              :to="{name:'MyOrder'}"
-            >查看</router-link>
-          </div>
-        </li>
-        <li class="content-list">
-          <div class="content-left">
-            <img
-              src="../assets/image/creditLife/coupon50@2x.png"
-              alt=""
-            >
-          </div>
-          <div class="content-right">
-            <p class="list-title">幸福西饼满减券</p>
+            <p class="list-title">{{item.desc}}</p>
             <router-link
               class="go-use"
               :to="{name:'MyOrder'}"
@@ -60,11 +34,20 @@
 <script>
 export default {
   name: "WelcomeToast",
-  props: [],
+  props: ["goodsNoList"],
   data() {
-    return {};
+    return {
+      goodList: []
+    };
   },
-  created() {},
+  created() {
+    this.goodList = this.goodsNoList.map(item => {
+      return {
+        imgUrl: require(`../assets/image/creditLife/coupon${item}@2x.png`),
+        desc: item == 1 ? "咪咕视频" : item == 2 ? "顺丰同城急送" : "幸福西饼"
+      };
+    });
+  },
   methods: {
     closeFn() {
       this.$emit("closeToast", false);

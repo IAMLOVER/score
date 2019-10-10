@@ -166,6 +166,7 @@ export default {
       active: 0, //table控制
       openid: "",
       userId: "",
+      token: "",
       mobile: "", //充值号码
       goodsId: "", //充值的产品id
       surePrice: "", //确认支付金额
@@ -192,6 +193,7 @@ export default {
     );
     this.openid = wxUserInfo ? wxUserInfo.openid : null;
     this.userId = store ? store.userId : null;
+    this.token = store ? store.token : null;
 
     // 从localstorage中获取手机号码
     this.mobile = localStorage.getItem("wlmMobile") || null;
@@ -239,7 +241,7 @@ export default {
         goodsId: this.goodsId, //商品ID
         type: "1", //1话费，2卡券
         mobile: this.mobile, // 充值号码
-        volume: (this.volume*1).toFixed(2), //充值金额（单位分）
+        volume: (this.volume * 1).toFixed(2), //充值金额（单位分）
         chargeType: this.chargeType, //1,快充，2，慢充
         slowChargeType: this.slowChargeType //慢充类型：0.5（半小时到账）、4（4小时到账）、12（12小时到账）、24（24小时到账）、48（48小时到账）、72（72小时到账）（慢充必需要传值，快充的时候不传值）
       }).then(res => {
@@ -253,7 +255,9 @@ export default {
             prepay_id: res.data.prepay_id,
             sign: res.data.sign
           };
-          this.show=false //actionsheet 隐藏
+          // 预支付订单号
+          const outTradeNo = res.data.outTradeNo;
+          this.show = false; //actionsheet 隐藏
           this.myWXPay(
             params,
             res => {
@@ -265,7 +269,17 @@ export default {
               this.typeIcon = "fail";
             },
             cancel => {
-              showMsg("支付已取消", 3000);
+              callServer("POST", "/djh/wx_pay/zhongchen/cancel", {
+                outTradeNo: outTradeNo,
+                userId: this.userId,
+                token: this.token
+              }).then(res => {
+                if (res.code == 0) {
+                  showMsg("支付已取消", 2000);
+                } else {
+                  showMsg(res.msg);
+                }
+              });
             }
           );
         } else {

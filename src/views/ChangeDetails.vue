@@ -32,7 +32,7 @@
       </div>
     </div>
     <div
-      v-if="goodsDetail.num"
+      v-if="goodsDetail.stock>0"
       class="submit-info active"
       @click="submitGoodsInfo(goodsDetail.money)"
     >
@@ -46,7 +46,7 @@
       不可兑换
     </div>
     <div class="now-stock">
-      （当前剩余库存<span class="stock-num">234</span>）
+      （当前剩余库存<span class="stock-num">{{goodsDetail.stock}}</span>）
     </div>
 
     <!-- toast -->
@@ -70,6 +70,7 @@ export default {
     return {
       openid: "",
       userId: "",
+      token: "",
       goodsId: "",
       goodsDetail: "",
       typeIcon: "success", //显示是否成功图标
@@ -89,7 +90,7 @@ export default {
     );
     this.openid = wxUserInfo ? wxUserInfo.openid : null;
     this.userId = store ? store.userId : null;
-
+    this.token = store ? store.token : null;
     this.goodsId = this.$route.query.goodsId;
     this.getGoodsDetail(this.goodsId);
   },
@@ -130,6 +131,8 @@ export default {
             prepay_id: res.data.prepay_id,
             sign: res.data.sign
           };
+          // 预支付订单号
+          const outTradeNo = res.data.outTradeNo;
           this.myWXPay(
             params,
             res => {
@@ -141,7 +144,17 @@ export default {
               this.typeIcon = "fail";
             },
             cancel => {
-              showMsg("支付已取消", 3000);
+              callServer("POST", "/djh/wx_pay/zhongchen/cancel", {
+                outTradeNo: outTradeNo,
+                userId: this.userId,
+                token: this.token
+              }).then(res => {
+                if (res.code == 0) {
+                  showMsg("支付已取消", 2000);
+                } else {
+                  showMsg(res.msg);
+                }
+              });
             }
           );
         } else {

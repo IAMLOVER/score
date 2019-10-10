@@ -2,7 +2,9 @@
 import axios from 'axios';
 axios.defaults.timeout = 180000;
 // axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://xyf.dazhongdianjin.cn';
+let baseURL = window.location.origin;
+baseURL = baseURL.indexOf('.com') > -1 ? "http://xyf.dazhongdianjin.com" : "http://xyf.dazhongdianjin.cn"
+axios.defaults.baseURL = baseURL;
 axios.interceptors.response.use(response => {   //响应拦截器
   return response.data
 }, error => {
@@ -82,7 +84,7 @@ let tools = (function () {
 
   function regPhoneType(phone) {
     var $CM = /^((13[456789])|(147)|(15[012589])|(178)|(18[2348])|(198))\d{8}$/g,
-      $CU = /^((13[012])|(145])|(15[56])|(166])|(17[0156])|(18[56]))\d{8}$/g,
+      $CU = /^((13[012])|(145)|(15[56])|(166)|(17[0156])|(18[56]))\d{8}$/g,
       $CT = /^((133)|(153)|(17[37])|(18[019])|(199))\d{8}$/g;
     if ($CM.test(phone)) {
       return { type: 'zgyd', name: '中国移动' }
@@ -283,6 +285,34 @@ let tools = (function () {
     return ymd
   };
 
+  /**
+   * 
+   *获取cookie
+   */
+  function getCookie(c_name) {
+    var c_start = null, c_end = null;
+    if (document.cookie.length > 0) {
+      c_start = document.cookie.indexOf(c_name + "=")
+      if (c_start != -1) {
+        c_start = c_start + c_name.length + 1
+        c_end = document.cookie.indexOf(";", c_start)
+        if (c_end == -1) c_end = document.cookie.length
+        return unescape(document.cookie.substring(c_start, c_end))
+      }
+    }
+    return ""
+  };
+
+  /**
+   * 设置cookie
+   */
+  function setCookie(c_name, value, expiredays) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + expiredays);
+    document.cookie = c_name + "=" + escape(value) +
+      ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()) + ';path=/';
+  };
+
   return {
     callServer,
     isEmpty,
@@ -300,7 +330,9 @@ let tools = (function () {
     isWeiXin,
     getObjectURL,
     regEmail,
-    dateFormat
+    dateFormat,
+    setCookie,
+    getCookie
   }
 })();
 

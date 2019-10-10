@@ -58,13 +58,13 @@
           <span class="hot2 hot-icon"></span>
           <span class="hot-item-desc">电影</span>
         </div>
-        <div
+        <router-link
           class="hot-item"
-          @click="showMsg"
+          to="GoodShopList"
         >
           <span class="hot3 hot-icon"></span>
           <span class="hot-item-desc">兑换</span>
-        </div>
+        </router-link>
         <div
           class="hot-item"
           @click="showMsg"
@@ -271,6 +271,7 @@
     <WelcomeToast
       v-if="isFirstLogin"
       @closeToast="closeToast"
+      :goodsNoList="goodsNoList"
     ></WelcomeToast>
 
   </section>
@@ -281,13 +282,15 @@ import "../assets/js/swiper.min.js";
 import "../assets/css/swiper.min.css";
 import MescrollVue from "mescroll.js/mescroll.vue";
 import WelcomeToast from "../components/WelcomeToast";
+import { mapGetters } from "vuex";
 export default {
   name: "CreditLife",
   components: { MescrollVue, WelcomeToast },
   data() {
     return {
-      isFirstLogin: true, //是否新用户第一次登陆控制
+      isFirstLogin: false, //是否新用户第一次登陆控制
       scoreData: "", //信用分
+      goodsNoList: [], //兑换券数据
       bannerList: [],
       dataList: [], //信用生活列表数据
       mescroll: null,
@@ -320,8 +323,11 @@ export default {
     };
   },
   created() {
+    const { getCookie, isEmpty } = this.$tools;
     this.scoreData = this.$route.query.scoreData;
-    this.getBanner();
+    this.getBanner(); //获取banner图
+    if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
+    this.getBond(); //获取新用户首次登陆券
   },
   mounted() {
     // 设置倒计时用于初始化第一个swiper
@@ -381,6 +387,31 @@ export default {
         }
       });
     },
+    getBond() {
+      const { callServer, setCookie } = this.$tools;
+      let params = {
+        userId: this.userIdToken.userId,
+        token: this.userIdToken.token
+      };
+      callServer("POST", "/djh/zhongchenOrder/getGiftCard", params).then(
+        res => {
+          if (res.code == 0) {
+            let goodsNoList = res.data.goodsNoList, //新获取的产品
+              ownGoodsNoList = res.data.ownGoodsNoList, //已经兑换过的产品
+              len = goodsNoList.length > 0 ? goodsNoList.length : null, //用于判断是否显示弹窗
+              ownLen = ownGoodsNoList.length > 0 ? ownGoodsNoList.length : null; //用于判断是否发送请求
+            // 设置弹窗是否显示
+            if (len && len > 0) {
+              this.isFirstLogin = true;
+              this.goodsNoList = goodsNoList;
+            } else {
+              this.isFirstLogin = false;
+            }
+            setCookie("bondNum", ownLen, 15);
+          }
+        }
+      );
+    },
     // mescroll组件初始化的回调,可获取到mescroll对象
     mescrollInit(mescroll) {
       this.mescroll = mescroll;
@@ -425,7 +456,6 @@ export default {
     },
     //信用生活更多
     goToLifeMore() {
-      console.log("123");
       this.$router.push({ name: "GoodShopList" });
     },
     // 关闭welcometoast
@@ -436,6 +466,9 @@ export default {
       const { showMsg } = this.$tools;
       showMsg("功能正在开发，敬请期待...");
     }
+  },
+  computed: {
+    ...mapGetters(["userIdToken"])
   }
 };
 </script>
