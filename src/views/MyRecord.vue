@@ -42,8 +42,8 @@
               <span
                 v-if="item.wxStatus==2"
                 class="refund"
-                :class="!item.refund_status?null:'active'"
-                @click="showConfirm(item.refund_status,item.refund_status_str,item.id)"
+                :class="!item.refundStatus?null:'active'"
+                @click="showConfirm(item.refundStatus,item.refund_status_str,item.id)"
               >{{item.refund_status_str}}</span>
             </template>
 
@@ -136,7 +136,7 @@ export default {
               if (item.wxStatus == 2 && item.status == 3) {
                 // 支付成功2且下单失败3时才遍历 refund_status
                 item.refund_status_str = this.refundStatusFilter(
-                  item.refund_status
+                  item.refundStatus
                 );
               }
             });
