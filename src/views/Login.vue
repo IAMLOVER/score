@@ -138,7 +138,7 @@ export default {
 .login-page-area {
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   padding: 3.2rem 0.6rem 0 0.6rem;
 
   // 背景图

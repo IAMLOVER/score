@@ -12,7 +12,7 @@
       <p class="quick-title main-wrap">快速提升</p>
       <div
         class="sub-wrap"
-        @click="showMsg"
+        @click="goToCreditReport"
       >
         <span class="icon ic-bigdata"></span>
         <span class="sub-title">征信大数据</span>
@@ -322,6 +322,30 @@ export default {
         return;
       }
       this.$router.push({ path: `EditInfo/${info}`, query: { info: info } });
+    },
+    // 去信用报告
+    goToCreditReport() {
+      const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
+      showLoading();
+      callServer("post", "/djh/user_info/report_token", {
+        userId: this.userId,
+        token: this.token
+      }).then(res => {
+        hideLoading();
+        if (res.code == 0) {
+          if (res.data.token) {
+            window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
+          } else {
+            this.$router.push({ name: "CreditReport" });
+          }
+        } else if (res.code == 101) {
+          // 登录超时
+          showMsg(res.msg);
+          this.$router.replace({ name: "Login" });
+        } else {
+          showMsg(res.msg);
+        }
+      });
     },
     showMsg() {
       this.$tools.showMsg("功能正在开发，敬请期待...");

@@ -266,7 +266,7 @@
       <!-- 悬浮按钮 -->
       <router-link
         class="convert-icon"
-        :to="{name:'MyRecord'}"
+        :to="{name:'MyOrder'}"
       ></router-link>
 
     </mescroll-vue>

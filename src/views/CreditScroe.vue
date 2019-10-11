@@ -168,7 +168,7 @@
         </div>
         <div
           class="right"
-          @click="showMsg('delLocalStorage')"
+          @click="showMsg"
         >
           <img
             src="../assets/image/creditScore/activity_sub_2@2x.png"

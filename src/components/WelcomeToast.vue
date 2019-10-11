@@ -44,7 +44,12 @@ export default {
     this.goodList = this.goodsNoList.map(item => {
       return {
         imgUrl: require(`../assets/image/creditLife/coupon${item}@2x.png`),
-        desc: item == 1 ? "咪咕视频7天会员体验卡" : item == 2 ? "顺丰同城急送下单代金券" : "幸福西饼满减券"
+        desc:
+          item == 1
+            ? "咪咕视频7天会员体验卡"
+            : item == 2
+            ? "顺丰同城急送下单代金券"
+            : "幸福西饼满减券"
       };
     });
   },
@@ -80,11 +85,11 @@ export default {
       border-radius: 0.08rem 0.08rem 0 0;
     }
     .content-wrap {
-      padding: 0.2rem 0.4rem;
+      padding: 0 0.44rem;
       background-color: #fff;
       border-radius: 0 0 0.08rem 0.08rem;
       .content-list {
-        padding: 0.18rem 0;
+        padding: 0.16rem 0;
         display: flex;
         align-items: center;
         border-top: 0.02rem solid #f7f7f7;
@@ -92,22 +97,29 @@ export default {
           border-top: 0 none;
         }
         .content-left {
-          width: 2.24rem;
-          height: 1.36rem;
+          width: 2.4rem;
+          height: 1.44rem;
         }
         .content-right {
-          height: 1.36rem;
-          padding: 0.1rem;
+          width: 2.24rem;
+          height: 1.44rem;
+          padding-left: 0.24rem;
+          padding-top: .16rem;
+          overflow: hidden;
           .list-title {
+            font-size: 0.28rem;
             color: #333;
             font-weight: 600;
             line-height: 0.36rem;
             margin-bottom: 0.24rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .go-use {
             width: 1.24rem;
             height: 0.48rem;
-            border-radius: 0.24rem;
+            margin-left: .1rem;
             text-align: center;
             line-height: 0.48rem;
             color: #fff;
@@ -118,6 +130,7 @@ export default {
             );
             cursor: pointer;
             user-select: none;
+            border-radius: 0.24rem;
           }
         }
       }

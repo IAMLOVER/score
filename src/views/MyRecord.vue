@@ -17,7 +17,6 @@
           :key="index"
         >
           <div class="left">
-            <span class="record-price">10</span>
             <img
               src="../assets/image/mescrolloptions/img_default@2x.png"
               :imgurl="item.goodsImg"
