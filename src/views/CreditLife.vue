@@ -175,9 +175,70 @@
           >更多</div>
         </div>
 
+        <!-- 10/11修改 zg -->
+        <div class="content-list">
+          <a
+            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
+            class="list-item"
+          >
+            <div class="img">
+              <img
+                src="../assets/image/creditLife/doctor1@2x.png"
+                alt=""
+              >
+            </div>
+            <p class="life-title">
+            （儿童版-电子卡）
+            </p>
+            <div class="price-area">
+              <span class="now-price">999.00</span>
+              <span class="old-price">1899.00</span>
+            </div>
+          </a>
+
+          <a
+            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271503"
+            class="list-item"
+          >
+            <div class="img">
+              <img
+                src="../assets/image/creditLife/doctor2@2x.png"
+                alt=""
+              >
+            </div>
+            <p class="life-title">
+              （成人关爱版-电子卡）
+            </p>
+            <div class="price-area">
+              <span class="now-price">499.00</span>
+              <span class="old-price">1099.00</span>
+            </div>
+          </a>
+
+          <a
+            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
+            class="list-item"
+          >
+            <div class="img">
+              <img
+                src="../assets/image/creditLife/doctor3@2x.png"
+                alt=""
+              >
+            </div>
+            <p class="life-title">
+              （至尊保长辈版-电子卡）
+            </p>
+            <div class="price-area">
+              <span class="now-price">1999.00</span>
+              <span class="old-price">3999.00</span>
+            </div>
+          </a>
+
+        </div>
+
         <!-- swiper2 area -->
 
-        <div class="swiper-container swiper2">
+        <!-- <div class="swiper-container swiper2">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <a
@@ -213,7 +274,7 @@
               </a>
             </div>
           </div>
-        </div>
+        </div> -->
       </section>
 
       <!-- 分割线 -->
@@ -364,10 +425,10 @@ export default {
       this.$tools.hideLoading();
     }, 800);
 
-    this.swiper2 = new window.Swiper(".swiper2", {
-      slidesPerView: 2.5,
-      freeMode: true
-    });
+    // this.swiper2 = new window.Swiper(".swiper2", {
+    //   slidesPerView: 2.5,
+    //   freeMode: true
+    // });
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -473,7 +534,7 @@ export default {
     },
     //信用生活更多
     goToLifeMore(type) {
-      this.$router.push({ name: "GoodShopList",query:{type:type} });
+      this.$router.push({ name: "GoodShopList", query: { type: type } });
     },
     // 关闭welcometoast
     closeToast(val) {
@@ -667,10 +728,11 @@ export default {
     background: url("../assets/image/creditLife/convert@2x.png") no-repeat
       center center / 100% 100%;
   }
-  //优生活，新娱乐，智金融
+  //优生活，新娱乐，智金融,大健康
   .credit-life-content-area,
   .new-entertainment-area,
-  .excellent-life-area {
+  .excellent-life-area,
+  .private-doctor-area {
     padding: 0 0.2rem;
     .content-list {
       display: flex;

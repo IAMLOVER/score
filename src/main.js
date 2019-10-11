@@ -14,9 +14,9 @@ Vue.use(VueClipboard);
 
 // 全局过滤时间
 Vue.filter('dataFm', (value = null, format = 'yyyy-mm-dd') => {
-  value = value ? value : new Date();
+  value = value ? value.replace(/-/g, '/') : new Date();
   // 兼容ios ios不识别 这种格式2019-07-26 只识别2019/07/26
-  let nowDate = new Date(value.replace(/-/g, '/')),
+  let nowDate = new Date(value),
     year = nowDate.getFullYear(),
     month = (nowDate.getMonth() + 1).toString().padStart(2, "0"),
     day = (nowDate.getDate()).toString().padStart(2, "0"),
