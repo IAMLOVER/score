@@ -75,88 +75,92 @@
       </section>
 
       <!-- EXCELLENT LIFE AREA -->
-      <section class="excellent-life-area">
-        <div class="credit-life-title">
-          <div class="left">
-            <span class="fc201D mr5">优生活</span>
-            <span class="fc138A">便利生活更舒心</span>
+      <template v-if="yshList.length>0">
+        <section class="excellent-life-area">
+          <div class="credit-life-title">
+            <div class="left">
+              <span class="fc201D mr5">优生活</span>
+              <span class="fc138A">便利生活更舒心</span>
+            </div>
+            <div
+              class="right goMore"
+              @click="goToLifeMore('1')"
+            >更多</div>
           </div>
-          <div
-            class="right goMore"
-            @click="goToLifeMore"
-          >更多</div>
-        </div>
-        <div class="content-list">
-          <router-link
-            class="list-item"
-            v-for="(item,index) in dataList"
-            :key="index"
-            :to="`ChangeDetails?goodsId=${item.goodsId}`"
-          >
-            <div class="img">
-              <img
-                src="../assets/image/mescrolloptions/img_default@2x.png"
-                :imgurl="item.goodsImg"
-                alt=""
-              >
-            </div>
-            <p class="life-title">{{item.goodsName}}</p>
-            <div class="price-area">
-              <span class="now-price">￥{{item.money}}</span>
-              <span
-                class="old-price"
-                v-if="item.volume"
-              >￥{{item.volume}}</span>
-            </div>
+          <div class="content-list">
+            <router-link
+              class="list-item"
+              v-for="(item,index) in yshList"
+              :key="index"
+              :to="`ChangeDetails?goodsId=${item.goodsId}`"
+            >
+              <div class="img">
+                <img
+                  src="../assets/image/mescrolloptions/img_default@2x.png"
+                  :imgurl="item.goodsImg"
+                  alt=""
+                >
+              </div>
+              <p class="life-title">{{item.goodsName}}</p>
+              <div class="price-area">
+                <span class="now-price">￥{{item.money}}</span>
+                <span
+                  class="old-price"
+                  v-if="item.volume"
+                >￥{{item.volume}}</span>
+              </div>
 
-          </router-link>
-        </div>
-      </section>
+            </router-link>
+          </div>
+        </section>
 
-      <!-- 分割线 -->
-      <div class="line10"></div>
+        <!-- 分割线 -->
+        <div class="line10"></div>
+      </template>
 
       <!-- New entertainment AREA -->
-      <section class="new-entertainment-area">
-        <div class="credit-life-title">
-          <div class="left">
-            <span class="fc201D mr5">新娱乐</span>
-            <span class="fc138A">新娱乐</span>
+      <template v-if="xylList.length>0">
+        <section class="new-entertainment-area">
+          <div class="credit-life-title">
+            <div class="left">
+              <span class="fc201D mr5">新娱乐</span>
+              <span class="fc138A">新娱乐</span>
+            </div>
+            <div
+              class="right goMore"
+              @click="goToLifeMore('2')"
+            >更多</div>
           </div>
-          <div
-            class="right goMore"
-            @click="goToLifeMore"
-          >更多</div>
-        </div>
-        <div class="content-list">
-          <router-link
-            class="list-item"
-            v-for="(item,index) in dataList"
-            :key="index"
-            :to="`ChangeDetails?goodsId=${item.goodsId}`"
-          >
-            <div class="img">
-              <img
-                src="../assets/image/mescrolloptions/img_default@2x.png"
-                :imgurl="item.goodsImg"
-                alt=""
-              >
-            </div>
-            <p class="life-title">{{item.goodsName}}</p>
-            <div class="price-area">
-              <span class="now-price">￥{{item.money}}</span>
-              <span
-                class="old-price"
-                v-if="item.volume"
-              >￥{{item.volume}}</span>
-            </div>
+          <div class="content-list">
+            <router-link
+              class="list-item"
+              v-for="(item,index) in xylList"
+              :key="index"
+              :to="`ChangeDetails?goodsId=${item.goodsId}`"
+            >
+              <div class="img">
+                <img
+                  src="../assets/image/mescrolloptions/img_default@2x.png"
+                  :imgurl="item.goodsImg"
+                  alt=""
+                >
+              </div>
+              <p class="life-title">{{item.goodsName}}</p>
+              <div class="price-area">
+                <span class="now-price">￥{{item.money}}</span>
+                <span
+                  class="old-price"
+                  v-if="item.volume"
+                >￥{{item.volume}}</span>
+              </div>
 
-          </router-link>
-        </div>
-      </section>
+            </router-link>
+          </div>
+        </section>
 
-      <!-- 分割线 -->
-      <div class="line10"></div>
+        <!-- 分割线 -->
+        <div class="line10"></div>
+      </template>
 
       <!-- Private doctor AREA -->
       <section class="private-doctor-area">
@@ -224,7 +228,7 @@
           </div>
           <div
             class="right goMore"
-            @click="goToLifeMore"
+            @click="goToLifeMore('3')"
           >更多</div>
         </div>
 
@@ -292,7 +296,9 @@ export default {
       scoreData: "", //信用分
       goodsNoList: [], //兑换券数据
       bannerList: [],
-      dataList: [], //信用生活列表数据
+      xylList: [], //新娱乐列表数据
+      yshList: [], //优生活列表数据
+      dataList: [], //智金融列表数据
       mescroll: null,
       mescrollDown: {
         use: false
@@ -326,6 +332,7 @@ export default {
     const { getCookie, isEmpty } = this.$tools;
     this.scoreData = this.$route.query.scoreData;
     this.getBanner(); //获取banner图
+    this.getYshXylDataList(); //获取优生活，新娱乐数据
     if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
     this.getBond(); //获取新用户首次登陆券
   },
@@ -387,6 +394,16 @@ export default {
         }
       });
     },
+    getYshXylDataList() {
+      const { callServer } = this.$tools;
+      callServer("POST", "/djh/zhongchenGoods/getList", {}).then(res => {
+        if (res.code == 0) {
+          let { xylList, yshList } = res.data;
+          this.yshList = yshList;
+          this.xylList = xylList;
+        }
+      });
+    },
     getBond() {
       const { callServer, setCookie } = this.$tools;
       let params = {
@@ -423,7 +440,7 @@ export default {
         .callServer("POST", "/djh/zhongchenGoods/list", {
           pageNo: page.num - 1,
           pageSize: page.size,
-          goodsType: "KQ"
+          type: "3"
         })
         .then(res => {
           if (res.code == 0) {
@@ -455,8 +472,8 @@ export default {
       });
     },
     //信用生活更多
-    goToLifeMore() {
-      this.$router.push({ name: "GoodShopList" });
+    goToLifeMore(type) {
+      this.$router.push({ name: "GoodShopList",query:{type:type} });
     },
     // 关闭welcometoast
     closeToast(val) {

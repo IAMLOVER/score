@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      type:'',//1,优生活 2，新娱乐 3，智金融
       dataList: [], //商品列表
       mescrollDown: {
         use: false
@@ -96,7 +97,9 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    this.type = this.$route.query.type
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteEnter方法
@@ -118,7 +121,7 @@ export default {
         .callServer("POST", "/djh/zhongchenGoods/list", {
           pageNo: page.num - 1,
           pageSize: page.size,
-          goodsType: "KQ"
+          type:this.type, //1,优生活 2，新娱乐 3，智金融
         })
         .then(res => {
           if (res.code == 0) {

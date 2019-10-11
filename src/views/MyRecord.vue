@@ -134,7 +134,7 @@ export default {
             if (page.num === 1) this.dataList = [];
             arr.forEach(item => {
               if (item.wxStatus == 2 && item.status == 3) {
-                // 支付成功2且下单失败3时才遍历 refund_status
+                // 支付成功2且下单失败3时才遍历 refundStatus
                 item.refund_status_str = this.refundStatusFilter(
                   item.refundStatus
                 );
