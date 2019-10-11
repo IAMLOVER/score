@@ -14,7 +14,7 @@
       </div>
       <p class="updatetime-area">
         <span>评估时间：</span>
-        <span class="updatetime">{{nowTime|dataFm}}</span>
+        <span class="updatetime">{{assessTime}}</span>
       </p>
 
     </section>
@@ -190,7 +190,7 @@ export default {
   components: {},
   data() {
     return {
-      nowTime: new Date(), // 当前评估时间
+      assessTime:"", // 当前评估时间
       scoreData: "", //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
       token: "", //用户token
@@ -239,9 +239,11 @@ export default {
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
-          let { creditScore, differenceTime } = res.data;
+          let { creditScore, differenceTime,assessTime } = res.data;
           // 设置分数
           this.scoreData = creditScore;
+          // 设置评估时间
+          this.assessTime=assessTime;
           // 设置表盘和对应的级别和时间差
           this.setGrade(differenceTime);
           // 设置个人信息状态
