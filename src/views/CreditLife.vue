@@ -197,7 +197,7 @@
           </a>
 
           <a
-            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271503"
+            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271505"
             class="list-item"
           >
             <div class="img">
@@ -207,11 +207,11 @@
               >
             </div>
             <p class="life-title">
-              （成人关爱版-电子卡）
+              （成人尊享版-电子卡）
             </p>
             <div class="price-area">
-              <span class="now-price">499.00</span>
-              <span class="old-price">1099.00</span>
+              <span class="now-price">999.00</span>
+              <span class="old-price">1899.00</span>
             </div>
           </a>
 
@@ -281,7 +281,7 @@
       <div class="line10"></div>
 
       <!-- Intellectual finance area -->
-      <section class="credit-life-content-area">
+      <section class="credit-life-content-area" v-if="dataList.length>0">
         <div class="credit-life-title">
           <div class="left">
             <span class="fc201D mr5">智金融</span>
@@ -371,7 +371,7 @@ export default {
         empty: {
           warpId: "upscrollWarp",
           icon: require("../assets/image/mescrolloptions/mescroll-empty.png"),
-          tip: "暂无相关数据"
+          tip: "暂无数据"
         },
         page: {
           num: 0, //默认是0，回调之后是1，所以我们是从0开始的
@@ -595,7 +595,7 @@ export default {
   }
 
   .right {
-    line-height: 0.32rem;
+    line-height: 0.4rem;
   }
 
   // BANNER AREA
