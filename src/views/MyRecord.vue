@@ -164,7 +164,7 @@ export default {
         return str;
       }
       if (status == 3) {
-        str = "审核不通过";
+        str = "审核拒绝";
         return str;
       }
       if (status == 4) {
