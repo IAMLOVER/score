@@ -44,7 +44,7 @@ export default {
     this.goodList = this.goodsNoList.map(item => {
       return {
         imgUrl: require(`../assets/image/creditLife/coupon${item}@2x.png`),
-        desc: item == 1 ? "咪咕视频" : item == 2 ? "顺丰同城急送" : "幸福西饼"
+        desc: item == 1 ? "咪咕视频7天会员体验卡" : item == 2 ? "顺丰同城急送下单代金券" : "幸福西饼满减券"
       };
     });
   },
@@ -100,7 +100,7 @@ export default {
           padding: 0.1rem;
           .list-title {
             color: #333;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 0.36rem;
             margin-bottom: 0.24rem;
           }
