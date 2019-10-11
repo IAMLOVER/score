@@ -578,6 +578,7 @@ export default {
 
   .credit-life-title {
     height: 1.04rem;
+    line-height: 1.04rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -595,7 +596,8 @@ export default {
   }
 
   .right {
-    line-height: 0.4rem;
+    // height: .6rem;
+    // line-height: 0.6rem;
   }
 
   // BANNER AREA
