@@ -67,7 +67,8 @@ export default {
   },
   data() {
     return {
-      type:'',//1,优生活 2，新娱乐 3，智金融
+      type: "", //1,优生活 2，新娱乐 3，智金融
+      exchangeType: "", //卡券
       dataList: [], //商品列表
       mescrollDown: {
         use: false
@@ -98,7 +99,8 @@ export default {
     };
   },
   created() {
-    this.type = this.$route.query.type
+    this.type = this.$route.query.type;
+    this.exchangeType=this.$route.query.exchangeType;
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -121,7 +123,8 @@ export default {
         .callServer("POST", "/djh/zhongchenGoods/list", {
           pageNo: page.num - 1,
           pageSize: page.size,
-          type:this.type, //1,优生活 2，新娱乐 3，智金融
+          exchangeType: this.exchangeType, //搜索卡券参数
+          type: this.type //1,优生活 2，新娱乐 3，智金融
         })
         .then(res => {
           if (res.code == 0) {

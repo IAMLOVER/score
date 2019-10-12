@@ -55,7 +55,7 @@
       </div>
       <router-link
         class="hot-item"
-        to="GoodShopList"
+        to="GoodShopList?exchangeType=1"
       >
         <span class="hot3 hot-icon"></span>
         <span class="hot-item-desc">兑换</span>
@@ -153,35 +153,7 @@ export default {
       bannerList: [],
       xylList: [], //新娱乐列表数据
       yshList: [], //优生活列表数据
-      djkList: [
-        {
-          id:'1',
-          goodsImg: require("../assets/image/creditLife/doctor1@2x.png"),
-          goodsName: "（儿童版-电子卡）",
-          money: "999.00",
-          volume: "1899.00",
-          url:
-            "https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
-        },
-        {
-          id: "2",
-          goodsImg: require("../assets/image/creditLife/doctor2@2x.png"),
-          goodsName: "（成人尊享版-电子卡））",
-          money: "999.00",
-          volume: "1899.00",
-          url:
-            "https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271505"
-        },
-        {
-          id: "3",
-          goodsImg: require("../assets/image/creditLife/doctor3@2x.png"),
-          goodsName: "（至尊保长辈版-电子卡）",
-          money: "1999.00",
-          volume: "3999.00",
-          url:
-            "https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
-        }
-      ], //大健康列表数据
+      djkList: [], //大健康列表数据
       zjrList: [] //智金融列表数据
     };
   },
@@ -240,9 +212,11 @@ export default {
       const { callServer } = this.$tools;
       callServer("POST", "/djh/zhongchenGoods/getList", {}).then(res => {
         if (res.code == 0) {
-          let { xylList, yshList } = res.data;
+          let { xylList, yshList, djkList, zjrList } = res.data;
           this.yshList = yshList;
           this.xylList = xylList;
+          this.djkList = djkList;
+          this.zjrList = zjrList;
         }
       });
     },
@@ -297,7 +271,7 @@ export default {
 .credit-life-area {
   width: 100%;
   min-height: 100vh;
-  padding-bottom: .2rem;
+  padding-bottom: 0.2rem;
   background-color: #fff;
 
   // 公共更多样式
@@ -431,61 +405,12 @@ export default {
     width: 1.16rem;
     height: 1.16rem;
     right: 0.2rem;
-    bottom: 1rem;
+    bottom: 2.2rem;
     transform: translateY(-55%);
     z-index: 10;
     border-radius: 50%;
     background: url("../assets/image/creditLife/convert@2x.png") no-repeat
       center center / 100% 100%;
-  }
-  //优生活，新娱乐，智金融,大健康
-  .credit-life-content-area,
-  .new-entertainment-area,
-  .excellent-life-area,
-  .private-doctor-area {
-    padding: 0 0.2rem;
-    .content-list {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 0 0.1rem;
-      .list-item {
-        width: 2.14rem;
-        margin-right: 0.23rem;
-        margin-bottom: 0.2rem;
-        cursor: pointer;
-        &:nth-of-type(3n) {
-          margin-right: 0;
-        }
-        &:active {
-          background-color: #f5f5f5;
-          -webkit-tap-highlight-color: transparent;
-        }
-        .img {
-          width: 100%;
-          height: 1.24rem;
-        }
-        .life-title {
-          margin-top: 0.12rem;
-          line-height: 0.32rem;
-          color: #1d1d1d;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        .price-area {
-          text-align: center;
-          line-height: 0.36rem;
-          .now-price {
-            color: #f17d0a;
-            margin-right: 0.08rem;
-          }
-          .old-price {
-            color: #8a8a8a;
-            text-decoration: line-through;
-          }
-        }
-      }
-    }
   }
 }
 </style>

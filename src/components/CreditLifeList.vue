@@ -24,7 +24,10 @@
           >
         </div>
         <p class="life-title">{{item.goodsName}}</p>
-        <div class="price-area">
+        <div
+          class="price-area"
+          v-if="item.money!=0"
+        >
           <span class="now-price">￥{{item.money}}</span>
           <span
             class="old-price"
@@ -53,6 +56,12 @@ export default {
           "https://jkt.jkwlx.net/wx/index.jhtml?from=singlemessage&isappinstalled=0";
         return;
       }
+      if (type == 3) {
+        //智金融
+        window.location.href = "http://dkcs.dazhongdianjin.com/";
+        return;
+      }
+
       this.$router.push({ name: "GoodShopList", query: { type: type } });
     },
     // 列表跳转
@@ -141,6 +150,7 @@ export default {
       .life-title {
         margin-top: 0.12rem;
         line-height: 0.32rem;
+        text-align: center;
         color: #1d1d1d;
         overflow: hidden;
         white-space: nowrap;

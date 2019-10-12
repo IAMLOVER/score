@@ -125,7 +125,7 @@ export default {
           pageSize: page.size,
           userId: this.userId,
           token: this.token,
-          exchangeType: 1
+          type:2, //1,话费，2卡券
         })
         .then(res => {
           if (res.code == 0) {
