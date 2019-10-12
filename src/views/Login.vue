@@ -1,11 +1,11 @@
 <template>
   <section class="login-page-area">
     <!-- BG AREA -->
-    <div class="login-bg"></div>
+    <!-- <div class="login-bg"></div> -->
     <!-- LOGIN TITLE AREA -->
     <div class="login-title-area">
       <p class="login-title">登录</p>
-      <p class="login-subtitle">喵喵生活，乐在分享</p>
+      <!-- <p class="login-subtitle">喵喵生活，乐在分享</p> -->
     </div>
     <!-- LOGIN FORM AREA -->
     <div class="login-form-area">

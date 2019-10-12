@@ -29,9 +29,29 @@
                 alt=""
               >
             </div>
-            <div class="right">
+            <div class="midel">
               <p class="good-title">{{item.goodsName}}</p>
-              <p class="charge-time">下单时间：{{item.orderTime}}</p>
+              <p class="charge-time">下单时间：{{item.orderTime|dataFm("年-月-日")}}</p>
+            </div>
+            <div class="right">
+              <span
+                class="success"
+                v-if="item.status==1||item.status==0"
+              >兑换中</span>
+              <span
+                class="success"
+                v-else-if="item.status==2"
+              >兑换成功</span>
+              <template v-else-if="item.status==3">
+                <span class="fail">兑换失败</span>
+                <span
+                  v-if="item.wxStatus==2"
+                  class="refund"
+                  :class="!item.refundStatus?null:'active'"
+                  @click.prevent="showConfirm(item.refundStatus,item.refund_status_str,item.id)"
+                >{{item.refund_status_str}}</span>
+              </template>
+
             </div>
           </div>
         </router-link>
@@ -117,6 +137,14 @@ export default {
             let arr = res.data.list;
             // 如果是第一页需手动置空列表
             if (page.num === 1) this.dataList = [];
+            arr.forEach(item => {
+              if (item.wxStatus == 2 && item.status == 3) {
+                // 支付成功2且下单失败3时才遍历 refundStatus
+                item.refund_status_str = this.refundStatusFilter(
+                  item.refundStatus
+                );
+              }
+            });
             this.dataList = this.dataList.concat(arr);
             // 数据渲染成功后,隐藏下拉刷新的状态
             this.$nextTick(() => {
@@ -128,6 +156,74 @@ export default {
         })
         .catch(error => {
           mescroll.endErr();
+        });
+    },
+    refundStatusFilter(status) {
+      let str = "退款";
+      if (status == 1) {
+        str = "待退款";
+        return str;
+      }
+      if (status == 2) {
+        str = "退款中";
+        return str;
+      }
+      if (status == 3) {
+        str = "审核拒绝";
+        return str;
+      }
+      if (status == 4) {
+        str = "退款成功";
+        return str;
+      }
+      if (status == 5) {
+        str = "退款失败";
+        return str;
+      }
+      return str;
+    },
+    showConfirm(status, statusStr, id) {
+      const { showLoading, hideLoading, showMsg, callServer } = this.$tools;
+      // 当是退款状态的时候，status是不存在的,因此如果有状态就显示当前状态
+      if (status) {
+        showMsg(statusStr);
+        return;
+      }
+      this.$dialog
+        .confirm({
+          title: "退款确认",
+          message: "您将进行退款操作，是否继续？"
+        })
+        .then(() => {
+          // on confirm
+          // 点击确认调用接口发送退款请求
+          showLoading();
+          callServer("POST", "/djh/zhongchenOrder/refund", {
+            id: id,
+            userId: this.userId,
+            token: this.token
+          }).then(res => {
+            hideLoading();
+            let type = null,
+              message = null;
+            if (res.code == 0) {
+              // 重新获取最新列表数据
+              this.mescroll.resetUpScroll();
+              type = "success";
+              message = "您提交的退款申请正在审核请耐心等待。";
+            } else {
+              type = "danger";
+              message = res.msg;
+            }
+            // 增加提示交互
+            this.$notify({
+              type: type,
+              message: message
+            });
+          });
+        })
+        .catch(() => {
+          // on cancel
         });
     }
   }
@@ -171,6 +267,7 @@ export default {
       .order-main {
         padding: 0.2rem 0;
         display: flex;
+        align-items: center;
         .left {
           position: relative;
           width: 2.12rem;
@@ -187,34 +284,50 @@ export default {
             color: #fff;
           }
         }
-        .right {
-          position: relative;
-          height: 1.2rem;
-          padding: 0.1rem 0 0.2rem 0;
+        .midel {
           flex: 1;
+          height: 1.2rem;
+          padding: 0.12rem 0;
+          margin: 0 0.24rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-
-          .good-title {
+          overflow: hidden;
+          p {
+            width: 100%;
+            line-height: 0.4rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .goods-title {
             font-size: 0.28rem;
-            line-height: 0.36rem;
-            font-weight: 500;
           }
           .charge-time {
             color: #8a8a8a;
-            font-weight: 500;
           }
-          &::after {
-            content: "";
-            position: absolute;
-            width: 0.14rem;
-            height: 0.28rem;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background: url("../assets/image/quickScore/arrow_back@2x.png")
-              no-repeat center center / 100% 100%;
+        }
+        .right {
+          width: 1.12rem;
+          line-height: 0.4rem;
+          font-size: 0.28rem;
+          font-weight: 500;
+          text-align: right;
+          span {
+            display: block;
+          }
+          .success {
+            color: #40db58;
+          }
+          .fail {
+            color: #ff3b17;
+          }
+          .refund {
+            margin-top: 0.16rem;
+            color: #0a84f1;
+            &.active {
+              color: #8a8a8a;
+            }
           }
         }
       }

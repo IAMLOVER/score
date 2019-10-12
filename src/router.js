@@ -62,7 +62,7 @@ const routes = [
   { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
   { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { title: '我的订单' } },
   { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } },
-  { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '兑换详情' } }
+  { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '订单详情' } }
 ];
 const router = new Router({
   routes,

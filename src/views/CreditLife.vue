@@ -1,336 +1,129 @@
 <template>
   <section class="credit-life-area">
     <!-- 滚动基本结构 -->
-    <mescroll-vue
-      ref="mescroll"
-      :down="mescrollDown"
-      :up="mescrollUp"
-      @init="mescrollInit"
-    >
-      <!-- BANNER AREA -->
-      <section class="banner-area">
-        <div class="swiper-container swiper1">
-          <div class="swiper-wrapper">
-            <!-- 内容 -->
-            <div
-              class="swiper-slide swiper-slide-banner"
-              v-for="item in bannerList"
-              :key="item.id"
-            >
-              <a class="banner-link">
-                <img
-                  :src="item.pictureUrl"
-                  alt=""
-                >
-              </a>
-            </div>
-          </div>
-          <!-- 分页器 -->
-          <div class="swiper-pagination "></div>
-        </div>
-      </section>
 
-      <!-- CREDIT SCOREDATA -->
-      <section class="credit-score-area">
-        <div class="score-left">
-          <span class="score-icon">您当前的信用分：</span>
-          <span class="score">{{scoreData}}</span>
-        </div>
-        <span
-          class="goMore score-right"
-          @click="goToInterpretation"
-        >去查看</span>
-      </section>
-
-      <!-- FOUR HOT AREA -->
-      <section class="four-hot-area">
-        <router-link
-          class="hot-item"
-          to="Recharge"
-        >
-          <span class="hot1 hot-icon"></span>
-          <span class="hot-item-desc">充值</span>
-        </router-link>
-        <div
-          class="hot-item"
-          @click="showMsg"
-        >
-          <span class="hot2 hot-icon"></span>
-          <span class="hot-item-desc">电影</span>
-        </div>
-        <router-link
-          class="hot-item"
-          to="GoodShopList"
-        >
-          <span class="hot3 hot-icon"></span>
-          <span class="hot-item-desc">兑换</span>
-        </router-link>
-        <div
-          class="hot-item"
-          @click="showMsg"
-        >
-          <span class="hot4 hot-icon"></span>
-          <span class="hot-item-desc">美食</span>
-        </div>
-      </section>
-
-      <!-- EXCELLENT LIFE AREA -->
-      <template v-if="yshList.length>0">
-        <section class="excellent-life-area">
-          <div class="credit-life-title">
-            <div class="left">
-              <span class="fc201D mr5">优生活</span>
-              <span class="fc138A">便利生活更舒心</span>
-            </div>
-            <div
-              class="right goMore"
-              @click="goToLifeMore('1')"
-            >更多</div>
-          </div>
-          <div class="content-list">
-            <router-link
-              class="list-item"
-              v-for="(item,index) in yshList"
-              :key="index"
-              :to="`ChangeDetails?goodsId=${item.goodsId}`"
-            >
-              <div class="img">
-                <img
-                  src="../assets/image/mescrolloptions/img_default@2x.png"
-                  :imgurl="item.goodsImg"
-                  alt=""
-                >
-              </div>
-              <p class="life-title">{{item.goodsName}}</p>
-              <div class="price-area">
-                <span class="now-price">￥{{item.money}}</span>
-                <span
-                  class="old-price"
-                  v-if="item.volume"
-                >￥{{item.volume}}</span>
-              </div>
-
-            </router-link>
-          </div>
-        </section>
-
-        <!-- 分割线 -->
-        <div class="line10"></div>
-      </template>
-
-      <!-- New entertainment AREA -->
-      <template v-if="xylList.length>0">
-        <section class="new-entertainment-area">
-          <div class="credit-life-title">
-            <div class="left">
-              <span class="fc201D mr5">新娱乐</span>
-              <span class="fc138A">新娱乐</span>
-            </div>
-            <div
-              class="right goMore"
-              @click="goToLifeMore('2')"
-            >更多</div>
-          </div>
-          <div class="content-list">
-            <router-link
-              class="list-item"
-              v-for="(item,index) in xylList"
-              :key="index"
-              :to="`ChangeDetails?goodsId=${item.goodsId}`"
-            >
-              <div class="img">
-                <img
-                  src="../assets/image/mescrolloptions/img_default@2x.png"
-                  :imgurl="item.goodsImg"
-                  alt=""
-                >
-              </div>
-              <p class="life-title">{{item.goodsName}}</p>
-              <div class="price-area">
-                <span class="now-price">￥{{item.money}}</span>
-                <span
-                  class="old-price"
-                  v-if="item.volume"
-                >￥{{item.volume}}</span>
-              </div>
-
-            </router-link>
-          </div>
-        </section>
-
-        <!-- 分割线 -->
-        <div class="line10"></div>
-      </template>
-
-      <!-- Private doctor AREA -->
-      <section class="private-doctor-area">
-        <div class="credit-life-title">
-          <div class="left">
-            <span class="fc201D mr5">大健康</span>
-            <span class="fc138A">平安好医生、私人医生</span>
-          </div>
+    <!-- BANNER AREA -->
+    <section class="banner-area">
+      <div class="swiper-container swiper1">
+        <div class="swiper-wrapper">
+          <!-- 内容 -->
           <div
-            class="right goMore"
-            @click="goToPingAnDoctor"
-          >更多</div>
-        </div>
-
-        <!-- 10/11修改 zg -->
-        <div class="content-list">
-          <a
-            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
-            class="list-item"
+            class="swiper-slide swiper-slide-banner"
+            v-for="item in bannerList"
+            :key="item.id"
           >
-            <div class="img">
+            <a class="banner-link">
               <img
-                src="../assets/image/creditLife/doctor1@2x.png"
+                :src="item.pictureUrl"
                 alt=""
               >
-            </div>
-            <p class="life-title">
-            （儿童版-电子卡）
-            </p>
-            <div class="price-area">
-              <span class="now-price">999.00</span>
-              <span class="old-price">1899.00</span>
-            </div>
-          </a>
-
-          <a
-            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271505"
-            class="list-item"
-          >
-            <div class="img">
-              <img
-                src="../assets/image/creditLife/doctor2@2x.png"
-                alt=""
-              >
-            </div>
-            <p class="life-title">
-              （成人尊享版-电子卡）
-            </p>
-            <div class="price-area">
-              <span class="now-price">999.00</span>
-              <span class="old-price">1899.00</span>
-            </div>
-          </a>
-
-          <a
-            href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
-            class="list-item"
-          >
-            <div class="img">
-              <img
-                src="../assets/image/creditLife/doctor3@2x.png"
-                alt=""
-              >
-            </div>
-            <p class="life-title">
-              （至尊保长辈版-电子卡）
-            </p>
-            <div class="price-area">
-              <span class="now-price">1999.00</span>
-              <span class="old-price">3999.00</span>
-            </div>
-          </a>
-
-        </div>
-
-        <!-- swiper2 area -->
-
-        <!-- <div class="swiper-container swiper2">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <a
-                class="doctor-link"
-                href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
-              >
-                <img
-                  src="../assets/image/creditLife/doctor1@2x.png"
-                  alt=""
-                >
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a
-                class="doctor-link"
-                href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271503"
-              >
-                <img
-                  src="../assets/image/creditLife/doctor2@2x.png"
-                  alt=""
-                >
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a
-                class="doctor-link"
-                href="https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
-              >
-                <img
-                  src="../assets/image/creditLife/doctor3@2x.png"
-                  alt=""
-                >
-              </a>
-            </div>
+            </a>
           </div>
-        </div> -->
-      </section>
+        </div>
+        <!-- 分页器 -->
+        <div class="swiper-pagination "></div>
+      </div>
+    </section>
 
+    <!-- CREDIT SCOREDATA -->
+    <section class="credit-score-area">
+      <div class="score-left">
+        <span class="score-icon">您当前的信用分：</span>
+        <span class="score">{{scoreData}}</span>
+      </div>
+      <span
+        class="goMore score-right"
+        @click="goToInterpretation"
+      >去查看</span>
+    </section>
+
+    <!-- FOUR HOT AREA -->
+    <section class="four-hot-area">
+      <router-link
+        class="hot-item"
+        to="Recharge"
+      >
+        <span class="hot1 hot-icon"></span>
+        <span class="hot-item-desc">充值</span>
+      </router-link>
+      <div
+        class="hot-item"
+        @click="showMsg"
+      >
+        <span class="hot2 hot-icon"></span>
+        <span class="hot-item-desc">电影</span>
+      </div>
+      <router-link
+        class="hot-item"
+        to="GoodShopList"
+      >
+        <span class="hot3 hot-icon"></span>
+        <span class="hot-item-desc">兑换</span>
+      </router-link>
+      <div
+        class="hot-item"
+        @click="showMsg"
+      >
+        <span class="hot4 hot-icon"></span>
+        <span class="hot-item-desc">订场</span>
+      </div>
+    </section>
+
+    <!-- EXCELLENT LIFE AREA -->
+    <template v-if="yshList.length>0">
+      <CreditLifeList
+        :lifeList="yshList"
+        title="优生活"
+        subtitle="便利生活更舒心"
+        type="1"
+      ></CreditLifeList>
+      <!-- 分割线 -->
+      <div class="line10"></div>
+    </template>
+
+    <!-- New entertainment AREA -->
+    <template v-if="xylList.length>0">
+      <CreditLifeList
+        :lifeList="xylList"
+        title="新娱乐"
+        subtitle="新娱乐"
+        type="2"
+      ></CreditLifeList>
       <!-- 分割线 -->
       <div class="line10"></div>
 
-      <!-- Intellectual finance area -->
-      <section class="credit-life-content-area" v-if="dataList.length>0">
-        <div class="credit-life-title">
-          <div class="left">
-            <span class="fc201D mr5">智金融</span>
-            <span class="fc138A">智金融</span>
-          </div>
-          <div
-            class="right goMore"
-            @click="goToLifeMore('3')"
-          >更多</div>
-        </div>
+      <!-- 分割线 -->
+      <div class="line10"></div>
+    </template>
 
-        <div
-          class="content-list"
-          id="upscrollWarp"
-        >
-          <router-link
-            class="list-item"
-            v-for="(item,index) in dataList"
-            :key="index"
-            :to="`ChangeDetails?goodsId=${item.goodsId}`"
-          >
-            <div class="img">
-              <img
-                src="../assets/image/mescrolloptions/img_default@2x.png"
-                :imgurl="item.goodsImg"
-                alt=""
-              >
-            </div>
-            <p class="life-title">{{item.goodsName}}</p>
-            <div class="price-area">
-              <span class="now-price">￥{{item.money}}</span>
-              <span
-                class="old-price"
-                v-if="item.volume"
-              >￥{{item.volume}}</span>
-            </div>
+    <!-- Private doctor AREA -->
+    <template v-if="djkList.length>0">
+      <CreditLifeList
+        :lifeList="djkList"
+        title="大健康"
+        subtitle="平安好医生、私人医生"
+        type="4"
+      ></CreditLifeList>
+      <!-- 分割线 -->
+      <div class="line10"></div>
 
-          </router-link>
+    </template>
 
-        </div>
-      </section>
+    <!-- Intellectual finance area -->
+    <template v-if="zjrList.length>0">
+      <CreditLifeList
+        :lifeList="zjrList"
+        title="智金融"
+        subtitle="智金融"
+        type="3"
+      ></CreditLifeList>
+    </template>
 
-      <!-- 悬浮按钮 -->
-      <router-link
-        class="convert-icon"
-        :to="{name:'MyOrder'}"
-      ></router-link>
-
-    </mescroll-vue>
+    <!-- 悬浮按钮 -->
+    <router-link
+      class="convert-icon"
+      :to="{name:'MyOrder'}"
+    ></router-link>
 
     <!-- 新用户首次登陆送优惠券，欢迎组件 -->
     <WelcomeToast
@@ -345,12 +138,13 @@
 <script>
 import "../assets/js/swiper.min.js";
 import "../assets/css/swiper.min.css";
-import MescrollVue from "mescroll.js/mescroll.vue";
+import CreditLifeList from "../components/CreditLifeList";
 import WelcomeToast from "../components/WelcomeToast";
+
 import { mapGetters } from "vuex";
 export default {
   name: "CreditLife",
-  components: { MescrollVue, WelcomeToast },
+  components: { CreditLifeList, WelcomeToast },
   data() {
     return {
       isFirstLogin: false, //是否新用户第一次登陆控制
@@ -359,34 +153,36 @@ export default {
       bannerList: [],
       xylList: [], //新娱乐列表数据
       yshList: [], //优生活列表数据
-      dataList: [], //智金融列表数据
-      mescroll: null,
-      mescrollDown: {
-        use: false
-      },
-      mescrollUp: {
-        //上拉加载配置
-        callback: this.upCallback, //上拉回调
-        isBounce: false,
-        empty: {
-          warpId: "upscrollWarp",
-          icon: require("../assets/image/mescrolloptions/mescroll-empty.png"),
-          tip: "暂无数据"
+      djkList: [
+        {
+          id:'1',
+          goodsImg: require("../assets/image/creditLife/doctor1@2x.png"),
+          goodsName: "（儿童版-电子卡）",
+          money: "999.00",
+          volume: "1899.00",
+          url:
+            "https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271339"
         },
-        page: {
-          num: 0, //默认是0，回调之后是1，所以我们是从0开始的
-          size: 5 //默认是10页，修改成5页
+        {
+          id: "2",
+          goodsImg: require("../assets/image/creditLife/doctor2@2x.png"),
+          goodsName: "（成人尊享版-电子卡））",
+          money: "999.00",
+          volume: "1899.00",
+          url:
+            "https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=201906271505"
         },
-        toTop: {
-          src: require("../assets/image/mescrolloptions/mescroll-totop.png"),
-          duration: 500
-        },
-        lazyLoad: {
-          use: true // 是否开启懒加载,默认false 在img标签加imgurl即可
-        },
-        htmlNodata:
-          '<p class="upwarp-nodata">我也是有底线的，没有更多数据啦～</p>'
-      }
+        {
+          id: "3",
+          goodsImg: require("../assets/image/creditLife/doctor3@2x.png"),
+          goodsName: "（至尊保长辈版-电子卡）",
+          money: "1999.00",
+          volume: "3999.00",
+          url:
+            "https://jkt.jkwlx.net/wx/viewPmProduct.jhtml?productCode=020cyw2019"
+        }
+      ], //大健康列表数据
+      zjrList: [] //智金融列表数据
     };
   },
   created() {
@@ -394,6 +190,7 @@ export default {
     this.scoreData = this.$route.query.scoreData;
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
+
     if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
     this.getBond(); //获取新用户首次登陆券
   },
@@ -424,22 +221,6 @@ export default {
       });
       this.$tools.hideLoading();
     }, 800);
-
-    // this.swiper2 = new window.Swiper(".swiper2", {
-    //   slidesPerView: 2.5,
-    //   freeMode: true
-    // });
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteEnter方法
-      vm.$refs.mescroll && vm.$refs.mescroll.beforeRouteEnter(); // 进入路由时,滚动到原来的列表位置,恢复回到顶部按钮和isBounce的配置
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteLeave方法
-    this.$refs.mescroll && this.$refs.mescroll.beforeRouteLeave(); // 退出路由时,记录列表滚动的位置,隐藏回到顶部按钮和isBounce的配置
-    next();
   },
   methods: {
     getBanner() {
@@ -490,52 +271,13 @@ export default {
         }
       );
     },
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    mescrollInit(mescroll) {
-      this.mescroll = mescroll;
-    },
-    // 上拉回调 page = {num:0, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
-    upCallback(page, mescroll) {
-      // 发送请求
-      this.$tools
-        .callServer("POST", "/djh/zhongchenGoods/list", {
-          pageNo: page.num - 1,
-          pageSize: page.size,
-          type: "3"
-        })
-        .then(res => {
-          if (res.code == 0) {
-            let arr = res.data.list;
-            // 如果是第一页需手动置空列表
-            if (page.num === 1) this.dataList = [];
-            this.dataList = this.dataList.concat(arr);
-            // 数据渲染成功后,隐藏下拉刷新的状态
-            this.$nextTick(() => {
-              mescroll.endSuccess(arr.length);
-            });
-          } else {
-            this.$tools.showMsg(res.msg);
-          }
-        })
-        .catch(error => {
-          mescroll.endErr();
-        });
-    },
-
-    goToPingAnDoctor() {
-      window.location.href =
-        "https://jkt.jkwlx.net/wx/index.jhtml?from=singlemessage&isappinstalled=0";
-    },
     goToInterpretation() {
       this.$router.push({
         name: "Interpretation",
         query: { scoreData: this.scoreData }
       });
     },
-    //信用生活更多
-    goToLifeMore(type) {
-      this.$router.push({ name: "GoodShopList", query: { type: type } });
-    },
+
     // 关闭welcometoast
     closeToast(val) {
       this.isFirstLogin = val;
@@ -554,15 +296,17 @@ export default {
 <style lang="less" scoped>
 .credit-life-area {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: .2rem;
   background-color: #fff;
 
-  // 公共样式
+  // 公共更多样式
   .goMore {
     position: relative;
     padding-right: 0.16rem;
     color: #f17d0a;
     cursor: pointer;
+    user-select: none;
     &::after {
       content: "";
       width: 0.12rem;
@@ -575,31 +319,6 @@ export default {
         center center / 100% 100%;
     }
   }
-
-  .credit-life-title {
-    height: 1.04rem;
-    line-height: 1.04rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .fc201D {
-    color: #1d1d1d;
-    font-size: 0.4rem;
-    font-weight: 500;
-  }
-  .fc138A {
-    color: #8a8a8a;
-  }
-  .mr5 {
-    margin-right: 0.1rem;
-  }
-
-  .right {
-    // height: .6rem;
-    // line-height: 0.6rem;
-  }
-
   // BANNER AREA
   .banner-area {
     width: 100%;
@@ -699,17 +418,6 @@ export default {
     }
   }
 
-  // Private doctor AREA
-  .private-doctor-area {
-    margin-top: 0.06rem;
-    padding-bottom: 0.3rem;
-    .credit-life-title {
-      padding: 0 0.2rem;
-    }
-    .doctor-link {
-      height: 3.44rem;
-    }
-  }
   // LINE 10
   .line10 {
     position: relative;

@@ -7,14 +7,15 @@
       @init="mescrollInit"
     >
 
-      <ul
+      <div
         class="record-wrap"
         id="upscrollWarp"
       >
-        <li
+        <router-link
           class="record-item"
           v-for="(item,index) in dataList"
           :key="index"
+          :to="`MyOrderDetail?serialNo=${item.serialNo}`"
         >
           <div class="left">
             <img
@@ -42,13 +43,13 @@
                 v-if="item.wxStatus==2"
                 class="refund"
                 :class="!item.refundStatus?null:'active'"
-                @click="showConfirm(item.refundStatus,item.refund_status_str,item.id)"
+                @click.prevent="showConfirm(item.refundStatus,item.refund_status_str,item.id)"
               >{{item.refund_status_str}}</span>
             </template>
 
           </div>
-        </li>
-      </ul>
+        </router-link>
+      </div>
 
     </MescrollVue>
   </section>
@@ -124,7 +125,7 @@ export default {
           pageSize: page.size,
           userId: this.userId,
           token: this.token,
-          type: 2 //1-话费充值 2-卡券兑换
+          exchangeType: 1
         })
         .then(res => {
           if (res.code == 0) {

@@ -210,6 +210,10 @@ export default {
         pageSize: 5
       }).then(res => {
         if (res.code == 0) {
+          // 如果我们设置的金额存在就用我们的金额，如果不存在就用上游的金额
+          res.data.list.forEach(item => {
+            item.money = item.money ? item.money : item.goodsPrice;
+          });
           this.normalChargeList = res.data.list;
         } else {
           showMsg(res.msg);
@@ -227,7 +231,7 @@ export default {
       this.surePrice = price; //在微信支付的金额
       this.volume = volume; //充值金额
       this.normalselect = index;
-      this.show = true;
+      this.show = true;  //actionsheet 显示
     },
     // 确认支付
     surePay() {
