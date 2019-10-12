@@ -1,54 +1,53 @@
 <template>
   <section class="change-detail-area">
-    <nav class="banner-area">
-      <!-- <div class="banner-left">45</div>
-      <div class="banner-right">
-        <p class="voucher">代金券</p>
-        <p class="coupon">COUPON</p>
-      </div> -->
-      <img
-        :src="goodsDetail.goodsImg"
-        alt=""
-      >
-    </nav>
-    <div class="detail-desc-area">
-      <p class="desc-area">
-        <span class="desc">{{goodsDetail.goodsName}}</span>
-      </p>
-      <p class="price-area">
-        <span
-          class="old-price"
-          v-if="goodsDetail.volume"
-        ><span class="fz14">￥</span>{{goodsDetail.volume}}</span>
-        <span class="now-price"><span class="fz14">￥</span>{{goodsDetail.money}}</span>
-      </p>
-    </div>
-    <div class="goods-content-area">
-      <p class="goods-title">商品详情：</p>
-      <div
-        class="goods-main"
-        v-html="goodsDetail.goodsInfo"
-      >
-      </div>
-    </div>
-    <div
-      v-if="goodsDetail.stock>0"
-      class="submit-info active"
-      @click="submitGoodsInfo(goodsDetail.money)"
-    >
-      立即兑换
-    </div>
-    <div
-      v-else
-      class="no-exchange"
-      @click="showMsg"
-    >
-      不可兑换
-    </div>
-    <div class="now-stock">
-      （当前剩余库存<span class="stock-num">{{goodsDetail.stock}}</span>）
-    </div>
+    <section class="change-detail-content">
+      <nav class="banner-area">
+        <img
+          :src="goodsDetail.goodsImg"
+          alt=""
+        >
+      </nav>
 
+      <div class="detail-desc-area">
+        <p class="desc-area">
+          <span class="desc">{{goodsDetail.goodsName}}</span>
+        </p>
+        <p class="price-area">
+          <span
+            class="old-price"
+            v-if="goodsDetail.volume"
+          ><span class="fz14">￥</span>{{goodsDetail.volume}}</span>
+          <span class="now-price"><span class="fz14">￥</span>{{goodsDetail.money}}</span>
+        </p>
+      </div>
+
+      <div class="goods-content-area">
+        <p class="goods-title">商品详情：</p>
+        <div
+          class="goods-main"
+          v-html="goodsDetail.goodsInfo"
+        >
+        </div>
+      </div>
+
+      <div
+        v-if="goodsDetail.stock>0"
+        class="submit-info active"
+        @click="submitGoodsInfo(goodsDetail.money)"
+      >
+        立即兑换
+      </div>
+      <div
+        v-else
+        class="no-exchange"
+        @click="showMsg"
+      >
+        不可兑换
+      </div>
+      <div class="now-stock">
+        （当前剩余库存<span class="stock-num">{{goodsDetail.stock}}</span>）
+      </div>
+    </section>
     <!-- toast -->
     <GoodsToast
       v-show="isShowToast"
@@ -183,44 +182,37 @@ export default {
 <style lang="less" scoped>
 .change-detail-area {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   // 公共样式
   .fz14 {
     font-size: 0.28rem;
   }
+  .change-detail-content {
+    width: 6.2rem;
+    height: 11rem;
+    box-shadow: 0 0.04rem 0.16rem 0.06rem rgba(0, 0, 0, 0.12);
+    border-radius: 0.08rem;
+  }
+
   .banner-area {
     width: 100%;
-    height: 2.8rem;
+    height: 3.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    .banner-left {
-      font-size: 1.3rem;
-      line-height: 1.82rem;
-      color: #fff;
-    }
-    .banner-right {
-      .voucher {
-        color: #fff;
-        font-size: 0.48rem;
-        line-height: 0.66rem;
-      }
-      .coupon {
-        padding: 0 0.16rem;
-        line-height: 0.4rem;
-        background-color: #fff;
-        color: #f5a455;
-        font-size: 0.28rem;
-        font-weight: 600;
-        border-radius: 0.2rem;
-      }
-    }
+    background: url("../assets/image/mescrolloptions/img_default@2x.png")
+      no-repeat center center/100% 100%;
+    border-radius: 0.08rem 0.08rem 0 0;
+    overflow: hidden;
   }
   .detail-desc-area {
     width: 100%;
     height: 1rem;
-    padding: 0 0.3rem 0 0.4rem;
+    padding: 0 0.3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -253,8 +245,12 @@ export default {
       text-decoration: line-through;
     }
   }
+
   .goods-content-area {
-    padding: 0.4rem;
+    padding: 0.3rem;
+    height: 4.8rem;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     .goods-title {
       font-size: 0.28rem;
       line-height: 0.4rem;
@@ -264,6 +260,11 @@ export default {
       margin-top: 0.2rem;
       color: #8a8a8a;
     }
+  }
+
+  .submit-info{
+    width: 5.6rem;
+    margin: 0 auto;
   }
 
   // 不可兑换样式
