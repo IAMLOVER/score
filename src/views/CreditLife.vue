@@ -62,7 +62,7 @@
       </router-link>
       <div
         class="hot-item"
-        @click="showMsg"
+        @click="goToDingchang"
       >
         <span class="hot4 hot-icon"></span>
         <span class="hot-item-desc">订场</span>
@@ -250,6 +250,10 @@ export default {
         name: "Interpretation",
         query: { scoreData: this.scoreData }
       });
+    },
+    goToDingchang() {
+      window.location.href =
+        "https://api.ligusports.com/JH_venue_h5/index.html";
     },
 
     // 关闭welcometoast

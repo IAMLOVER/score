@@ -30,22 +30,24 @@
         </div>
       </div>
 
-      <div
-        v-if="goodsDetail.stock>0"
-        class="submit-info active"
-        @click="submitGoodsInfo(goodsDetail.money)"
-      >
-        立即兑换
-      </div>
-      <div
-        v-else
-        class="no-exchange"
-        @click="showMsg"
-      >
-        不可兑换
-      </div>
-      <div class="now-stock">
-        （当前剩余库存<span class="stock-num">{{goodsDetail.stock}}</span>）
+      <div class="goods-btn-area">
+        <div
+          v-if="goodsDetail.stock>0"
+          class="submit-info active"
+          @click="submitGoodsInfo(goodsDetail.money)"
+        >
+          立即兑换
+        </div>
+        <div
+          v-else
+          class="no-exchange"
+          @click="showMsg"
+        >
+          不可兑换
+        </div>
+        <div class="now-stock">
+          （当前剩余库存<span class="stock-num">{{goodsDetail.stock}}</span>）
+        </div>
       </div>
     </section>
     <!-- toast -->
@@ -187,13 +189,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   // 公共样式
   .fz14 {
     font-size: 0.28rem;
   }
   .change-detail-content {
-    width: 6.2rem;
-    height: 11rem;
+    position: relative;
+    width: 82%;
+    height: 90%;
     box-shadow: 0 0.04rem 0.16rem 0.06rem rgba(0, 0, 0, 0.12);
     border-radius: 0.08rem;
   }
@@ -248,7 +252,7 @@ export default {
 
   .goods-content-area {
     padding: 0.3rem;
-    height: 4.8rem;
+    height: 45%;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     .goods-title {
@@ -262,16 +266,22 @@ export default {
     }
   }
 
-  .submit-info{
+  .goods-btn-area {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0.2rem;
+  }
+  .submit-info {
     width: 5.6rem;
-    margin: 0 auto;
+    margin: 0.2rem auto 0;
   }
 
   // 不可兑换样式
   .no-exchange {
     cursor: pointer;
-    margin: 0.5rem auto 0;
-    width: 6.8rem;
+    margin: 0.2rem auto 0;
+    width: 5.6rem;
     height: 0.92rem;
     line-height: 0.92rem;
     background-color: #dedede;
