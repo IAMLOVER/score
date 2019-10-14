@@ -86,7 +86,7 @@
       <CreditLifeList
         :lifeList="xylList"
         title="新娱乐"
-        subtitle="新娱乐"
+        subtitle="从心定义娱乐"
         type="2"
       ></CreditLifeList>
       <!-- 分割线 -->
@@ -114,7 +114,7 @@
       <CreditLifeList
         :lifeList="zjrList"
         title="智金融"
-        subtitle="智金融"
+        subtitle="便捷金融服务"
         type="3"
       ></CreditLifeList>
     </template>
