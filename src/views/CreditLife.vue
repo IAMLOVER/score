@@ -308,7 +308,7 @@ export default {
         width: 93%;
       }
       .banner-link {
-        height: 3.86rem;
+        height: 2.8rem;
         img {
           border-radius: 0.12rem;
         }

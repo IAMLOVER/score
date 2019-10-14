@@ -68,11 +68,11 @@
         </li>
         <li
           class="recommend-item sifashuju"
-          @click="goToCreditReport"
+          @click="goToTelling"
         >
           <a href="javascript:;">
             <img
-              src="../assets/image/creditScore/sifashuju@2x.png"
+              src="../assets/image/creditScore/telling@2x.png"
               alt=""
             >
           </a>
@@ -378,6 +378,10 @@ export default {
         name: "CreditLife",
         query: { scoreData: this.scoreData }
       });
+    },
+    // 去运势
+    goToTelling(){
+      window.location.href='https://wn.qianssd.cn/mllyuncheng/index?channel=swdzdj000'
     }
   },
   computed: {
