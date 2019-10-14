@@ -253,7 +253,7 @@ export default {
     },
     goToDingchang() {
       window.location.href =
-        "https://api.ligusports.com/JH_venue_h5/index.html";
+        "https://api.ligusports.com/JH_venue_h5/index.html#/home?source=dzdj";
     },
 
     // 关闭welcometoast
