@@ -65,7 +65,7 @@
         @click="goToDingchang"
       >
         <span class="hot4 hot-icon"></span>
-        <span class="hot-item-desc">订场</span>
+        <span class="hot-item-desc">运动</span>
       </div>
     </section>
 

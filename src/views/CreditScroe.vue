@@ -57,7 +57,7 @@
       <ul class="hot-recommend-wrap">
         <li
           class="recommend-item heimingdan"
-          @click="showMsg"
+          @click="goToCreditReport"
         >
           <a href="javascript:;">
             <img
@@ -68,7 +68,7 @@
         </li>
         <li
           class="recommend-item sifashuju"
-          @click="showMsg"
+          @click="goToCreditReport"
         >
           <a href="javascript:;">
             <img
@@ -274,7 +274,7 @@ export default {
       if (this.scoreData >= 400 && this.scoreData < 550) {
         this.areaIcon = "icon4";
         sessionStorage.grade = 4; // 存入sessionstorage对应的级别
-        this.gradeStr = "较差";
+        this.gradeStr = "一般";
         return;
       }
       if (this.scoreData >= 550 && this.scoreData < 650) {
