@@ -12,7 +12,7 @@
             v-for="item in bannerList"
             :key="item.id"
           >
-            <a class="banner-link">
+            <a class="banner-link" :href="item.eventUrl?item.eventUrl:null">
               <img
                 :src="item.pictureUrl"
                 alt=""
