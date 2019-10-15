@@ -35,7 +35,7 @@ const routes = [
   { path: '/', redirect: '/CreditScore' },
   { path: '/WxAuth', component: WxAuth, name: 'WxAuth' },
   { path: '/Login', component: Login, name: 'Login', meta: { title: '登录' } },
-  { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
+  { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { needLogin: true, title: '信用分' } },
   { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
   { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用历史' } },
   { path: '/QuickScore', component: QuickScore, name: 'QuickScore', meta: { title: '快速提分' } },
@@ -54,7 +54,7 @@ const routes = [
       { path: 'JDInfo', component: JDInfo, name: 'JDInfo', meta: { title: '京东信用' } },
     ]
   },
-  { path: '/CreditLife', component: CreditLife, name: "CreditLife", meta: { title: '信用生活' } },
+  { path: '/CreditLife', component: CreditLife, name: "CreditLife", meta: { needLogin: true, title: '信用生活' } },
   { path: '/CreditCheese', component: CreditCheese, name: "CreditCheese", meta: { title: '信用芝士' } },
   { path: '/CreditReport', component: CreditReport, name: "CreditReport", meta: { title: '信用报告' } },
   { path: '/Recharge', component: Recharge, name: 'Recharge', meta: { title: '充值' } },
@@ -92,8 +92,10 @@ router.beforeEach((to, from, next) => {
     next()
     return
   };
+
   let wxUserInfo = JSON.parse(localStorage.getItem('wxUserInfo') ? localStorage.getItem('wxUserInfo') : null);
   if (wxUserInfo && wxUserInfo.openid) {
+    // 如果已经授权过，就放行
     next();
   } else {
     // 保存当前路由地址，授权后跳回到此地址

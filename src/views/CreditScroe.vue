@@ -57,7 +57,7 @@
       <ul class="hot-recommend-wrap">
         <li
           class="recommend-item heimingdan"
-          @click="goToCreditReport"
+          @click="goToShunfeng('111')"
         >
           <a href="javascript:;">
             <img
@@ -190,7 +190,7 @@ export default {
   components: {},
   data() {
     return {
-      assessTime:"", // 当前评估时间
+      assessTime: "", // 当前评估时间
       scoreData: "", //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
       token: "", //用户token
@@ -239,11 +239,11 @@ export default {
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
-          let { creditScore, differenceTime,assessTime } = res.data;
+          let { creditScore, differenceTime, assessTime } = res.data;
           // 设置分数
           this.scoreData = creditScore;
           // 设置评估时间
-          this.assessTime=assessTime;
+          this.assessTime = assessTime;
           // 设置表盘和对应的级别和时间差
           this.setGrade(differenceTime);
           // 设置个人信息状态
@@ -379,13 +379,19 @@ export default {
         query: { scoreData: this.scoreData }
       });
     },
+    // 去顺丰同城
+    goToShunfeng(goodsId) {
+      this.$router.push({ name: "ChangeDetails", query: { goodsId: goodsId } });
+    },
     // 去运势
-    goToTelling(){
-      window.location.href='https://wn.qianssd.cn/mllyuncheng/index?channel=swdzdj000'
+    goToTelling() {
+      window.location.href =
+        "https://wn.qianssd.cn/mllyuncheng/index?channel=swdzdj000";
     },
     // 去每日运势
-    goToFortune(){
-      window.location.href='https://zx.1az56ps.cn/meiriyunshi/index.html?channel=swdzdj000'
+    goToFortune() {
+      window.location.href =
+        "https://zx.1az56ps.cn/meiriyunshi/index.html?channel=swdzdj000";
     }
   },
   computed: {

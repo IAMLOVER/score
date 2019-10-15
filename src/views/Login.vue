@@ -122,8 +122,12 @@ export default {
             token: res.data.token,
             userId: res.data.userId
           });
+          // 从本地取出存入的跳转路径，如果有，就跳转到存入的，没有就跳转到信用分首页
+          let fromRouterName = localStorage.getItem("fromRouterName")
+            ? localStorage.getItem("fromRouterName")
+            : "CreditScore";
           this.$router.push({
-            name: "CreditScore"
+            name: fromRouterName
           });
         } else {
           showMsg(res.msg);
