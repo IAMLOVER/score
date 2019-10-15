@@ -79,7 +79,7 @@
         </li>
         <li
           class="recommend-item xinyongxiaozhishi"
-          @click="showMsg"
+          @click="goToFortune"
         >
           <a href="javascript:;">
             <img
@@ -382,6 +382,10 @@ export default {
     // 去运势
     goToTelling(){
       window.location.href='https://wn.qianssd.cn/mllyuncheng/index?channel=swdzdj000'
+    },
+    // 去每日运势
+    goToFortune(){
+      window.location.href='https://zx.1az56ps.cn/meiriyunshi/index.html?channel=swdzdj000'
     }
   },
   computed: {
