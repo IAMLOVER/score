@@ -126,7 +126,7 @@ export default {
           let fromRouterName = localStorage.getItem("fromRouterName")
             ? localStorage.getItem("fromRouterName")
             : "CreditScore";
-          this.$router.push({
+          this.$router.replace({
             name: fromRouterName
           });
         } else {

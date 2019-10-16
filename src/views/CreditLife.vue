@@ -161,10 +161,6 @@ export default {
     };
   },
   created() {
-    // 检查是否登录
-    if (!this.checkLogin()) {
-      return;
-    }
     const { getCookie, isEmpty } = this.$tools;
     this.scoreData = this.$route.query.scoreData;
     this.getBanner(); //获取banner图
@@ -202,18 +198,6 @@ export default {
     }, 800);
   },
   methods: {
-    checkLogin() {
-      const store = JSON.parse(
-          localStorage.getItem("store") ? localStorage.getItem("store") : null
-        ),
-        userId = store ? store.userId : null;
-      if (!userId) {
-        this.$router.push({ name: "Login" });
-        localStorage.setItem("fromRouterName", "CreditLife");
-        return false;
-      }
-      return true;
-    },
     getBanner() {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();

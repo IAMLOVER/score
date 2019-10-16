@@ -60,7 +60,7 @@ const routes = [
   { path: '/Recharge', component: Recharge, name: 'Recharge', meta: { title: '充值' } },
   { path: '/ChangeDetails', component: ChangeDetails, name: 'ChangeDetails', meta: { title: '兑换详情' } },
   { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
-  { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { title: '我的订单' } },
+  { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { needLogin: true, title: '我的订单' } },
   { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } },
   { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '订单详情' } }
 ];
@@ -76,17 +76,35 @@ const router = new Router({
   }
 });
 
+let checkLogin = () => {
+  const store = JSON.parse(
+    localStorage.getItem("store") ? localStorage.getItem("store") : null
+  ),
+    userId = store ? store.userId : null;
+  if (!userId) {
+    router.push({ name: "Login" });
+    return false;
+  }
+};
+
 // 路由守卫
 router.beforeEach((to, from, next) => {
   // 路由守卫改变title
   if (to.meta.title) {
     document.title = to.meta.title;
   };
+
   // 判断是否是微信浏览器环境,不是微信环境就直接通过
   if (!/micromessenger/i.test(navigator.userAgent)) {
+    if (to.meta.needLogin) { //需要登录
+      // 把路径存起来
+      localStorage.setItem("fromRouterName", to.name);
+      checkLogin();
+    }
     next()
     return
   };
+
   //不对 WxAuth 路由进行拦截，不进入 WxAuth 路由就拿不到微信返回的授权 code
   if (to.name === 'WxAuth') {
     next()
@@ -96,6 +114,11 @@ router.beforeEach((to, from, next) => {
   let wxUserInfo = JSON.parse(localStorage.getItem('wxUserInfo') ? localStorage.getItem('wxUserInfo') : null);
   if (wxUserInfo && wxUserInfo.openid) {
     // 如果已经授权过，就放行
+    if (to.meta.needLogin) { //需要登录
+      // 把路径存起来
+      localStorage.setItem("fromRouterName", to.name);
+      checkLogin();
+    }
     next();
   } else {
     // 保存当前路由地址，授权后跳回到此地址

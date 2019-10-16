@@ -199,11 +199,9 @@ export default {
     };
   },
   created() {
-    if (this.checkLogin()) {
-      this.token = this.userIdToken.token;
-      this.userId = this.userIdToken.userId;
-      this.getScoreData();
-    }
+    this.token = this.userIdToken.token;
+    this.userId = this.userIdToken.userId;
+    this.getScoreData();
   },
   mounted() {},
   methods: {
@@ -218,17 +216,6 @@ export default {
       "SET_ZHIMA_INFO_STATUS",
       "SET_JD_INFO_STATUS"
     ]),
-    checkLogin() {
-      const store = JSON.parse(
-          localStorage.getItem("store") ? localStorage.getItem("store") : null
-        ),
-        userId = store ? store.userId : null;
-      if (!userId) {
-        this.$router.push({ name: "Login" });
-        return false;
-      }
-      return true;
-    },
     getScoreData() {
       const { showLoading, hideLoading, callServer, showMsg } = this.$tools;
       showLoading();
