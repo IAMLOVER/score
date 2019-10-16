@@ -162,41 +162,15 @@ export default {
   },
   created() {
     const { getCookie, isEmpty } = this.$tools;
-    this.scoreData = this.$route.query.scoreData;
+    this.scoreData =
+      this.$route.query.scoreData || localStorage.getItem("wlmCreditScore");
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
 
     if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
     this.getBond(); //获取新用户首次登陆券
   },
-  mounted() {
-    // 设置倒计时用于初始化第一个swiper
-    setTimeout(() => {
-      this.swiper1 = new window.Swiper(".swiper1", {
-        loop: true,
-        effect: "coverflow",
-        slidesPerView: "auto",
-        coverflowEffect: {
-          rotate: 0,
-          stretch: -6, //->调整两张图片的间距
-          depth: 40,
-          modifier: 3,
-          slideShadows: false
-        },
-        centeredSlides: true,
-        autoplay: {
-          disableOnInteraction: false
-        },
-        // 如果需要分页器
-        pagination: {
-          el: ".swiper-pagination",
-          bulletClass: "banner-pagination",
-          bulletActiveClass: "banner-pagination-active"
-        }
-      });
-      this.$tools.hideLoading();
-    }, 800);
-  },
+  mounted() {},
   methods: {
     getBanner() {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
@@ -206,6 +180,31 @@ export default {
       }).then(res => {
         if (res.code == 0) {
           this.bannerList = res.data.bannerList;
+          this.$nextTick(() => {
+            this.swiper1 = new window.Swiper(".swiper1", {
+              loop: true,
+              effect: "coverflow",
+              slidesPerView: "auto",
+              coverflowEffect: {
+                rotate: 0,
+                stretch: -6, //->调整两张图片的间距
+                depth: 40,
+                modifier: 3,
+                slideShadows: false
+              },
+              centeredSlides: true,
+              autoplay: {
+                disableOnInteraction: false
+              },
+              // 如果需要分页器
+              pagination: {
+                el: ".swiper-pagination",
+                bulletClass: "banner-pagination",
+                bulletActiveClass: "banner-pagination-active"
+              }
+            });
+            hideLoading();
+          });
         } else {
           showMsg(res.msg);
         }

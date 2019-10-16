@@ -84,9 +84,21 @@ let checkLogin = () => {
     localStorage.getItem("store") ? localStorage.getItem("store") : null
   ),
     userId = store ? store.userId : null;
-  if (!userId) {
+  if (userId) {
+    return true
+  } else {
     router.push({ name: "Login" });
-    return false;
+  }
+};
+
+let iosOrAndroid = () => {
+  var u = navigator.userAgent;
+  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  if (isiOS) {
+    return isiOS;
+  } else {
+    return isAndroid;
   }
 };
 
@@ -102,10 +114,14 @@ router.beforeEach((to, from, next) => {
     if (to.meta.needLogin) { //需要登录
       // 把路径存起来
       localStorage.setItem("fromRouterName", to.name);
-      checkLogin();
+      // 如果登录检查不通过
+      if (!checkLogin()) return;
     }
-    if (to.path !== location.pathname) {
-      location.assign(to.fullPath)
+    // 用于处理IOS环境微信复制链接为首页bug，
+    if (iosOrAndroid()) {
+      if (to.path !== location.pathname) {
+        location.assign(to.fullPath)
+      }
     }
     next()
     return
@@ -123,11 +139,13 @@ router.beforeEach((to, from, next) => {
     if (to.meta.needLogin) { //需要登录
       // 把路径存起来
       localStorage.setItem("fromRouterName", to.name);
-      checkLogin();
+      if (!checkLogin()) return;
     }
-    // 
-    if (to.path !== location.pathname) {
-      location.assign(to.fullPath)
+    // 用于处理IOS环境微信复制链接为首页bug， 
+    if (iosOrAndroid()) {
+      if (to.path !== location.pathname) {
+        location.assign(to.fullPath)
+      }
     }
     next();
   } else {
