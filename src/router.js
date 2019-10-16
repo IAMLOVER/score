@@ -26,6 +26,7 @@ const GoodShopList = () => import('./views/GoodShopList.vue');
 const MyOrder = () => import('./views/MyOrder.vue');
 const MyRecord = () => import('./views/MyRecord.vue');
 const MyOrderDetail = () => import('./views/MyOrderDetail.vue');
+const NotFoundComponent = () => import('./views/NotFoundComponent.vue');
 
 Vue.use(Router);
 
@@ -62,9 +63,11 @@ const routes = [
   { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
   { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { needLogin: true, title: '我的订单' } },
   { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } },
-  { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '订单详情' } }
+  { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '订单详情' } },
+  { path: '*', name: 'NotFoundComponent', meta: { title: '未找到页面' }, component: NotFoundComponent }
 ];
 const router = new Router({
+  mode: 'history',
   routes,
   // 路由滚动行为，用于路由跳转时跳回到顶部位置
   scrollBehavior(to, from, savedPosition) {
@@ -101,6 +104,9 @@ router.beforeEach((to, from, next) => {
       localStorage.setItem("fromRouterName", to.name);
       checkLogin();
     }
+    if (to.path !== location.pathname) {
+      location.assign(to.fullPath)
+    }
     next()
     return
   };
@@ -118,6 +124,10 @@ router.beforeEach((to, from, next) => {
       // 把路径存起来
       localStorage.setItem("fromRouterName", to.name);
       checkLogin();
+    }
+    // 
+    if (to.path !== location.pathname) {
+      location.assign(to.fullPath)
     }
     next();
   } else {
