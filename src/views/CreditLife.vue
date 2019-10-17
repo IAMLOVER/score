@@ -165,7 +165,7 @@ export default {
   created() {
     const { getCookie, isEmpty } = this.$tools;
     this.scoreData =
-      this.$route.query.scoreData || localStorage.getItem("wlmCreditScore");
+      this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
 
@@ -290,7 +290,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userIdToken"])
+    ...mapGetters(["userIdToken", "getCreditScoreGrade"])
   }
 };
 </script>
