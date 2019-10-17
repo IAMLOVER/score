@@ -213,7 +213,7 @@ export default {
       });
     },
     getYshXylDataList() {
-      const { callServer } = this.$tools;
+      const { callServer, showMsg } = this.$tools;
       callServer("POST", "/djh/zhongchenGoods/getList", {}).then(res => {
         if (res.code == 0) {
           let { xylList, yshList, djkList, zjrList } = res.data;
@@ -224,9 +224,10 @@ export default {
           this.myWxShare(
             {
               shareLink: location.href,
-              shareTitle: "信用生活",
+              shareTitle: "便利生活更舒心",
               shareDesc: "便利生活更舒心",
-              shareImg: require('../assets/image/login/logBg@2x.png')
+              shareImg:
+                location.origin + require("../assets/image/login/logBg@2x.png")
             },
             res => {
               // 成功
@@ -236,6 +237,7 @@ export default {
             },
             cancel => {
               // 取消
+              showMsg("分享取消");
             }
           );
         }
