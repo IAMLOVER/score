@@ -184,9 +184,10 @@
 <script>
 // @ is an alias to /src
 import { mapGetters, mapMutations } from "vuex";
-
+import WX_SDK from "@/assets/js/WX_SDK.js";
 export default {
   name: "CreditScore",
+  mixins: [WX_SDK],
   components: {},
   data() {
     return {
@@ -236,6 +237,26 @@ export default {
           this.setGrade(differenceTime);
           // 设置个人信息状态
           this.setUserInfoStatus(res.data);
+          // 设置微信分享
+          this.myWxShare(
+            {
+              shareLink: location.href,
+              shareTitle: "便利生活更舒心",
+              shareDesc: "便利生活更舒心",
+              shareImg:
+                location.origin + require("../assets/image/login/logBg@2x.png")
+            },
+            res => {
+              // 成功
+            },
+            err => {
+              // 失败
+            },
+            cancel => {
+              // 取消
+              showMsg("分享取消");
+            }
+          );
         } else {
           showMsg(res.msg, 500);
           this.$router.push({ name: "Login" });

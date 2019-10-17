@@ -221,10 +221,11 @@ export default {
           this.xylList = xylList;
           this.djkList = djkList;
           this.zjrList = zjrList;
+          // 设置微信分享
           this.myWxShare(
             {
               shareLink: location.href,
-              shareTitle: "便利生活更舒心",
+              shareTitle: "信用生活",
               shareDesc: "便利生活更舒心",
               shareImg:
                 location.origin + require("../assets/image/login/logBg@2x.png")
