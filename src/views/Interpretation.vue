@@ -120,8 +120,9 @@
 </template>
 
 <script>
-import "../assets/js/swiper.min.js";
-import "../assets/css/swiper.min.css";
+import "@/assets/js/swiper.min.js";
+import "@/assets/css/swiper.min.css";
+import { mapGetters } from "vuex";
 export default {
   name: "Interpretation",
   components: {},
@@ -132,7 +133,8 @@ export default {
     };
   },
   created() {
-    this.scoreData = this.$route.query.scoreData;
+    this.scoreData =
+      this.$route.query.scoreData || this.getCreditScoreGrade.creditScore;
     this.$tools.showLoading();
   },
   mounted() {
@@ -167,6 +169,9 @@ export default {
     slideTo(index) {
       this.swiper.slideToLoop(index, 300, false);
     }
+  },
+  computed: {
+    ...mapGetters(["getCreditScoreGrade"])
   }
 };
 </script>

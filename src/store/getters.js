@@ -25,6 +25,15 @@ const userIdToken = (state) => {
   }
 };
 
+// 获取信用分和等级信息
+const getCreditScoreGrade = (state) => {
+  return {
+    creditScore: state.creditScore || (store ? (store.creditScore ? store.creditScore : null) : null),
+    grade: state.grade || (store ? (store.grade ? store.grade : null) : null),
+    gradeStr: state.gradeStr || (store ? (store.gradeStr ? store.gradeStr : null) : null)
+  }
+};
+
 // 获取身份证状态
 const idCardInfo = (state) => {
   return state.idCardInfoStatus || (store ? (store.idCardInfoStatus ? store.idCardInfoStatus : 0) : 0)
@@ -85,6 +94,7 @@ export default {
   studentInfo,
   userInfo,
   userIdToken,
+  getCreditScoreGrade,
   idCardInfo,
   passPortInfo,
   studentsInfo,

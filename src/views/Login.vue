@@ -145,6 +145,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -164,6 +165,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["SET_TOKEN_USERID", "SET_SCOREDATA_GRADE"]),
     // 登录注册事件
     tableChange(val) {
       this.active = val;
@@ -245,13 +247,13 @@ export default {
         if (res.code == 0) {
           // 把手机号码存入本地
           localStorage.setItem("wlmMobile", this.mobile);
-          // 把分出入本地
-          localStorage.setItem("wlmCreditScore", res.data.creditScore);
           // 设置token
-          this.$store.commit("SET_TOKEN_USERID", {
+          this.SET_TOKEN_USERID({
             token: res.data.token,
             userId: res.data.userId
           });
+          // 设置信用分及等级
+          this.SET_SCOREDATA_GRADE(res.data.creditScore);
           // 从本地取出存入的跳转路径，如果有，就跳转到存入的，没有就跳转到信用分首页
           let fromRouterName = localStorage.getItem("fromRouterName")
             ? localStorage.getItem("fromRouterName")
@@ -300,12 +302,13 @@ export default {
           showMsg("注册成功");
           // 把手机号码存入本地
           localStorage.setItem("wlmMobile", this.mobile);
-          localStorage.setItem("wlmCreditScore", res.data.creditScore);
           // 设置token
-          this.$store.commit("SET_TOKEN_USERID", {
+          this.SET_TOKEN_USERID({
             token: res.data.token,
             userId: res.data.userId
           });
+          // 设置信用分及等级
+          this.SET_SCOREDATA_GRADE(res.data.creditScore);
           // 从本地取出存入的跳转路径，如果有，就跳转到存入的，没有就跳转到信用分首页
           let fromRouterName = localStorage.getItem("fromRouterName")
             ? localStorage.getItem("fromRouterName")

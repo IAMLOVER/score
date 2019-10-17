@@ -118,7 +118,7 @@ export default {
   },
   created() {
     // 从全局变量中取出记录的级别
-    this.active = sessionStorage.grade;
+    this.active = this.getCreditScoreGrade.grade;
   },
   mounted() {
     // 设置sticky吸顶效果
@@ -191,7 +191,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userIdToken"])
+    ...mapGetters(["userIdToken","getCreditScoreGrade"])
   }
 };
 </script>
