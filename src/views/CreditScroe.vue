@@ -287,6 +287,7 @@ export default {
     setUserInfoStatus(data) {
       const {
         creditScore,
+        nickname,
         driverLicenseStatus,
         drivingLicenseStatus,
         educationStatus,
@@ -307,6 +308,7 @@ export default {
       this.SET_HOUSE_INFO_STATUS(deedStatus);
       this.SET_ZHIMA_INFO_STATUS(sesameStatus);
       this.SET_JD_INFO_STATUS(jingdongStatus);
+      localStorage.setItem('nickname',nickname);
     },
     // 去信用解读
     goToInterpretation() {

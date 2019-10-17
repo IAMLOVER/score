@@ -247,6 +247,8 @@ export default {
         if (res.code == 0) {
           // 把手机号码存入本地
           localStorage.setItem("wlmMobile", this.mobile);
+          // 把用户昵称存入本地
+          localStorage.setItem("nickname", res.data.nickname);
           // 设置token
           this.SET_TOKEN_USERID({
             token: res.data.token,
@@ -302,6 +304,8 @@ export default {
           showMsg("注册成功");
           // 把手机号码存入本地
           localStorage.setItem("wlmMobile", this.mobile);
+          // 把用户昵称存入本地
+          localStorage.setItem("nickname", res.data.nickname);
           // 设置token
           this.SET_TOKEN_USERID({
             token: res.data.token,
