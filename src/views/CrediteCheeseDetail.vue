@@ -67,10 +67,10 @@
                   class="pl-text hfpl-text"
                   @click="commentItem.isShowReplayTextArea = !commentItem.isShowReplayTextArea"
                 >
-                  <a href="javascript:;" class="comment-size-name">曾小周</a>
+                  <a href="javascript:;" class="comment-size-name">{{item.userName}}</a>
                   <div class="my-pl-con hf-inline comhf">
                     回复
-                    <a href="javascript: void (0)" class="atName">@曾代周</a>
+                    <a href="javascript: void (0)" class="atName">@{{commentItem.userName}}</a>
                     : {{commentItem.content}}
                   </div>
                 </div>
@@ -246,12 +246,12 @@ export default {
           // 处理一级评论的交互效果
           this.arr.forEach((item, index) => {
             this.$set(item, "isShowTextArea", false);
-            this.$set(item, "textAreaValue", "回复：");
+            this.$set(item, "textAreaValue", '回复@'+item.userName+'：');
             // 处理一级评论下方的二级回复
             let replayList = item.list;
             replayList.forEach((item, index) => {
               this.$set(item, "isShowReplayTextArea", false);
-              this.$set(item, "replayTextAreaValue", "回复：");
+              this.$set(item, "replayTextAreaValue", '回复@'+item.userName+'：');
             });
           });
           if (res.data.count > this.pageNo * this.pageSize) {
@@ -276,7 +276,7 @@ export default {
           // 处理一级评论的交互效果
           this.arr.forEach((item, index) => {
             this.$set(item, "isShowTextArea", false);
-            this.$set(item, "textAreaValue", "回复：");
+            this.$set(item, "textAreaValue", '回复@'+item.userName+'：');
             // 处理一级评论下方的二级回复
             let replayList = item.list;
             replayList.forEach((item, index) => {
