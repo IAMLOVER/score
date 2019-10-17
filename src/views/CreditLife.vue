@@ -12,7 +12,10 @@
             v-for="item in bannerList"
             :key="item.id"
           >
-            <a class="banner-link">
+            <a
+              class="banner-link"
+              :href="item.eventUrl?item.eventUrl:null"
+            >
               <img
                 :src="item.pictureUrl"
                 alt=""
@@ -65,7 +68,7 @@
         @click="goToDingchang"
       >
         <span class="hot4 hot-icon"></span>
-        <span class="hot-item-desc">订场</span>
+        <span class="hot-item-desc">运动</span>
       </div>
     </section>
 
@@ -86,7 +89,7 @@
       <CreditLifeList
         :lifeList="xylList"
         title="新娱乐"
-        subtitle="新娱乐"
+        subtitle="从心定义娱乐"
         type="2"
       ></CreditLifeList>
       <!-- 分割线 -->
@@ -114,7 +117,7 @@
       <CreditLifeList
         :lifeList="zjrList"
         title="智金融"
-        subtitle="智金融"
+        subtitle="便捷金融服务"
         type="3"
       ></CreditLifeList>
     </template>
@@ -136,14 +139,16 @@
 </template>
 
 <script>
-import "../assets/js/swiper.min.js";
-import "../assets/css/swiper.min.css";
+import "@/assets/js/swiper.min.js";
+import "@/assets/css/swiper.min.css";
+import WX_SDK from "@/assets/js/WX_SDK.js";
 import CreditLifeList from "../components/CreditLifeList";
 import WelcomeToast from "../components/WelcomeToast";
 
 import { mapGetters } from "vuex";
 export default {
   name: "CreditLife",
+  mixins: [WX_SDK],
   components: { CreditLifeList, WelcomeToast },
   data() {
     return {
@@ -159,41 +164,15 @@ export default {
   },
   created() {
     const { getCookie, isEmpty } = this.$tools;
-    this.scoreData = this.$route.query.scoreData;
+    this.scoreData =
+      this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
 
     if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
     this.getBond(); //获取新用户首次登陆券
   },
-  mounted() {
-    // 设置倒计时用于初始化第一个swiper
-    setTimeout(() => {
-      this.swiper1 = new window.Swiper(".swiper1", {
-        loop: true,
-        effect: "coverflow",
-        slidesPerView: "auto",
-        coverflowEffect: {
-          rotate: 0,
-          stretch: -6, //->调整两张图片的间距
-          depth: 40,
-          modifier: 3,
-          slideShadows: false
-        },
-        centeredSlides: true,
-        autoplay: {
-          disableOnInteraction: false
-        },
-        // 如果需要分页器
-        pagination: {
-          el: ".swiper-pagination",
-          bulletClass: "banner-pagination",
-          bulletActiveClass: "banner-pagination-active"
-        }
-      });
-      this.$tools.hideLoading();
-    }, 800);
-  },
+  mounted() {},
   methods: {
     getBanner() {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
@@ -203,13 +182,38 @@ export default {
       }).then(res => {
         if (res.code == 0) {
           this.bannerList = res.data.bannerList;
+          this.$nextTick(() => {
+            this.swiper1 = new window.Swiper(".swiper1", {
+              loop: true,
+              effect: "coverflow",
+              slidesPerView: "auto",
+              coverflowEffect: {
+                rotate: 0,
+                stretch: -6, //->调整两张图片的间距
+                depth: 40,
+                modifier: 3,
+                slideShadows: false
+              },
+              centeredSlides: true,
+              autoplay: {
+                disableOnInteraction: false
+              },
+              // 如果需要分页器
+              pagination: {
+                el: ".swiper-pagination",
+                bulletClass: "banner-pagination",
+                bulletActiveClass: "banner-pagination-active"
+              }
+            });
+            hideLoading();
+          });
         } else {
           showMsg(res.msg);
         }
       });
     },
     getYshXylDataList() {
-      const { callServer } = this.$tools;
+      const { callServer, showMsg } = this.$tools;
       callServer("POST", "/djh/zhongchenGoods/getList", {}).then(res => {
         if (res.code == 0) {
           let { xylList, yshList, djkList, zjrList } = res.data;
@@ -217,6 +221,26 @@ export default {
           this.xylList = xylList;
           this.djkList = djkList;
           this.zjrList = zjrList;
+          // 设置微信分享
+          this.myWxShare(
+            {
+              shareLink: location.href,
+              shareTitle: "信用生活",
+              shareDesc: "便利生活更舒心",
+              shareImg:
+                location.origin + require("../assets/image/login/logBg@2x.png")
+            },
+            res => {
+              // 成功
+            },
+            err => {
+              // 失败
+            },
+            cancel => {
+              // 取消
+              showMsg("分享取消");
+            }
+          );
         }
       });
     },
@@ -253,7 +277,7 @@ export default {
     },
     goToDingchang() {
       window.location.href =
-        "https://api.ligusports.com/JH_venue_h5/index.html";
+        "https://api.ligusports.com/JH_venue_h5/index.html#/home?source=dzdj";
     },
 
     // 关闭welcometoast
@@ -266,7 +290,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userIdToken"])
+    ...mapGetters(["userIdToken", "getCreditScoreGrade"])
   }
 };
 </script>
@@ -308,7 +332,7 @@ export default {
         width: 93%;
       }
       .banner-link {
-        height: 3.86rem;
+        height: 2.8rem;
         img {
           border-radius: 0.12rem;
         }

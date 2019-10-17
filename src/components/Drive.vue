@@ -26,7 +26,9 @@
             />
           </div>
         </div>
-        <div class="form-group">
+        <!-- 2019-10-14 zg 注释，下面功能暂时不开放 -->
+
+        <!-- <div class="form-group">
           <span class="label">准驾车型</span>
           <div class="input-area">
             <input
@@ -92,7 +94,8 @@
             :minDate="minDate"
             @selectDatePickerVal="initDates"
           ></VantDatePicker>
-        </div>
+        </div> -->
+
       </div>
       <!-- PIC AREA -->
       <div class="pic-area">
@@ -100,12 +103,14 @@
         <div class="pic-1">
           <Camear
             tip="拍摄驾驶证主页"
+            multiple=true
             @savePicPath="picFront"
           ></Camear>
         </div>
         <div class="pic-2">
           <Camear
             tip="拍摄驾驶证副业"
+            multiple=true
             @savePicPath="picRear"
           ></Camear>
         </div>
@@ -281,26 +286,27 @@ export default {
         noShow && showMsg("姓名不能为空");
         return false;
       }
-      if (isEmpty(this.carModel)) {
-        noShow && showMsg("车型不能为空");
-        return false;
-      }
-      if (isEmpty(this.effectiveDate)) {
-        noShow && showMsg("生效日期不能为空");
-        return false;
-      }
-      if (isEmpty(this.expirationDate)) {
-        noShow && showMsg("失效日期不能为空");
-        return false;
-      }
-      if (isEmpty(this.fileNumber)) {
-        noShow && showMsg("档案编号不能为空");
-        return false;
-      }
-      if (isEmpty(this.initDate)) {
-        noShow && showMsg("初次领证日期不能为空");
-        return false;
-      }
+      // 如下功能暂时不开放  2019-10-14
+      // if (isEmpty(this.carModel)) {
+      //   noShow && showMsg("车型不能为空");
+      //   return false;
+      // }
+      // if (isEmpty(this.effectiveDate)) {
+      //   noShow && showMsg("生效日期不能为空");
+      //   return false;
+      // }
+      // if (isEmpty(this.expirationDate)) {
+      //   noShow && showMsg("失效日期不能为空");
+      //   return false;
+      // }
+      // if (isEmpty(this.fileNumber)) {
+      //   noShow && showMsg("档案编号不能为空");
+      //   return false;
+      // }
+      // if (isEmpty(this.initDate)) {
+      //   noShow && showMsg("初次领证日期不能为空");
+      //   return false;
+      // }
       if (isEmpty(this.mainPic)) {
         noShow && showMsg("驾驶证主页不能为空");
         return false;
@@ -337,13 +343,15 @@ export default {
           token: this.userInfo.token,
           licenseNo: this.driverNum,
           name: this.userName,
-          driveType: this.carModel,
-          effectiveTime: this.effectiveDate,
-          invalidTime: this.expirationDate,
-          fileNumber: this.fileNumber,
-          gender: this.sex ? (this.sex == "男" ? 1 : 2) : null,
-          country: this.citizenship ? this.citizenship : null,
-          receiveTime: this.initDate,
+          // 如下字段暂时不开放，2019-10-14 zg
+          // driveType: this.carModel,
+          // effectiveTime: this.effectiveDate,
+          // invalidTime: this.expirationDate,
+          // fileNumber: this.fileNumber,
+          // gender: this.sex ? (this.sex == "男" ? 1 : 2) : null,
+          // country: this.citizenship ? this.citizenship : null,
+          // receiveTime: this.initDate,
+
           driverLicenseHomepage: this.mainPic,
           driverLicenseSecondary: this.subPic,
           driverLicenseStatus: 1
@@ -374,13 +382,14 @@ export default {
         token: this.userInfo.token,
         licenseNo: this.driverNum,
         name: this.userName,
-        driveType: this.carModel,
-        effectiveTime: this.effectiveDate,
-        invalidTime: this.expirationDate,
-        fileNumber: this.fileNumber,
-        gender: this.sex ? (this.sex == "男" ? 1 : 2) : null,
-        country: this.citizenship ? this.citizenship : null,
-        receiveTime: this.initDate,
+        // 以下注释功能暂时不开放，2019-10-14 zg
+        // driveType: this.carModel,
+        // effectiveTime: this.effectiveDate,
+        // invalidTime: this.expirationDate,
+        // fileNumber: this.fileNumber,
+        // gender: this.sex ? (this.sex == "男" ? 1 : 2) : null,
+        // country: this.citizenship ? this.citizenship : null,
+        // receiveTime: this.initDate,
         driverLicenseHomepage: this.mainPic,
         driverLicenseSecondary: this.subPic,
         driverLicenseStatus: 0

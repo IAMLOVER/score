@@ -33,12 +33,14 @@
         <div class="pic-id-card">
           <Camear
             tip="拍摄身份证正面"
+            multiple=true
             @savePicPath="savePicPathF"
           ></Camear>
         </div>
         <div class="pic-id-card">
           <Camear
             tip="拍摄身份证背面"
+            multiple=true
             @savePicPath="savePicPathB"
           ></Camear>
         </div>

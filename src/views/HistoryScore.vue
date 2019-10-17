@@ -17,7 +17,7 @@
         <section class="grade-area">
           <div class="slide">
             <div class="tips">
-              <span :class="active==4?'active':null">较差</span>
+              <span :class="active==4?'active':null">一般</span>
               <span :class="active==5?'active':null">中等</span>
               <span :class="active==6?'active':null">良好</span>
               <span :class="active==7?'active':null">优秀</span>
@@ -118,7 +118,7 @@ export default {
   },
   created() {
     // 从全局变量中取出记录的级别
-    this.active = sessionStorage.grade;
+    this.active = this.getCreditScoreGrade.grade;
   },
   mounted() {
     // 设置sticky吸顶效果
@@ -191,7 +191,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userIdToken"])
+    ...mapGetters(["userIdToken","getCreditScoreGrade"])
   }
 };
 </script>

@@ -113,6 +113,23 @@ export default {
     submitGoodsInfo(money) {
       const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
       showLoading();
+      if (money == 0) {
+        // 如果价格是0的时候调用另外一个接口
+        callServer("POST", "djh/zhongchenOrder/buyFreeGoods", {
+          userId: this.userId,
+          token: this.token,
+          goodsId: this.goodsId
+        }).then(res => {
+          hideLoading();
+          if (res.code == 0) {
+            this.isShowToast = true;
+            this.typeIcon = "success";
+          } else {
+            showMsg(res.msg);
+          }
+        });
+        return;
+      }
       callServer("POST", "/djh/wx_pay/zhongchen/prepay", {
         userId: this.userId,
         openid: this.openid,

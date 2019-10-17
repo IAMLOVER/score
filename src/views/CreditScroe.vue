@@ -57,7 +57,7 @@
       <ul class="hot-recommend-wrap">
         <li
           class="recommend-item heimingdan"
-          @click="showMsg"
+          @click="goToShunfeng('111')"
         >
           <a href="javascript:;">
             <img
@@ -68,18 +68,18 @@
         </li>
         <li
           class="recommend-item sifashuju"
-          @click="showMsg"
+          @click="goToTelling"
         >
           <a href="javascript:;">
             <img
-              src="../assets/image/creditScore/sifashuju@2x.png"
+              src="../assets/image/creditScore/telling@2x.png"
               alt=""
             >
           </a>
         </li>
         <li
           class="recommend-item xinyongxiaozhishi"
-          @click="showMsg"
+          @click="goToFortune"
         >
           <a href="javascript:;">
             <img
@@ -184,13 +184,14 @@
 <script>
 // @ is an alias to /src
 import { mapGetters, mapMutations } from "vuex";
-
+import WX_SDK from "@/assets/js/WX_SDK.js";
 export default {
   name: "CreditScore",
+  mixins: [WX_SDK],
   components: {},
   data() {
     return {
-      assessTime:"", // 当前评估时间
+      assessTime: "", // 当前评估时间
       scoreData: "", //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
       token: "", //用户token
@@ -199,15 +200,14 @@ export default {
     };
   },
   created() {
-    if (this.checkLogin()) {
-      this.token = this.userIdToken.token;
-      this.userId = this.userIdToken.userId;
-      this.getScoreData();
-    }
+    this.token = this.userIdToken.token;
+    this.userId = this.userIdToken.userId;
+    this.getScoreData();
   },
   mounted() {},
   methods: {
     ...mapMutations([
+      "SET_SCOREDATA_GRADE",
       "SET_IDCARD_STATUS",
       "SET_PASSPORT_STATUS",
       "SET_STUDENT_INFO_STATUS",
@@ -218,17 +218,6 @@ export default {
       "SET_ZHIMA_INFO_STATUS",
       "SET_JD_INFO_STATUS"
     ]),
-    checkLogin() {
-      const store = JSON.parse(
-          localStorage.getItem("store") ? localStorage.getItem("store") : null
-        ),
-        userId = store ? store.userId : null;
-      if (!userId) {
-        this.$router.push({ name: "Login" });
-        return false;
-      }
-      return true;
-    },
     getScoreData() {
       const { showLoading, hideLoading, callServer, showMsg } = this.$tools;
       showLoading();
@@ -239,15 +228,35 @@ export default {
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
-          let { creditScore, differenceTime,assessTime } = res.data;
+          let { creditScore, differenceTime, assessTime } = res.data;
           // 设置分数
           this.scoreData = creditScore;
           // 设置评估时间
-          this.assessTime=assessTime;
+          this.assessTime = assessTime;
           // 设置表盘和对应的级别和时间差
           this.setGrade(differenceTime);
           // 设置个人信息状态
           this.setUserInfoStatus(res.data);
+          // 设置微信分享
+          this.myWxShare(
+            {
+              shareLink: location.href,
+              shareTitle: "便利生活更舒心",
+              shareDesc: "便利生活更舒心",
+              shareImg:
+                location.origin + require("../assets/image/login/logBg@2x.png")
+            },
+            res => {
+              // 成功
+            },
+            err => {
+              // 失败
+            },
+            cancel => {
+              // 取消
+              showMsg("分享取消");
+            }
+          );
         } else {
           showMsg(res.msg, 500);
           this.$router.push({ name: "Login" });
@@ -271,45 +280,13 @@ export default {
         seconds: Math.round((mss % (1000 * 60)) / 1000)
       };
       localStorage.setItem("differenceTime", JSON.stringify(differenceTime));
-      if (this.scoreData >= 400 && this.scoreData < 550) {
-        this.areaIcon = "icon4";
-        sessionStorage.grade = 4; // 存入sessionstorage对应的级别
-        this.gradeStr = "较差";
-        return;
-      }
-      if (this.scoreData >= 550 && this.scoreData < 650) {
-        this.areaIcon = "icon5";
-        sessionStorage.grade = 5;
-        this.gradeStr = "中等";
-        return;
-      }
-      if (this.scoreData >= 650 && this.scoreData < 750) {
-        this.areaIcon = "icon6";
-        sessionStorage.grade = 6;
-        this.gradeStr = "良好";
-        return;
-      }
-      if (this.scoreData >= 750 && this.scoreData < 850) {
-        this.areaIcon = "icon7";
-        sessionStorage.grade = 7;
-        this.gradeStr = "优秀";
-        return;
-      }
-      if (this.scoreData >= 850 && this.scoreData < 950) {
-        this.areaIcon = "icon8";
-        sessionStorage.grade = 8;
-        this.gradeStr = "极好";
-        return;
-      }
-      if (this.scoreData >= 950) {
-        this.areaIcon = "icon9";
-        sessionStorage.grade = 9;
-        this.gradeStr = "极好";
-        return;
-      }
+      // 设置等级描述和等级对应的图片
+      this.gradeStr = this.getCreditScoreGrade.gradeStr;
+      this.areaIcon = `icon${this.getCreditScoreGrade.grade}`;
     },
     setUserInfoStatus(data) {
       const {
+        creditScore,
         driverLicenseStatus,
         drivingLicenseStatus,
         educationStatus,
@@ -320,6 +297,7 @@ export default {
         sesameStatus,
         jingdongStatus
       } = data;
+      this.SET_SCOREDATA_GRADE(creditScore);
       this.SET_IDCARD_STATUS(idCardStatus);
       this.SET_PASSPORT_STATUS(passportStatus);
       this.SET_STUDENT_INFO_STATUS(educationStatus);
@@ -378,10 +356,24 @@ export default {
         name: "CreditLife",
         query: { scoreData: this.scoreData }
       });
+    },
+    // 去顺丰同城
+    goToShunfeng(goodsId) {
+      this.$router.push({ name: "ChangeDetails", query: { goodsId: goodsId } });
+    },
+    // 去运势
+    goToTelling() {
+      window.location.href =
+        "https://wn.qianssd.cn/mllyuncheng/index?channel=swdzdj000";
+    },
+    // 去每日运势
+    goToFortune() {
+      window.location.href =
+        "https://zx.1az56ps.cn/meiriyunshi/index.html?channel=swdzdj000";
     }
   },
   computed: {
-    ...mapGetters(["userIdToken"])
+    ...mapGetters(["userIdToken", "getCreditScoreGrade"])
   }
 };
 </script>
