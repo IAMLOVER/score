@@ -37,7 +37,7 @@
         </li>
         <li
           class="four-item"
-          @click="showMsg"
+          @click="goToCreditCheese"
         >
           <span class="item-icon lishizhangdan"></span>
           <span class="item-title">信用芝士</span>

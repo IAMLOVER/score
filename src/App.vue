@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-document.body.addEventListener("touchstart", function() {});
+// document.body.addEventListener("touchstart", function() {});
 export default {
   data() {
     return {};
@@ -103,5 +103,8 @@ body {
   p {
     line-height: 0.32rem;
   }
+}
+.mescroll-fade-in ,.mescroll-fade-out{
+  visibility: hidden !important;
 }
 </style>
