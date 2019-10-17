@@ -104,7 +104,7 @@ let iosOrAndroid = () => {
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  // 路由守卫改变title
+  // 改变title
   if (to.meta.title) {
     document.title = to.meta.title;
   };

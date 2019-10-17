@@ -139,14 +139,16 @@
 </template>
 
 <script>
-import "../assets/js/swiper.min.js";
-import "../assets/css/swiper.min.css";
+import "@/assets/js/swiper.min.js";
+import "@/assets/css/swiper.min.css";
+import WX_SDK from "@/assets/js/WX_SDK.js";
 import CreditLifeList from "../components/CreditLifeList";
 import WelcomeToast from "../components/WelcomeToast";
 
 import { mapGetters } from "vuex";
 export default {
   name: "CreditLife",
+  mixins: [WX_SDK],
   components: { CreditLifeList, WelcomeToast },
   data() {
     return {
@@ -219,6 +221,23 @@ export default {
           this.xylList = xylList;
           this.djkList = djkList;
           this.zjrList = zjrList;
+          this.myWxShare(
+            {
+              shareLink: location.href,
+              shareTitle: "信用生活",
+              shareDesc: "便利生活更舒心",
+              shareImg: require('../assets/image/login/logBg@2x.png')
+            },
+            res => {
+              // 成功
+            },
+            err => {
+              // 失败
+            },
+            cancel => {
+              // 取消
+            }
+          );
         }
       });
     },
