@@ -36,7 +36,7 @@
           class="submit-info active"
           @click="submitGoodsInfo(goodsDetail.money)"
         >
-          立即兑换
+          {{goodsDetail.money==0?'免费兑换':'立即兑换'}}
         </div>
         <div
           v-else

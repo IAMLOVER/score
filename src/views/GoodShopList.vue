@@ -45,7 +45,7 @@
             </div>
             <p class="life-title">{{item.goodsName}}</p>
             <div class="price-area">
-              <span class="now-price">￥{{item.goodsPrice}}</span>
+              <span class="now-price">￥{{item.money}}</span>
               <span
                 class="old-price"
                 v-if="item.volume"
@@ -100,7 +100,7 @@ export default {
   },
   created() {
     this.type = this.$route.query.type;
-    this.exchangeType=this.$route.query.exchangeType;
+    this.exchangeType = this.$route.query.exchangeType;
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
