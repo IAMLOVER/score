@@ -142,7 +142,9 @@
             <span class="item-lable">姓 名</span>
             <span class="item-desc">{{userName}}</span>
           </div>
-          <div class="main-item">
+           <!-- 2019-10-14 zg 注释，下面功能暂时不开放 -->
+           
+          <!-- <div class="main-item">
             <span class="item-lable">准驾车型</span>
             <span class="item-desc">{{carModel}}</span>
           </div>
@@ -169,7 +171,7 @@
           <div class="main-item">
             <span class="item-lable">初次领证日期</span>
             <span class="item-desc">{{initDate}}</span>
-          </div>
+          </div> -->
           <div class="main-item">
             <span class="item-lable">证件图片</span>
           </div>
