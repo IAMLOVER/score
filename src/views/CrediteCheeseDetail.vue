@@ -56,7 +56,7 @@
                 <a
                   href="javascript:;"
                   class="hf-pl"
-                  @click="replayComment(id,userId,item.id,item.beUcId ,item.id,item.textAreaValue,index)"
+                  @click="replayComment(id,userId,item.id,item.ucId ,item.id,item.textAreaValue,index)"
                 >评论</a>
                 <a href="javascript:;" class="hf-cancel" @click="item.isShowTextArea = false">取消</a>
               </div>
@@ -310,8 +310,6 @@ export default {
     },
     showTextArea(index, ucId) {
       let { showMsg } = this.$tools;
-      console.log(this.userId);
-      console.log(ucId);
       if (this.userId === ucId) {
         showMsg("自己不能评论自己");
         return;
