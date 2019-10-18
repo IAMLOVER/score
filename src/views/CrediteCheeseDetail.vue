@@ -42,7 +42,7 @@
             <div class="comment-wrap">
               <div
                 class="commentContent hf-con-block"
-                @click="item.isShowTextArea = true"
+                @click="showTextArea(index,item.ucId)"
               >{{item.content}}</div>
               <div class="hf-con" v-show="item.isShowTextArea">
                 <div class="flex-text-wrap">
@@ -56,21 +56,18 @@
                 <a
                   href="javascript:;"
                   class="hf-pl"
-                  @click="replayComment(id,userId,item.id,item.ucId,item.id,item.textAreaValue,index)"
+                  @click="replayComment(id,userId,item.id,item.beUcId ,item.id,item.textAreaValue,index)"
                 >评论</a>
                 <a href="javascript:;" class="hf-cancel" @click="item.isShowTextArea = false">取消</a>
               </div>
             </div>
             <div class="hf-list-con" v-for="(commentItem,i) in item.list " :key="i">
               <div class="comment-hf">
-                <div
-                  class="pl-text hfpl-text"
-                  @click="commentItem.isShowReplayTextArea = !commentItem.isShowReplayTextArea"
-                >
-                  <a href="javascript:;" class="comment-size-name">{{item.userName}}</a>
+                <div class="pl-text hfpl-text" @click="showCommentText(index,i,commentItem.ucId)">
+                  <a href="javascript:;" class="comment-size-name">{{commentItem.userName}}</a>
                   <div class="my-pl-con hf-inline comhf">
                     回复
-                    <a href="javascript: void (0)" class="atName">@{{commentItem.userName}}</a>
+                    <a href="javascript: void (0)" class="atName">@{{commentItem.beUserName}}</a>
                     : {{commentItem.content}}
                   </div>
                 </div>
@@ -87,7 +84,7 @@
                     <a
                       href="javascript:;"
                       class="hf-pl"
-                      @click="replayCommentReplay(id,userId,commentItem.replayTextAreaValue,commentItem.beId,commentItem.beUcId,commentItem.inId)"
+                      @click="replayCommentReplay(id,userId,commentItem.replayTextAreaValue,commentItem.id,commentItem.ucId,commentItem.inId)"
                     >评论</a>
                     <a
                       href="javascript:;"
@@ -173,6 +170,7 @@ Vue.use(Icon);
 export default {
   data() {
     return {
+      nickname: "",
       id: "", // 资讯id
       detailInfo: {}, // 资讯的详情
       commentList: [], // 资讯的评论
@@ -246,12 +244,20 @@ export default {
           // 处理一级评论的交互效果
           this.arr.forEach((item, index) => {
             this.$set(item, "isShowTextArea", false);
-            this.$set(item, "textAreaValue", '回复@'+item.userName+'：');
+            this.$set(
+              item,
+              "textAreaValue",
+              "" + this.nickname + "回复@" + item.userName + "："
+            );
             // 处理一级评论下方的二级回复
             let replayList = item.list;
             replayList.forEach((item, index) => {
               this.$set(item, "isShowReplayTextArea", false);
-              this.$set(item, "replayTextAreaValue", '回复@'+item.userName+'：');
+              this.$set(
+                item,
+                "replayTextAreaValue",
+                "" + this.nickname + "回复@" + item.beUserName + "："
+              );
             });
           });
           if (res.data.count > this.pageNo * this.pageSize) {
@@ -276,12 +282,20 @@ export default {
           // 处理一级评论的交互效果
           this.arr.forEach((item, index) => {
             this.$set(item, "isShowTextArea", false);
-            this.$set(item, "textAreaValue", '回复@'+item.userName+'：');
+            this.$set(
+              item,
+              "textAreaValue",
+              "" + this.nickname + "回复@" + item.userName + "："
+            );
             // 处理一级评论下方的二级回复
             let replayList = item.list;
             replayList.forEach((item, index) => {
               this.$set(item, "isShowReplayTextArea", false);
-              this.$set(item, "replayTextAreaValue", "回复：");
+              this.$set(
+                item,
+                "replayTextAreaValue",
+                "" + this.nickname + "回复@" + item.beUserName + "："
+              );
             });
           });
           if (this.arr.length === res.data.count) {
@@ -294,8 +308,29 @@ export default {
         }
       });
     },
+    showTextArea(index, ucId) {
+      let { showMsg } = this.$tools;
+      console.log(this.userId);
+      console.log(ucId);
+      if (this.userId === ucId) {
+        showMsg("自己不能评论自己");
+        return;
+      }else{
+        this.arr[index].isShowTextArea = true
+      }
+    },
+    showCommentText(index,i,beUcId){
+      let { showMsg } = this.$tools;
+           if (this.userId === beUcId) {
+        showMsg("自己不能评论自己");
+        return;
+      }else{
+        this.arr[index].list[i].isShowReplayTextArea = true
+      }
+    },
     // 回复一级评论
     replayComment(id, userId, beId, beUcId, inId, content, index) {
+      let { showMsg, callServer } = this.$tools;
       let params = {};
       params.infoId = id;
       params.ucId = userId;
@@ -303,7 +338,6 @@ export default {
       params.beId = beId;
       params.beUcId = beUcId;
       params.inId = inId;
-      let { showMsg, callServer } = this.$tools;
       callServer("post", "/djh/edit_info_xyf/addComment", params).then(res => {
         if (res.code == 0) {
           showMsg("回复成功");
@@ -315,6 +349,7 @@ export default {
     },
     // 回复一级评论的回复
     replayCommentReplay(id, userId, content, beId, beUcId, inId, index) {
+      let { showMsg, callServer } = this.$tools;
       let params = {};
       params.infoId = id;
       params.ucId = userId;
@@ -322,7 +357,6 @@ export default {
       params.beId = beId;
       params.beUcId = beUcId;
       params.inId = inId;
-      let { showMsg, callServer } = this.$tools;
       callServer("post", "/djh/edit_info_xyf/addComment", params).then(res => {
         if (res.code == 0) {
           showMsg("回复成功");
@@ -416,6 +450,9 @@ export default {
     const store = JSON.parse(
       localStorage.getItem("store") ? localStorage.getItem("store") : null
     );
+    this.nickname = localStorage.getItem("nickname")
+      ? localStorage.getItem("nickname")
+      : "";
     this.userId = store ? store.userId : null;
     this.getDetails();
     this.getComment();
@@ -437,6 +474,7 @@ export default {
   padding: 0 0.3rem;
   padding-top: 0.4rem;
   background: #fff;
+  overflow-x: hidden;
   .videoBox {
     width: 100%;
     video {
