@@ -42,7 +42,7 @@
         <ul id="dataList" class="data-list" v-show="!showWordImg">
           <li v-for="(item,index) in dataList" :key="index">
             <div class="avatar">
-              <img src="http://m.dazhongdianjin.com/img/logo.png" alt class="mescroll-lazy-in" />
+              <img src="../assets/image/creditCheese/header.png" alt class="mescroll-lazy-in" />
             </div>
             <div class="commentList">
               <div class="dt">

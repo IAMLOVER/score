@@ -28,7 +28,7 @@
         <div class="commentText" v-for="(item,index) in arr" :key="index">
           <div class="commentImg btn">
             <img :src="item.headPortrait" class="commentAvatar btn" v-if="item.headPortrait" />
-            <img src="http://m.dazhongdianjin.com/img/logo.png" v-else class="commentAvatar btn" />
+            <img src="../assets/image/creditCheese/header.png" v-else class="commentAvatar btn" />
           </div>
           <div class="commentList">
             <div class="commentInfo">
@@ -61,6 +61,7 @@
                 <a href="javascript:;" class="hf-cancel" @click="item.isShowTextArea = false">取消</a>
               </div>
             </div>
+            <!-- 已有评论下方的回复 -->
             <div class="hf-list-con" v-for="(commentItem,i) in item.list " :key="i">
               <div class="comment-hf">
                 <div class="pl-text hfpl-text" @click="showCommentText(index,i,commentItem.ucId)">
@@ -345,7 +346,7 @@ export default {
         }
       });
     },
-    // 回复一级评论的回复
+    // 对回复评论的回复
     replayCommentReplay(id, userId, content, beId, beUcId, inId, index) {
       let { showMsg, callServer } = this.$tools;
       let params = {};

@@ -253,7 +253,7 @@ export default {
       successCallback,
       errorCallback
     ) {
-      let { callServer } = this.$tools;
+      let { callServer, showMsg } = this.$tools;
       let params = {};
       params.pageNo = pageNum - 1;
       params.pageSize = pageSize;
@@ -349,6 +349,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #fff;
 }
 .creditcheese-area {
   width: 100%;
