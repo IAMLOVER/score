@@ -31,10 +31,10 @@
         >
           <div :id="`dataList${index}`">
             <div v-for="(item,index) in item.list" :key="index">
-              <div v-if="!item.isVideo && !item.isPictureNews">
+              <div v-if="!item.isVideo && item.style === 1">
                 <CheeseDataList :msg="item"></CheeseDataList>
               </div>
-              <div v-if="item.isPictureNews">
+              <div v-if="!item.isVideo && item.style === 2">
                 <CheeseDataBigList :msg="item"></CheeseDataBigList>
               </div>
               <div v-if="item.isVideo">

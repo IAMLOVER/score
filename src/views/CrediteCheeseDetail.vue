@@ -332,7 +332,7 @@ export default {
       let params = {};
       params.infoId = id;
       params.ucId = userId;
-      params.content = content.split("：")[1];
+      params.content = content.split("：")[1]?content.split("：")[1]:content;
       params.beId = beId;
       params.beUcId = beUcId;
       params.inId = inId;
@@ -351,7 +351,7 @@ export default {
       let params = {};
       params.infoId = id;
       params.ucId = userId;
-      params.content = content.split("：")[1];
+      params.content = content.split("：")[1]?content.split("：")[1]:content;
       params.beId = beId;
       params.beUcId = beUcId;
       params.inId = inId;
@@ -879,6 +879,7 @@ export default {
       padding: 0.3rem;
       .textArea {
         width: 100%;
+        padding-top: .1rem;
       }
     }
   }

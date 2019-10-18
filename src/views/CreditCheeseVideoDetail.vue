@@ -571,6 +571,7 @@ export default {
       padding: 0.3rem;
       .textArea {
         width: 100%;
+        padding-top: .1rem;
       }
     }
   }
