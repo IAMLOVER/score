@@ -275,7 +275,7 @@ export default {
         education: this.education,
         enrollmentTime: this.admissionTime,
         graduationTime: this.graduationTime,
-        studentStatus: this.status,
+        studentStatus: this.status == "在读" ? 1 : 2,
         educationStatus: 0
       }).then(res => {
         hideLoading();

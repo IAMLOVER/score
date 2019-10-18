@@ -95,13 +95,13 @@ const mutations = {
   SET_STUDENT_RIGION(state, studentRegion) {
     state.studentRegionName = studentRegion.title;
     state.studentRedionId = studentRegion.id
-    setLocalStorage({ studentRegionName: studentRegion.title, studentRedionId: studentRegion.id });
+    // setLocalStorage({ studentRegionName: studentRegion.title, studentRedionId: studentRegion.id });
   },
   // 设置学籍信息学校方法
   SET_STUDENT_INFO(state, studentInfo) {
     state.studentName = studentInfo.title;
     state.studentId = studentInfo.id
-    setLocalStorage({ studentName: studentInfo.title, studentId: studentInfo.id });
+    // setLocalStorage({ studentName: studentInfo.title, studentId: studentInfo.id });
   },
 
   // 设置芝麻信用信息状态方法
