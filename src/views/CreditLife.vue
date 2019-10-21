@@ -7,24 +7,14 @@
       <div class="swiper-container swiper1">
         <div class="swiper-wrapper">
           <!-- 内容 -->
-          <div
-            class="swiper-slide swiper-slide-banner"
-            v-for="item in bannerList"
-            :key="item.id"
-          >
-            <a
-              class="banner-link"
-              :href="item.eventUrl?item.eventUrl:null"
-            >
-              <img
-                :src="item.pictureUrl"
-                alt=""
-              >
+          <div class="swiper-slide swiper-slide-banner" v-for="item in bannerList" :key="item.id">
+            <a class="banner-link" :href="item.eventUrl?item.eventUrl:null">
+              <img :src="item.pictureUrl" alt />
             </a>
           </div>
         </div>
         <!-- 分页器 -->
-        <div class="swiper-pagination "></div>
+        <div class="swiper-pagination"></div>
       </div>
     </section>
 
@@ -34,39 +24,24 @@
         <span class="score-icon">您当前的信用分：</span>
         <span class="score">{{scoreData}}</span>
       </div>
-      <span
-        class="goMore score-right"
-        @click="goToInterpretation"
-      >去查看</span>
+      <span class="goMore score-right" @click="goToInterpretation">去查看</span>
     </section>
 
     <!-- FOUR HOT AREA -->
     <section class="four-hot-area">
-      <router-link
-        class="hot-item"
-        to="Recharge"
-      >
+      <router-link class="hot-item" to="Recharge">
         <span class="hot1 hot-icon"></span>
         <span class="hot-item-desc">充值</span>
       </router-link>
-      <div
-        class="hot-item"
-        @click="showMsg"
-      >
+      <div class="hot-item" @click="showMsg">
         <span class="hot2 hot-icon"></span>
         <span class="hot-item-desc">电影</span>
       </div>
-      <router-link
-        class="hot-item"
-        to="GoodShopList?exchangeType=1"
-      >
+      <router-link class="hot-item" to="GoodShopList?exchangeType=1">
         <span class="hot3 hot-icon"></span>
         <span class="hot-item-desc">兑换</span>
       </router-link>
-      <div
-        class="hot-item"
-        @click="goToDingchang"
-      >
+      <div class="hot-item" @click="goToDingchang">
         <span class="hot4 hot-icon"></span>
         <span class="hot-item-desc">运动</span>
       </div>
@@ -74,24 +49,14 @@
 
     <!-- EXCELLENT LIFE AREA -->
     <template v-if="yshList.length>0">
-      <CreditLifeList
-        :lifeList="yshList"
-        title="优生活"
-        subtitle="便利生活更舒心"
-        type="1"
-      ></CreditLifeList>
+      <CreditLifeList :lifeList="yshList" title="优生活" subtitle="便利生活更舒心" type="1"></CreditLifeList>
       <!-- 分割线 -->
       <div class="line10"></div>
     </template>
 
     <!-- New entertainment AREA -->
     <template v-if="xylList.length>0">
-      <CreditLifeList
-        :lifeList="xylList"
-        title="新娱乐"
-        subtitle="从心定义娱乐"
-        type="2"
-      ></CreditLifeList>
+      <CreditLifeList :lifeList="xylList" title="新娱乐" subtitle="从心定义娱乐" type="2"></CreditLifeList>
       <!-- 分割线 -->
       <div class="line10"></div>
 
@@ -101,40 +66,21 @@
 
     <!-- Private doctor AREA -->
     <template v-if="djkList.length>0">
-      <CreditLifeList
-        :lifeList="djkList"
-        title="大健康"
-        subtitle="平安好医生、私人医生"
-        type="4"
-      ></CreditLifeList>
+      <CreditLifeList :lifeList="djkList" title="大健康" subtitle="平安好医生、私人医生" type="4"></CreditLifeList>
       <!-- 分割线 -->
       <div class="line10"></div>
-
     </template>
 
     <!-- Intellectual finance area -->
     <template v-if="zjrList.length>0">
-      <CreditLifeList
-        :lifeList="zjrList"
-        title="智金融"
-        subtitle="便捷金融服务"
-        type="3"
-      ></CreditLifeList>
+      <CreditLifeList :lifeList="zjrList" title="智金融" subtitle="便捷金融服务" type="3"></CreditLifeList>
     </template>
 
     <!-- 悬浮按钮 -->
-    <router-link
-      class="convert-icon"
-      :to="{name:'MyOrder'}"
-    ></router-link>
+    <router-link class="convert-icon" :to="{name:'MyOrder'}"></router-link>
 
     <!-- 新用户首次登陆送优惠券，欢迎组件 -->
-    <WelcomeToast
-      v-if="isFirstLogin"
-      @closeToast="closeToast"
-      :goodsNoList="goodsNoList"
-    ></WelcomeToast>
-
+    <WelcomeToast v-if="isFirstLogin" @closeToast="closeToast" :goodsNoList="goodsNoList"></WelcomeToast>
   </section>
 </template>
 
@@ -166,6 +112,12 @@ export default {
     const { getCookie, isEmpty } = this.$tools;
     this.scoreData =
       this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
+    if (
+      !localStorage.getItem("store").openid &&
+      /micromessenger/i.test(navigator.userAgent)
+    ) {
+      this.saveOpenId();
+    }
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
 
@@ -174,6 +126,20 @@ export default {
   },
   mounted() {},
   methods: {
+    // 保存openId
+    saveOpenId() {
+      let openid = localStorage.getItem("wxUserInfo").openid;
+      const { callServer } = this.$tools;
+      let params = {};
+      (params.openid = openid),
+        (params.userId = localStorage.getItem("store").userId),
+        (params.token = localStorage.getItem("store").token);
+      callServer("post", "/djh/user_info/save_openid", params).then(res => {
+        if (res.code == 0) {
+          localStorage.getItem("store").openid = openid;
+        }
+      });
+    },
     getBanner() {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();

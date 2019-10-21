@@ -2,10 +2,7 @@
   <section class="change-detail-area">
     <section class="change-detail-content">
       <nav class="banner-area">
-        <img
-          :src="goodsDetail.goodsImg"
-          alt=""
-        >
+        <img :src="goodsDetail.goodsImg" alt />
       </nav>
 
       <div class="detail-desc-area">
@@ -13,21 +10,20 @@
           <span class="desc">{{goodsDetail.goodsName}}</span>
         </p>
         <p class="price-area">
-          <span
-            class="old-price"
-            v-if="goodsDetail.volume"
-          ><span class="fz14">￥</span>{{goodsDetail.volume}}</span>
-          <span class="now-price"><span class="fz14">￥</span>{{goodsDetail.money}}</span>
+          <span class="old-price" v-if="goodsDetail.volume">
+            <span class="fz14">￥</span>
+            {{goodsDetail.volume}}
+          </span>
+          <span class="now-price">
+            <span class="fz14">￥</span>
+            {{goodsDetail.money}}
+          </span>
         </p>
       </div>
 
       <div class="goods-content-area">
         <p class="goods-title">商品详情：</p>
-        <div
-          class="goods-main"
-          v-html="goodsDetail.goodsInfo"
-        >
-        </div>
+        <div class="goods-main" v-html="goodsDetail.goodsInfo"></div>
       </div>
 
       <div class="goods-btn-area">
@@ -35,28 +31,16 @@
           v-if="goodsDetail.stock>0"
           class="submit-info active"
           @click="submitGoodsInfo(goodsDetail.money)"
-        >
-          {{goodsDetail.money==0?'免费兑换':'立即兑换'}}
-        </div>
-        <div
-          v-else
-          class="no-exchange"
-          @click="showMsg"
-        >
-          不可兑换
-        </div>
+        >{{goodsDetail.money==0?'免费兑换':'立即兑换'}}</div>
+        <div v-else class="no-exchange" @click="showMsg">不可兑换</div>
         <div class="now-stock">
-          （当前剩余库存<span class="stock-num">{{goodsDetail.stock}}</span>）
+          （当前剩余库存
+          <span class="stock-num">{{goodsDetail.stock}}</span>）
         </div>
       </div>
     </section>
     <!-- toast -->
-    <GoodsToast
-      v-show="isShowToast"
-      :typeIcon="typeIcon"
-      @sure="sureFn"
-      @goToTarget="goToTargetFn"
-    ></GoodsToast>
+    <GoodsToast v-show="isShowToast" :typeIcon="typeIcon" @sure="sureFn" @goToTarget="goToTargetFn"></GoodsToast>
   </section>
 </template>
 
@@ -69,6 +53,7 @@ export default {
   components: { GoodsToast },
   data() {
     return {
+      fromId: "",
       openid: "",
       userId: "",
       token: "",
@@ -79,19 +64,39 @@ export default {
     };
   },
   created() {
-    // 从本地获取微信用户信息
-    const wxUserInfo = JSON.parse(
-      localStorage.getItem("wxUserInfo")
-        ? localStorage.getItem("wxUserInfo")
-        : null
-    );
-    // 从本地获取userId
-    const store = JSON.parse(
-      localStorage.getItem("store") ? localStorage.getItem("store") : null
-    );
-    this.openid = wxUserInfo ? wxUserInfo.openid : null;
-    this.userId = store ? store.userId : null;
-    this.token = store ? store.token : null;
+    //获取当前连接，根据fromId判断是从哪一个公众号进入的当前页面;1:大众点金 2:微联盟
+    let fromId = this.$route.query.fromId;
+    this.fromId = fromId;
+    if (fromId == 1) {
+      // 判断大众点金是否已经授权
+      let wxDianJinUserInfo = JSON.parse(
+        localStorage.getItem("wxDianJinUserInfo")
+          ? localStorage.getItem("wxDianJinUserInfo")
+          : null
+      );
+      if (wxDianJinUserInfo && wxDianJinUserInfo.openid) {
+        this.openid = wxDianJinUserInfo.openid;
+      } else {
+        // 保存当前路由地址，授权后跳回到此地址
+        sessionStorage.setItem(
+          "wxDianJinRedirectUrl",
+          `${location.pathname}${location.search}`
+        );
+        let appId = "wxf0ab4b0f8353c4bf";
+        let redirectUrl = encodeURIComponent(
+          `${window.location.host}/redirect.html?type=WxDianJinAuth`
+        );
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=http://${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`;
+      }
+    } else {
+      // 如果from不等于1
+      const wxUserInfo = JSON.parse(
+        localStorage.getItem("wxUserInfo")
+          ? localStorage.getItem("wxUserInfo")
+          : null
+      );
+      this.openid = wxUserInfo ? wxUserInfo.openid : null;
+    }
     this.goodsId = this.$route.query.goodsId;
     this.getGoodsDetail(this.goodsId);
   },
@@ -114,22 +119,62 @@ export default {
       const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
       showLoading();
       if (money == 0) {
-        // 如果价格是0的时候调用另外一个接口
-        callServer("POST", "djh/zhongchenOrder/buyFreeGoods", {
-          userId: this.userId,
-          token: this.token,
-          goodsId: this.goodsId
-        }).then(res => {
-          hideLoading();
-          if (res.code == 0) {
-            this.isShowToast = true;
-            this.typeIcon = "success";
-          } else {
-            showMsg(res.msg);
-          }
-        });
-        return;
+        // 如果是大众点金用户购买
+        if (this.fromId == 1) {
+          // 从本地获取大众点金userId
+          const wxDianJinUserStore = JSON.parse(
+            localStorage.getItem("wxDianJinUserStore")
+              ? localStorage.getItem("wxDianJinUserStore")
+              : null
+          );
+          this.userId = wxDianJinUserStore ? wxDianJinUserStore.userId : null;
+          this.token = wxDianJinUserStore ? wxDianJinUserStore.token : null;
+          // 如果价格是0的时候调用另外一个接口
+          callServer("POST", "/djh/zhongchenOrder/buyFreeGoods", {
+            userId: this.userId,
+            token: this.token,
+            goodsId: this.goodsId,
+            wxMsgStatus: 1
+          }).then(res => {
+            hideLoading();
+            if (res.code == 0) {
+              this.isShowToast = true;
+              this.typeIcon = "success";
+            } else {
+              showMsg(res.msg);
+            }
+          });
+          return;
+        } else {
+          // 如果价格是0的时候调用另外一个接口
+          // 从本地获取userId
+          const store = JSON.parse(
+            localStorage.getItem("store") ? localStorage.getItem("store") : null
+          );
+          this.userId = store ? store.userId : null;
+          this.token = store ? store.token : null;
+          callServer("POST", "/djh/zhongchenOrder/buyFreeGoods", {
+            userId: this.userId,
+            token: this.token,
+            goodsId: this.goodsId
+          }).then(res => {
+            hideLoading();
+            if (res.code == 0) {
+              this.isShowToast = true;
+              this.typeIcon = "success";
+            } else {
+              showMsg(res.msg);
+            }
+          });
+          return;
+        }
       }
+      // 从本地获取userId
+      const store = JSON.parse(
+        localStorage.getItem("store") ? localStorage.getItem("store") : null
+      );
+      this.userId = store ? store.userId : null;
+      this.token = store ? store.token : null;
       callServer("POST", "/djh/wx_pay/zhongchen/prepay", {
         userId: this.userId,
         openid: this.openid,

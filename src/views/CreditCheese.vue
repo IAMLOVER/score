@@ -217,10 +217,6 @@ export default {
         },
         lazyLoad: {
           use: true,
-          attr: "imgurl",
-          showClass: "mescroll-lazy-in",
-          delay: 500,
-          offset: 200
         }
       };
     },

@@ -1,22 +1,25 @@
 <script>
-  ! function () {
-    let url = location.href;
+    ! function() {
+        let url = location.href;
 
-    /**
-     * 获取URL中的参数值，用于页面传参
-     * @name 参数的key
-     */
-    function getURLParameter(name) {
-      return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [,
-        ""
-      ])[1].replace(/\+/g, '%20')) || null;
-    };
+        /**
+         * 获取URL中的参数值，用于页面传参
+         * @name 参数的key
+         */
+        function getURLParameter(name) {
+            return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [,
+                ""
+            ])[1].replace(/\+/g, '%20')) || null;
+        };
 
-    let type = getURLParameter('type'),
-      code = getURLParameter('code');
+        let type = getURLParameter('type'),
+            code = getURLParameter('code');
 
-    if (type == 'WxAuth') {
-      window.location.replace(window.location.origin + '/WxAuth?code=' + code)
-    }
-  }();
+        if (type == 'WxAuth') {
+            window.location.replace(window.location.origin + '/WxAuth?code=' + code)
+        }
+        if (type == 'WxDianJinAuth') {
+            window.location.replace(window.location.origin + '/WxDianJinAuth?code=' + code)
+        }
+    }();
 </script>

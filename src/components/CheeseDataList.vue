@@ -12,7 +12,7 @@
       </div>
       <!-- 右侧内容 -->
       <div class="list-right">
-        <img :imgurl="msg.picture" />
+        <img src="../assets/image/mescrolloptions/img_default@2x.png" :imgurl="msg.picture" />
       </div>
     </div>
   </section>

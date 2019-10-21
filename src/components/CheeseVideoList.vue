@@ -10,7 +10,7 @@
       </div>
       <div class="list-left">
         <img
-          :src="msg.picture"
+          src="../assets/image/mescrolloptions/img_default@2x.png" :imgurl="msg.picture"
         />
         <span class="iconPlay"></span>
       </div>

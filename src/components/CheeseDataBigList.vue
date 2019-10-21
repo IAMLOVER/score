@@ -4,7 +4,7 @@
       <a href="javascript:void(0);">
         <h4>{{msg.title}}</h4>
         <div class="newsBigImg">
-          <img :imgurl="msg.picture" />
+          <img src="../assets/image/mescrolloptions/img_default@2x.png" :imgurl="msg.picture"/>
         </div>
         <div class="newsInfoWrapper" style="display: block;">
           <div class="newsInfo">

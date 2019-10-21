@@ -202,6 +202,9 @@ export default {
   created() {
     this.token = this.userIdToken.token;
     this.userId = this.userIdToken.userId;
+    if(!localStorage.getItem("store").openid && /micromessenger/i.test(navigator.userAgent)){
+      this.saveOpenId()
+    }
     this.getScoreData();
   },
   mounted() {},
@@ -218,6 +221,20 @@ export default {
       "SET_ZHIMA_INFO_STATUS",
       "SET_JD_INFO_STATUS"
     ]),
+    // 保存openId
+    saveOpenId(){
+      let openid =  localStorage.getItem("wxUserInfo").openid
+      const { callServer } = this.$tools;
+      let params = {}
+      params.openid = openid,
+      params.userId = localStorage.getItem("store").userId,
+      params.token = localStorage.getItem("store").token
+      callServer("post","/djh/user_info/save_openid",params).then(res => {
+        if(res.code == 0){
+            localStorage.getItem("store").openid = openid
+        }
+      })
+    },
     getScoreData() {
       const { showLoading, hideLoading, callServer, showMsg } = this.$tools;
       showLoading();

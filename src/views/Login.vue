@@ -240,6 +240,7 @@ export default {
         }
       }
       let params = { mobile: this.mobile };
+      params.openid = localStorage.getItem("wxUserInfo").openid;
       this.selectPassWord
         ? (params.password = this.loginpassword)
         : (params.authcode = this.loginverifyCode);
@@ -298,7 +299,8 @@ export default {
       callServer("POST", "/djh/user_info/register", {
         mobile: this.mobile,
         authcode: this.regverifyCode,
-        password: this.regpassword
+        password: this.regpassword,
+        openid: localStorage.getItem("wxUserInfo").openid,
       }).then(res => {
         if (res.code == 0) {
           showMsg("注册成功");
