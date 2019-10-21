@@ -170,9 +170,11 @@ router.beforeEach((to, from, next) => {
         }
         // 用于处理IOS环境微信复制链接为首页bug，
         if (iosOrAndroid() == 'IOS') {
-            if (to.path !== location.pathname) {
-                location.assign(to.fullPath)
-                return
+            if (!to.meta.noRefresh || to.meta.noRefresh != true) {
+                if (to.path !== location.pathname) {
+                    location.assign(to.fullPath)
+                    return
+                }
             }
         }
         next()

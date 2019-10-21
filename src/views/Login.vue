@@ -336,6 +336,7 @@ export default {
   position: relative;
   width: 100%;
   min-height: 100vh;
+  background-color:#fff;
 
   // 背景图
   .login-bg {
@@ -379,6 +380,7 @@ export default {
   .degister-from-area {
     padding: 0 0.6rem;
     margin-top: 0.6rem;
+    background-color: #fff;
 
     .form-group {
       position: relative;
