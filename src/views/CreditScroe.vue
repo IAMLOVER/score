@@ -1,14 +1,8 @@
 <template>
   <section class="credit-page">
     <!-- BANNER AREA -->
-    <section
-      class="banner-area"
-      @click="goToInterpretation"
-    >
-      <div
-        class="score-area"
-        :class="areaIcon"
-      >
+    <section class="banner-area" @click="goToInterpretation">
+      <div class="score-area" :class="areaIcon">
         <p class="score">{{scoreData}}</p>
         <p>信用{{gradeStr}}</p>
       </div>
@@ -16,36 +10,23 @@
         <span>评估时间：</span>
         <span class="updatetime">{{assessTime}}</span>
       </p>
-
     </section>
     <!-- FOUR MENU -->
     <section class="four-menu-area">
       <ul class="four-content">
-        <li
-          class="four-item"
-          @click="goToQuickScore"
-        >
+        <li class="four-item" @click="goToQuickScore">
           <span class="item-icon kuaishutifen"></span>
           <span class="item-title">快速提分</span>
         </li>
-        <li
-          class="four-item"
-          @click="goToCreditReport"
-        >
+        <li class="four-item" @click="goToCreditReport">
           <span class="item-icon xinyongbaogao"></span>
           <span class="item-title">信用报告</span>
         </li>
-        <li
-          class="four-item"
-          @click="goToCreditCheese"
-        >
+        <li class="four-item" @click="goToCreditCheese">
           <span class="item-icon lishizhangdan"></span>
           <span class="item-title">信用芝士</span>
         </li>
-        <li
-          class="four-item"
-          @click="goToCreditLife"
-        >
+        <li class="four-item" @click="goToCreditLife">
           <span class="item-icon xinyongshenghuo"></span>
           <span class="item-title">信用生活</span>
         </li>
@@ -55,37 +36,19 @@
     <section class="hot-recommend-area p24 mb32">
       <p class="title">热门推荐</p>
       <ul class="hot-recommend-wrap">
-        <li
-          class="recommend-item heimingdan"
-          @click="goToShunfeng('111')"
-        >
+        <li class="recommend-item heimingdan" @click="goToShunfeng('111')">
           <a href="javascript:;">
-            <img
-              src="../assets/image/creditScore/heimingdan@2x.png"
-              alt=""
-            >
+            <img src="../assets/image/creditScore/heimingdan@2x.png" alt />
           </a>
         </li>
-        <li
-          class="recommend-item sifashuju"
-          @click="goToTelling"
-        >
+        <li class="recommend-item sifashuju" @click="goToTelling">
           <a href="javascript:;">
-            <img
-              src="../assets/image/creditScore/telling@2x.png"
-              alt=""
-            >
+            <img src="../assets/image/creditScore/telling@2x.png" alt />
           </a>
         </li>
-        <li
-          class="recommend-item xinyongxiaozhishi"
-          @click="goToFortune"
-        >
+        <li class="recommend-item xinyongxiaozhishi" @click="goToFortune">
           <a href="javascript:;">
-            <img
-              src="../assets/image/creditScore/xinyongxiaozhishi@2x.png"
-              alt=""
-            >
+            <img src="../assets/image/creditScore/xinyongxiaozhishi@2x.png" alt />
           </a>
         </li>
       </ul>
@@ -119,7 +82,6 @@
               </p>
               <p class="ce959">信用分+200</p>
             </div>
-
           </div>
           <div class="right">
             <span>未完成</span>
@@ -135,49 +97,28 @@
               </p>
               <p class="ce959">信用分自动提升</p>
             </div>
-
           </div>
           <div class="right">
             <span>未完成</span>
           </div>
         </li>
       </ul>
-
     </section>
     <!-- ACTIVITY -->
     <section class="activity-area p24 mb32">
       <p class="title">精选活动</p>
-      <div
-        class="activity-main-img"
-        @click="showMsg"
-      >
-        <img
-          src="../assets/image/creditScore/activity_main@2x.png"
-          alt=""
-        >
+      <div class="activity-main-img" @click="showMsg">
+        <img src="../assets/image/creditScore/activity_main@2x.png" alt />
       </div>
       <div class="activity-sub-imgs">
-        <div
-          class="left"
-          @click="showMsg"
-        >
-          <img
-            src="../assets/image/creditScore/activity_sub_1@2x.png"
-            alt=""
-          >
+        <div class="left" @click="showMsg">
+          <img src="../assets/image/creditScore/activity_sub_1@2x.png" alt />
         </div>
-        <div
-          class="right"
-          @click="showMsg"
-        >
-          <img
-            src="../assets/image/creditScore/activity_sub_2@2x.png"
-            alt=""
-          >
+        <div class="right" @click="showMsg">
+          <img src="../assets/image/creditScore/activity_sub_2@2x.png" alt />
         </div>
       </div>
     </section>
-
   </section>
 </template>
 
@@ -202,9 +143,6 @@ export default {
   created() {
     this.token = this.userIdToken.token;
     this.userId = this.userIdToken.userId;
-    if(!localStorage.getItem("store").openid && /micromessenger/i.test(navigator.userAgent)){
-      this.saveOpenId()
-    }
     this.getScoreData();
   },
   mounted() {},
@@ -221,20 +159,6 @@ export default {
       "SET_ZHIMA_INFO_STATUS",
       "SET_JD_INFO_STATUS"
     ]),
-    // 保存openId
-    saveOpenId(){
-      let openid =  localStorage.getItem("wxUserInfo").openid
-      const { callServer } = this.$tools;
-      let params = {}
-      params.openid = openid,
-      params.userId = localStorage.getItem("store").userId,
-      params.token = localStorage.getItem("store").token
-      callServer("post","/djh/user_info/save_openid",params).then(res => {
-        if(res.code == 0){
-            localStorage.getItem("store").openid = openid
-        }
-      })
-    },
     getScoreData() {
       const { showLoading, hideLoading, callServer, showMsg } = this.$tools;
       showLoading();
@@ -325,7 +249,7 @@ export default {
       this.SET_HOUSE_INFO_STATUS(deedStatus);
       this.SET_ZHIMA_INFO_STATUS(sesameStatus);
       this.SET_JD_INFO_STATUS(jingdongStatus);
-      localStorage.setItem('nickname',nickname);
+      localStorage.setItem("nickname", nickname);
     },
     // 去信用解读
     goToInterpretation() {

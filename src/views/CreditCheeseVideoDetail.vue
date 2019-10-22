@@ -14,7 +14,7 @@
           x5-video-player-type="h5"
           x5-video-orientation="h5"
           x5-video-player-fullscreen="true"
-          poster="http://m.dazhongdianjin.com/upload/p-bbaab1050fe14440ab3983c283c8d7ab.png"
+          :poster="detailInfo.picture"
         ></video>
       </div>
       <div class="titleBox">

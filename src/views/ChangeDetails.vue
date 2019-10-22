@@ -29,7 +29,9 @@
       <div class="goods-btn-area">
         <div
           v-if="goodsDetail.stock>0"
-          class="submit-info active"
+          class="submit-info"
+          :class="userId ? 'active': ''"
+          :disabled="userId ? true :false"
           @click="submitGoodsInfo(goodsDetail.money)"
         >{{goodsDetail.money==0?'免费兑换':'立即兑换'}}</div>
         <div v-else class="no-exchange" @click="showMsg">不可兑换</div>
@@ -47,6 +49,7 @@
 <script>
 import WX_SDK from "@/assets/js/WX_SDK.js";
 import GoodsToast from "../components/GoodsToast";
+import { mapMutations } from "vuex";
 export default {
   name: "ChangeDetails",
   mixins: [WX_SDK],
@@ -66,6 +69,7 @@ export default {
   created() {
     //获取当前连接，根据fromId判断是从哪一个公众号进入的当前页面;1:大众点金 2:微联盟
     let fromId = this.$route.query.fromId;
+    this.userId = localStorage.getItem('store') ? JSON.parse(localStorage.getItem('store')).userId : null
     this.fromId = fromId;
     if (fromId == 1) {
       // 判断大众点金是否已经授权
@@ -117,18 +121,27 @@ export default {
     },
     submitGoodsInfo(money) {
       const { showMsg, showLoading, hideLoading, callServer } = this.$tools;
-      showLoading();
       if (money == 0) {
         // 如果是大众点金用户购买
         if (this.fromId == 1) {
           // 从本地获取大众点金userId
-          const wxDianJinUserStore = JSON.parse(
-            localStorage.getItem("wxDianJinUserStore")
-              ? localStorage.getItem("wxDianJinUserStore")
-              : null
+          const store = JSON.parse(
+            localStorage.getItem("store") ? localStorage.getItem("store") : null
           );
-          this.userId = wxDianJinUserStore ? wxDianJinUserStore.userId : null;
-          this.token = wxDianJinUserStore ? wxDianJinUserStore.token : null;
+          this.userId = store ? store.userId : null;
+          this.token = store ? store.token : null;
+          if (this.userId == null || this.token == null) {
+            sessionStorage.setItem(
+              "wxDianJinRedirectUrl",
+              `${location.pathname}${location.search}`
+            );
+            let appId = "wxf0ab4b0f8353c4bf";
+            let redirectUrl = encodeURIComponent(
+              `${window.location.host}/redirect.html?type=WxDianJinAuth`
+            );
+            window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=http://${redirectUrl}&response_type=code&scope=snsapi_base&state=state#wechat_redirect`;
+            return;
+          }
           // 如果价格是0的时候调用另外一个接口
           callServer("POST", "/djh/zhongchenOrder/buyFreeGoods", {
             userId: this.userId,
@@ -136,7 +149,6 @@ export default {
             goodsId: this.goodsId,
             wxMsgStatus: 1
           }).then(res => {
-            hideLoading();
             if (res.code == 0) {
               this.isShowToast = true;
               this.typeIcon = "success";

@@ -113,10 +113,10 @@ export default {
     this.scoreData =
       this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
     if (
-      !localStorage.getItem("store").openid &&
+      !JSON.parse(localStorage.getItem("store")).openid &&
       /micromessenger/i.test(navigator.userAgent)
     ) {
-      this.saveOpenId();
+      // this.saveOpenId();
     }
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
@@ -128,15 +128,19 @@ export default {
   methods: {
     // 保存openId
     saveOpenId() {
-      let openid = localStorage.getItem("wxUserInfo").openid;
+      let openid = JSON.parse(localStorage.getItem("wxUserInfo")).openid;
       const { callServer } = this.$tools;
       let params = {};
       (params.openid = openid),
-        (params.userId = localStorage.getItem("store").userId),
-        (params.token = localStorage.getItem("store").token);
+        (params.userId = JSON.parse(
+          localStorage.getItem("wxDianJinUserStore")
+        ).userId),
+        (params.token = JSON.parse(
+          localStorage.getItem("wxDianJinUserStore")
+        ).token);
       callServer("post", "/djh/user_info/save_openid", params).then(res => {
         if (res.code == 0) {
-          localStorage.getItem("store").openid = openid;
+          JSON.parse(localStorage.getItem("store")).openid = openid;
         }
       });
     },

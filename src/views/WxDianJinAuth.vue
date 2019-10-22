@@ -35,15 +35,14 @@ export default {
               .then(res => {
                 if (res.code == 0) {
                   localStorage.setItem(
-                    "wxDianJinUserStore",
+                    "store",
                     JSON.stringify(res.data)
                   );
+                 let wxDianJinRedirectUrl = sessionStorage.getItem("wxDianJinRedirectUrl");
+                 this.$router.replace(wxDianJinRedirectUrl);
                 }
               });
-            let wxDianJinRedirectUrl = sessionStorage.getItem(
-              "wxDianJinRedirectUrl"
-            );
-            this.$router.replace(wxDianJinRedirectUrl);
+
           }
         });
     } else {

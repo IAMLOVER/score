@@ -4,16 +4,8 @@
     <div class="login-bg"></div>
     <!-- LOGIN TITLE AREA -->
     <div class="login-title-area">
-      <p
-        class="login-title"
-        :class="active==1?'active':null"
-        @click="tableChange('1')"
-      >登录</p>
-      <p
-        class="login-title"
-        :class="active==2?'active':null"
-        @click="tableChange('2')"
-      >注册</p>
+      <p class="login-title" :class="active==1?'active':null" @click="tableChange('1')">登录</p>
+      <p class="login-title" :class="active==2?'active':null" @click="tableChange('2')">注册</p>
     </div>
 
     <template v-if="active==1">
@@ -27,23 +19,12 @@
             pattern="[0-9]*"
             maxlength="11"
             v-model="mobile"
-          >
+          />
         </div>
-        <div
-          class="form-group password"
-          v-if="selectPassWord"
-        >
-          <input
-            type="password"
-            placeholder="请输入密码"
-            autocomplete="off"
-            v-model="loginpassword"
-          >
+        <div class="form-group password" v-if="selectPassWord">
+          <input type="password" placeholder="请输入密码" autocomplete="off" v-model="loginpassword" />
         </div>
-        <div
-          class="form-group verfication"
-          v-else
-        >
+        <div class="form-group verfication" v-else>
           <input
             type="text"
             placeholder="请输入验证码"
@@ -51,35 +32,21 @@
             pattern="[0-9]*"
             v-model="loginverifyCode"
             class="verify-code"
-          >
+          />
           <span
             class="button emit-verify-code"
             v-if="!loginisShowTime"
             @click="sendVerifyCode('login')"
           >发送验证码</span>
-          <span
-            class="verify-code-time"
-            v-else
-          >{{logintotalTime}}s后重试</span>
+          <span class="verify-code-time" v-else>{{logintotalTime}}s后重试</span>
         </div>
       </div>
       <!-- LOGIN BTN AREA -->
-      <div
-        class="login-btn-area button"
-        @click="loginFn"
-      >
-        登录
-      </div>
+      <div class="login-btn-area button" @click="loginFn">登录</div>
       <!-- PASSWORD & VERIFICATION LOGIN SELECT AREA -->
       <div class="password-verification-select">
-        <span
-          v-if="selectPassWord"
-          @click="selectPassWordFn(false)"
-        >验证码登陆</span>
-        <span
-          v-else
-          @click="selectPassWordFn(true)"
-        >密码登陆</span>
+        <span v-if="selectPassWord" @click="selectPassWordFn(false)">验证码登陆</span>
+        <span v-else @click="selectPassWordFn(true)">密码登陆</span>
       </div>
     </template>
     <template v-else>
@@ -93,7 +60,7 @@
             pattern="[0-9]*"
             maxlength="11"
             v-model="mobile"
-          >
+          />
         </div>
 
         <div class="form-group verfication">
@@ -104,24 +71,16 @@
             pattern="[0-9]*"
             v-model="regverifyCode"
             class="verify-code"
-          >
+          />
           <span
             class="button emit-verify-code"
             v-if="!regisShowTime"
             @click="sendVerifyCode('reg')"
           >发送验证码</span>
-          <span
-            class="verify-code-time"
-            v-else
-          >{{regtotalTime}}s后重试</span>
+          <span class="verify-code-time" v-else>{{regtotalTime}}s后重试</span>
         </div>
         <div class="form-group password">
-          <input
-            type="password"
-            placeholder="请输入密码"
-            autocomplete="off"
-            v-model="regpassword"
-          >
+          <input type="password" placeholder="请输入密码" autocomplete="off" v-model="regpassword" />
         </div>
         <div class="form-group password">
           <input
@@ -129,18 +88,12 @@
             placeholder="请再次输入密码"
             autocomplete="off"
             v-model="regcheckPassWord"
-          >
+          />
         </div>
       </div>
       <!-- LOGIN BTN AREA -->
-      <div
-        class="login-btn-area button"
-        @click="registerFn"
-      >
-        注册
-      </div>
+      <div class="login-btn-area button" @click="registerFn">注册</div>
     </template>
-
   </section>
 </template>
 
@@ -240,7 +193,6 @@ export default {
         }
       }
       let params = { mobile: this.mobile };
-      params.openid = localStorage.getItem("wxUserInfo").openid;
       this.selectPassWord
         ? (params.password = this.loginpassword)
         : (params.authcode = this.loginverifyCode);
@@ -300,7 +252,6 @@ export default {
         mobile: this.mobile,
         authcode: this.regverifyCode,
         password: this.regpassword,
-        openid: localStorage.getItem("wxUserInfo").openid,
       }).then(res => {
         if (res.code == 0) {
           showMsg("注册成功");
@@ -327,7 +278,7 @@ export default {
         }
       });
     }
-  }
+  },
 };
 </script>
 
@@ -336,7 +287,7 @@ export default {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color:#fff;
+  background-color: #fff;
 
   // 背景图
   .login-bg {

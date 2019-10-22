@@ -76,13 +76,13 @@ const routes = [
         children: [
             { path: 'IdCard', component: IdCard, name: 'IdCard', meta: { title: '添加身份证' } },
             { path: 'PassPort', component: PassPort, name: 'PassPort', meta: { title: '添加护照' } },
-            { path: 'StudentInfo', component: StudentInfo, name: 'StudentInfo', meta: { title: '学历学籍' } },
+            { path: 'StudentInfo', component: StudentInfo, name: 'StudentInfo', meta: { title: '学历学籍', noRefresh: true } },
             { path: 'EMail', component: EMail, name: 'EMail', meta: { title: '单位邮箱' } },
             { path: 'Drive', component: Drive, name: 'Drive', meta: { title: '驾驶证' } },
             { path: 'CarInfo', component: CarInfo, name: 'CarInfo', meta: { title: '车辆信息' } },
             { path: 'HouseInfo', component: HouseInfo, name: 'HouseInfo', meta: { title: '房产信息' } },
             { path: 'VantIndexAnchor', component: VantIndexAnchor, name: 'VantIndexAnchor' },
-            { path: 'ZhiMaInfo', component: ZhiMaInfo, name: 'ZhiMaInfo', meta: { title: '芝麻信用' } },
+            { path: 'ZhiMaInfo', component: ZhiMaInfo, name: 'ZhiMaInfo', meta: { title: '芝麻信用', meta: { noRefresh: true } } },
             { path: 'JDInfo', component: JDInfo, name: 'JDInfo', meta: { title: '京东信用' } },
         ]
     },
@@ -127,13 +127,7 @@ let checkLogin = () => {
             localStorage.getItem("store") ? localStorage.getItem("store") : null
         ),
         userId = store ? store.userId : null;
-    // 从本地获取大众点金userId
-    const wxDianJinUserStore = JSON.parse(
-        localStorage.getItem("wxDianJinUserStore") ?
-        localStorage.getItem("wxDianJinUserStore") :
-        null
-    );
-    if (userId || wxDianJinUserStore.userId) {
+    if (userId) {
         return true
     } else {
         router.push({ name: "Login" });
@@ -197,9 +191,11 @@ router.beforeEach((to, from, next) => {
         }
         // 用于处理IOS环境微信复制链接为首页bug， 
         if (iosOrAndroid() == 'IOS') {
-            if (to.path !== location.pathname) {
-                location.assign(to.fullPath)
-                return
+            if (!to.meta.noRefresh || to.meta.noRefresh != true) {
+                if (to.path !== location.pathname) {
+                    location.assign(to.fullPath)
+                    return
+                }
             }
         }
         next();
