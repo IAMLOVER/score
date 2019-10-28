@@ -30,7 +30,8 @@ export default {
             this.$tools
               .callServer("post", "/djh/user_info/login", {
                 djOpenid: djOpenid,
-                openid: wxUserInfo.openid
+                openid: wxUserInfo.openid,
+                nickname: wxUserInfo.nickname
               })
               .then(res => {
                 if (res.code == 0) {

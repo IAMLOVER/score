@@ -36,19 +36,14 @@
     <section class="hot-recommend-area p24 mb32">
       <p class="title">热门推荐</p>
       <ul class="hot-recommend-wrap">
-        <li class="recommend-item heimingdan" @click="goToShunfeng('111')">
+        <li
+          class="recommend-item heimingdan"
+          @click="recommendLinkTo(item.eventUrl)"
+          v-for="(item,index) in hotRecommend"
+          :key="index"
+        >
           <a href="javascript:;">
-            <img src="../assets/image/creditScore/heimingdan@2x.png" alt />
-          </a>
-        </li>
-        <li class="recommend-item sifashuju" @click="goToTelling">
-          <a href="javascript:;">
-            <img src="../assets/image/creditScore/telling@2x.png" alt />
-          </a>
-        </li>
-        <li class="recommend-item xinyongxiaozhishi" @click="goToFortune">
-          <a href="javascript:;">
-            <img src="../assets/image/creditScore/xinyongxiaozhishi@2x.png" alt />
+            <img :src="item.pictureUrl" alt />
           </a>
         </li>
       </ul>
@@ -107,15 +102,22 @@
     <!-- ACTIVITY -->
     <section class="activity-area p24 mb32">
       <p class="title">精选活动</p>
-      <div class="activity-main-img" @click="showMsg">
-        <img src="../assets/image/creditScore/activity_main@2x.png" alt />
+      <div
+        class="activity-main-img"
+        @click="activityLinkTo(item.eventUrl)"
+        v-for="(item,index) in activityOne"
+        :key="index"
+      >
+        <img :src="imgPrePath + item.pictureUrl" alt v-if="item.pictureUrl" />
       </div>
       <div class="activity-sub-imgs">
-        <div class="left" @click="showMsg">
-          <img src="../assets/image/creditScore/activity_sub_1@2x.png" alt />
-        </div>
-        <div class="right" @click="showMsg">
-          <img src="../assets/image/creditScore/activity_sub_2@2x.png" alt />
+        <div
+          :class="index == 0 ? 'left' : 'right'"
+          @click="activityLinkTo(item.eventUrl)"
+          v-for="(item,index) in activitySub"
+          :key="index"
+        >
+          <img :src="imgPrePath + item.pictureUrl" alt v-if="item.pictureUrl" />
         </div>
       </div>
     </section>
@@ -132,22 +134,40 @@ export default {
   components: {},
   data() {
     return {
+      mark: "", // 来源渠道
+      isReport: "", // 是否做过征信
+      customerId: "", // 渠道用户id
       assessTime: "", // 当前评估时间
       scoreData: "", //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
       token: "", //用户token
       userId: "", //用户id
-      gradeStr: "" //级别
+      gradeStr: "", //级别
+      hotRecommend: [], // 热门推荐
+      activity: [], // 精选活动
+      activitySub: []
     };
   },
   created() {
-    this.token = this.userIdToken.token;
-    this.userId = this.userIdToken.userId;
-    this.getScoreData();
+    // 判断导航上是否有渠道mark字段，// bianlimao
+    this.mark = this.$route.query.mark;
+    if (this.mark == "bianlimao") {
+      this.customerId = this.$route.query.customerId;
+      this.customerLogin(this.mark, this.customerId);
+    } else {
+      this.token = this.userIdToken.token;
+      this.userId = this.userIdToken.userId;
+      this.getScoreData();
+    }
+    // 获取热门推荐
+    this.getHotRecommend();
+    // 获取精选活动
+    this.getActivity();
   },
   mounted() {},
   methods: {
     ...mapMutations([
+      "SET_TOKEN_USERID",
       "SET_SCOREDATA_GRADE",
       "SET_IDCARD_STATUS",
       "SET_PASSPORT_STATUS",
@@ -239,6 +259,10 @@ export default {
         sesameStatus,
         jingdongStatus
       } = data;
+      this.SET_TOKEN_USERID({
+        token: this.token,
+        userId: this.userId
+      });
       this.SET_SCOREDATA_GRADE(creditScore);
       this.SET_IDCARD_STATUS(idCardStatus);
       this.SET_PASSPORT_STATUS(passportStatus);
@@ -251,6 +275,33 @@ export default {
       this.SET_JD_INFO_STATUS(jingdongStatus);
       localStorage.setItem("nickname", nickname);
     },
+    // 热门推荐
+    getHotRecommend() {
+      let { callServer, showMsg } = this.$tools;
+      let params = {};
+      params.mark = this.mark;
+      callServer("post", "/djh/recomment_xyf/list", params).then(res => {
+        if (res.code == 0) {
+          this.hotRecommend = res.data.list;
+        } else {
+          showMsg(res.msg);
+        }
+      });
+    },
+    // 精选活动
+    getActivity() {
+      let { callServer, showMsg } = this.$tools;
+      let params = {};
+      params.mark = this.mark;
+      callServer("post", "/djh/selected_activity/list", params).then(res => {
+        if (res.code == 0) {
+          this.activity = res.data.list;
+          this.activitySub = this.activity.splice(1, 2);
+        } else {
+          showMsg(res.msg);
+        }
+      });
+    },
     // 去信用解读
     goToInterpretation() {
       this.$router.push({
@@ -258,15 +309,36 @@ export default {
         query: { scoreData: this.scoreData }
       });
     },
-    // 去快速提分
+    // 去快速提分,需要根据渠道补充跳转链接
     goToQuickScore() {
-      this.$router.push({
-        name: "QuickScore",
-        query: { scoreData: this.scoreData }
-      });
+      if (this.mark) {
+        this.$router.push({
+          name: "QuickScore",
+          query: {
+            scoreData: this.scoreData,
+            mark: this.mark,
+            isReport: this.isReport
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "QuickScore",
+          query: { scoreData: this.scoreData }
+        });
+      }
     },
-    // 去信用报告
+    // 去信用报告,根据渠道用户是否做过信检，跳转不同页面
     goToCreditReport() {
+      // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
+      if (this.mark && this.isReport == 0) {
+        window.location.href = `${window.location.href}#need_report`;
+        return;
+      }
+      // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
+      if (this.mark && this.isReport == 1) {
+        window.location.href = `${window.location.href}#go_report`;
+        return;
+      }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();
       callServer("post", "/djh/user_info/report_token", {
@@ -275,6 +347,7 @@ export default {
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
+          console.log(res.data);
           if (res.data.token) {
             window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
           } else {
@@ -300,23 +373,54 @@ export default {
         query: { scoreData: this.scoreData }
       });
     },
-    // 去顺丰同城
-    goToShunfeng(goodsId) {
-      this.$router.push({ name: "ChangeDetails", query: { goodsId: goodsId } });
+    // 跳转热门推荐
+    recommendLinkTo(url) {
+      window.location.href = url;
     },
-    // 去运势
-    goToTelling() {
-      window.location.href =
-        "https://wn.qianssd.cn/mllyuncheng/index?channel=swdzdj000";
+    // 跳转精选活动
+    activityLinkTo(url) {
+      let { showMsg } = this.$tools;
+      if (!url) {
+        showMsg("功能正在开发中，敬请期待...");
+        return;
+      } else {
+        window.location.href = url;
+      }
     },
-    // 去每日运势
-    goToFortune() {
-      window.location.href =
-        "https://zx.1az56ps.cn/meiriyunshi/index.html?channel=swdzdj000";
+    // 来自其他渠道用户的登录
+    customerLogin(mark, customerId) {
+      let { callServer, showMsg } = this.$tools;
+      let params = {};
+      params.mark = mark;
+      params.customerId = customerId;
+      callServer("post", "/djh/user_info/cat/login", params)
+        .then(res => {
+          if (res.code == 0) {
+            this.userId = res.data.userId;
+            this.token = res.data.token;
+            this.isReport = res.data.isReport;
+          } else {
+            showMsg(res.msg);
+          }
+        })
+        .then(res => {
+          this.getScoreData();
+        });
     }
   },
   computed: {
-    ...mapGetters(["userIdToken", "getCreditScoreGrade"])
+    ...mapGetters(["userIdToken", "getCreditScoreGrade"]),
+    activityOne() {
+      return this.activity.splice(0, 1);
+    },
+    imgPrePath() {
+      let baseURL = window.location.origin;
+      baseURL =
+        baseURL.indexOf(".com") > -1
+          ? "http://xyf.dazhongdianjin.com"
+          : "http://xyf.dazhongdianjin.cn";
+      return baseURL;
+    }
   }
 };
 </script>

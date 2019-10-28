@@ -8,7 +8,7 @@ let getTicket = function() {
         if (res.code == 0) {
             const pra = {
                 jsApiTicket: res.data.accessToken,
-                url: location.href.split('#')[0]
+                url: window.location.href
             }
             return pra
         }

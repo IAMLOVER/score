@@ -2,7 +2,7 @@ import axios from 'axios';
 axios.defaults.timeout = 180000;
 // axios.defaults.withCredentials = true;
 let baseURL = window.location.origin;
-baseURL = baseURL.indexOf('.com') > -1 ? "http://xyf.dazhongdianjin.com" : "http://xyf.dazhongdianjin.cn"
+baseURL = baseURL.indexOf('.com') > -1 ? "http://xyf.dazhongdianjin.com" : "http://xyf.dazhongdianjin.cn/"
 axios.defaults.baseURL = baseURL;
 axios.interceptors.response.use(response => { //响应拦截器
     return response.data

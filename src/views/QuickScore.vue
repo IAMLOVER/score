@@ -4,20 +4,22 @@
     <section class="bg-area">
       <p class="score-data">{{scoreData}}</p>
       <p class="now-score">当前信用</p>
-      <p class="next-time">距下次评估:{{differenceTime.day}}天 {{differenceTime.hours}}时 : {{differenceTime.minutes}}分 : {{differenceTime.seconds}}秒</p>
+      <p
+        class="next-time"
+      >距下次评估:{{differenceTime.day}}天 {{differenceTime.hours}}时 : {{differenceTime.minutes}}分 : {{differenceTime.seconds}}秒</p>
     </section>
     <!-- FRIEND TIPS AREA -->
     <section class="friend-tips-area mb8">
       <p class="friend-tip">- 以下内容有助于更好的评估您的信用 -</p>
       <p class="quick-title main-wrap">快速提升</p>
-      <div
-        class="sub-wrap"
-        @click="goToCreditReport"
-      >
+      <div class="sub-wrap" @click="goToCreditReport">
         <span class="icon ic-bigdata"></span>
         <span class="sub-title">征信大数据</span>
         <span class="ic-warning"></span>
-        <span class="colorf455">￥<span class="price">19.9</span></span>
+        <span class="colorf455">
+          ￥
+          <span class="price">19.9</span>
+        </span>
         <span class="colorf455 query">我要查询</span>
       </div>
     </section>
@@ -30,20 +32,11 @@
         :key="item.id"
         @click="goToEditInfo(item.enname,item.status)"
       >
-        <span
-          class="icon"
-          :class="item.style"
-        ></span>
+        <span class="icon" :class="item.style"></span>
         <div class="right">
           <span class="sub-title">{{item.name}}</span>
-          <span
-            class="pending"
-            v-if="item.status==0"
-          >待完成</span>
-          <span
-            class="suc-icon"
-            v-else
-          ></span>
+          <span class="pending" v-if="item.status==0">待完成</span>
+          <span class="suc-icon" v-else></span>
         </div>
       </div>
     </section>
@@ -51,26 +44,12 @@
     <!-- JOBS AREA -->
     <section class="jobs-area mb8">
       <p class="main-wrap">职业</p>
-      <div
-        class="sub-wrap"
-        v-for="item in jobList"
-        :key="item.id"
-        @click="showMsg"
-      >
-        <span
-          class="icon"
-          :class="item.style"
-        ></span>
+      <div class="sub-wrap" v-for="item in jobList" :key="item.id" @click="showMsg">
+        <span class="icon" :class="item.style"></span>
         <div class="right">
           <span class="sub-title">{{item.name}}</span>
-          <span
-            class="pending"
-            v-if="item.status==0"
-          >待完成</span>
-          <span
-            class="suc-icon"
-            v-else
-          ></span>
+          <span class="pending" v-if="item.status==0">待完成</span>
+          <span class="suc-icon" v-else></span>
         </div>
       </div>
     </section>
@@ -84,27 +63,15 @@
         :key="item.id"
         @click="goToEditInfo(item.enname,item.status)"
       >
-        <span
-          class="icon"
-          :class="item.style"
-        ></span>
+        <span class="icon" :class="item.style"></span>
         <div class="right">
           <span class="sub-title">{{item.name}}</span>
-          <span
-            class="pending"
-            v-if="item.status==0"
-          >待完成</span>
-          <span
-            class="suc-icon"
-            v-else
-          ></span>
+          <span class="pending" v-if="item.status==0">待完成</span>
+          <span class="suc-icon" v-else></span>
         </div>
       </div>
     </section>
-    <footer>
-      您的个人信息以严格的认证标准进行保护， 未经您的授权不会对任何第三方提供。
-    </footer>
-
+    <footer>您的个人信息以严格的认证标准进行保护， 未经您的授权不会对任何第三方提供。</footer>
   </section>
 </template>
 
@@ -115,6 +82,8 @@ export default {
   components: {},
   data() {
     return {
+      mark: "",
+      isReport: "",
       token: "",
       userId: "",
       scoreData: "", //分数
@@ -131,6 +100,8 @@ export default {
     this.differenceTime = differenceTime;
     this.token = this.userIdToken.token;
     this.userId = this.userIdToken.userId;
+    this.mark = this.$route.query.mark;
+    this.isReport = this.$route.query.isReport;
     this.getUserInfo();
   },
   mounted() {},
@@ -325,6 +296,16 @@ export default {
     },
     // 去信用报告
     goToCreditReport() {
+      // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
+      if (this.mark && this.isReport == 0) {
+        window.location.href = `${window.location.href}#need_report`;
+        return;
+      }
+      // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
+      if (this.mark && this.isReport == 1) {
+        window.location.href = `${window.location.href}#go_report`;
+        return;
+      }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();
       callServer("post", "/djh/user_info/report_token", {

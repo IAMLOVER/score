@@ -65,7 +65,7 @@ const routes = [
     { path: '/WxAuth', component: WxAuth, name: 'WxAuth' },
     { path: '/WxDianJinAuth', component: WxDianJinAuth, name: 'WxDianJinAuth' },
     { path: '/Login', component: Login, name: 'Login', meta: { title: '登录' } },
-    { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { needLogin: true, title: '信用分' } },
+    { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
     { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
     { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用历史' } },
     { path: '/QuickScore', component: QuickScore, name: 'QuickScore', meta: { title: '快速提分' } },
@@ -148,8 +148,7 @@ let iosOrAndroid = () => {
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-    console.log(to.fullPath)
-        // 改变title
+    // 改变title
     if (to.meta.title) {
         document.title = to.meta.title;
     };
