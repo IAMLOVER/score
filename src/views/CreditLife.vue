@@ -80,7 +80,9 @@
     <router-link class="convert-icon" :to="{name:'MyOrder'}"></router-link>
 
     <!-- 新用户首次登陆送优惠券，欢迎组件 -->
-    <WelcomeToast v-if="isFirstLogin" @closeToast="closeToast" :goodsNoList="goodsNoList"></WelcomeToast>
+    <transition name="fade">
+      <WelcomeToast v-if="isFirstLogin" @closeToast="closeToast" :goodsNoList="goodsNoList"></WelcomeToast>
+    </transition>
   </section>
 </template>
 
@@ -409,6 +411,15 @@ export default {
     border-radius: 50%;
     background: url("../assets/image/creditLife/convert@2x.png") no-repeat
       center center / 100% 100%;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+   transition: opacity .3s;
+  }
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0;
   }
 }
 </style>

@@ -43,7 +43,7 @@
           :key="index"
         >
           <a href="javascript:;">
-            <img :src="item.pictureUrl" alt />
+            <img :src="imgPrePath + item.pictureUrl" alt />
           </a>
         </li>
       </ul>
