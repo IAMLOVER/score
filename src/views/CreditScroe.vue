@@ -194,10 +194,10 @@ export default {
           this.scoreData = creditScore;
           // 设置评估时间
           this.assessTime = assessTime;
-          // 设置表盘和对应的级别和时间差
-          this.setGrade(differenceTime);
           // 设置个人信息状态
           this.setUserInfoStatus(res.data);
+          // 设置表盘和对应的级别和时间差
+          this.setGrade(differenceTime);
           // 设置微信分享
           this.myWxShare(
             {
@@ -220,7 +220,7 @@ export default {
           );
         } else {
           showMsg(res.msg, 500);
-          this.$router.push({ name: "Login" });
+          // this.$router.push({ name: "Login" });
         }
       });
     },
@@ -402,10 +402,9 @@ export default {
           } else {
             showMsg(res.msg);
           }
+        }).then(res => {
+             this.getScoreData();
         })
-        .then(res => {
-          this.getScoreData();
-        });
     }
   },
   computed: {
