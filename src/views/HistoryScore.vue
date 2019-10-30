@@ -61,6 +61,7 @@
             <li
               v-for="item in dataList"
               :key="item.id"
+              @click="goHistoryDetail(item.createTime)"
             >
               <p class="list-title">{{item.createTime}} 评估</p>
               <div class="list-desc">
@@ -188,6 +189,13 @@ export default {
           }
         };
       }
+    },
+    // 去历史消息的详情页
+    goHistoryDetail(time){
+      this.$router.push({
+        name: "HistoryScoreDetail",
+        query: {creatTime: encodeURI(time)}
+      })
     }
   },
   computed: {

@@ -220,7 +220,7 @@ export default {
           );
         } else {
           showMsg(res.msg, 500);
-          // this.$router.push({ name: "Login" });
+          this.$router.push({ name: "Login" });
         }
       });
     },

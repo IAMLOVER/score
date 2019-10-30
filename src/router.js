@@ -8,6 +8,8 @@ const Interpretation = () =>
     import ("./views/Interpretation.vue");
 const HistoryScore = () =>
     import ("./views/HistoryScore.vue");
+const HistoryScoreDetail = () =>
+    import ("./views/HistoryScoreDetail.vue");
 const QuickScore = () =>
     import ("./views/QuickScore.vue");
 const EditInfo = () =>
@@ -60,54 +62,253 @@ const NotFoundComponent = () =>
 Vue.use(Router);
 
 // 创建路由规则
-const routes = [
-    { path: '/', redirect: '/CreditScore' },
-    { path: '/WxAuth', component: WxAuth, name: 'WxAuth' },
-    { path: '/WxDianJinAuth', component: WxDianJinAuth, name: 'WxDianJinAuth' },
-    { path: '/Login', component: Login, name: 'Login', meta: { title: '登录' } },
-    { path: '/CreditScore', component: CreditScore, name: 'CreditScore', meta: { title: '信用分' } },
-    { path: '/Interpretation', component: Interpretation, name: 'Interpretation', meta: { title: '信用解读' } },
-    { path: '/HistoryScore', component: HistoryScore, name: 'HistoryScore', meta: { title: '信用历史' } },
-    { path: '/QuickScore', component: QuickScore, name: 'QuickScore', meta: { title: '快速提分' } },
+const routes = [{
+        path: '/',
+        redirect: '/CreditScore'
+    },
+    {
+        path: '/WxAuth',
+        component: WxAuth,
+        name: 'WxAuth'
+    },
+    {
+        path: '/WxDianJinAuth',
+        component: WxDianJinAuth,
+        name: 'WxDianJinAuth'
+    },
+    {
+        path: '/Login',
+        component: Login,
+        name: 'Login',
+        meta: {
+            title: '登录'
+        }
+    },
+    {
+        path: '/CreditScore',
+        component: CreditScore,
+        name: 'CreditScore',
+        meta: {
+            title: '信用分'
+        }
+    },
+    {
+        path: '/Interpretation',
+        component: Interpretation,
+        name: 'Interpretation',
+        meta: {
+            title: '信用解读'
+        }
+    },
+    {
+        path: '/HistoryScore',
+        component: HistoryScore,
+        name: 'HistoryScore',
+        meta: {
+            title: '信用历史'
+        }
+    },
+    {
+        path: '/HistoryScoreDetail',
+        component: HistoryScoreDetail,
+        name: 'HistoryScoreDetail',
+        meta: {
+            title: '信用历史详情'
+        }
+    },
+    {
+        path: '/QuickScore',
+        component: QuickScore,
+        name: 'QuickScore',
+        meta: {
+            title: '快速提分'
+        }
+    },
     {
         path: '/EditInfo',
         component: EditInfo,
         name: 'EditInfo',
-        children: [
-            { path: 'IdCard', component: IdCard, name: 'IdCard', meta: { title: '添加身份证' } },
-            { path: 'PassPort', component: PassPort, name: 'PassPort', meta: { title: '添加护照' } },
-            { path: 'StudentInfo', component: StudentInfo, name: 'StudentInfo', meta: { title: '学历学籍', noRefresh: true } },
-            { path: 'EMail', component: EMail, name: 'EMail', meta: { title: '单位邮箱' } },
-            { path: 'Drive', component: Drive, name: 'Drive', meta: { title: '驾驶证' } },
-            { path: 'CarInfo', component: CarInfo, name: 'CarInfo', meta: { title: '车辆信息' } },
-            { path: 'HouseInfo', component: HouseInfo, name: 'HouseInfo', meta: { title: '房产信息' } },
-            { path: 'VantIndexAnchor', component: VantIndexAnchor, name: 'VantIndexAnchor' },
-            { path: 'ZhiMaInfo', component: ZhiMaInfo, name: 'ZhiMaInfo', meta: { title: '芝麻信用', meta: { noRefresh: true } } },
-            { path: 'JDInfo', component: JDInfo, name: 'JDInfo', meta: { title: '京东信用' } },
+        children: [{
+                path: 'IdCard',
+                component: IdCard,
+                name: 'IdCard',
+                meta: {
+                    title: '添加身份证'
+                }
+            },
+            {
+                path: 'PassPort',
+                component: PassPort,
+                name: 'PassPort',
+                meta: {
+                    title: '添加护照'
+                }
+            },
+            {
+                path: 'StudentInfo',
+                component: StudentInfo,
+                name: 'StudentInfo',
+                meta: {
+                    title: '学历学籍',
+                    noRefresh: true
+                }
+            },
+            {
+                path: 'EMail',
+                component: EMail,
+                name: 'EMail',
+                meta: {
+                    title: '单位邮箱'
+                }
+            },
+            {
+                path: 'Drive',
+                component: Drive,
+                name: 'Drive',
+                meta: {
+                    title: '驾驶证'
+                }
+            },
+            {
+                path: 'CarInfo',
+                component: CarInfo,
+                name: 'CarInfo',
+                meta: {
+                    title: '车辆信息'
+                }
+            },
+            {
+                path: 'HouseInfo',
+                component: HouseInfo,
+                name: 'HouseInfo',
+                meta: {
+                    title: '房产信息'
+                }
+            },
+            {
+                path: 'VantIndexAnchor',
+                component: VantIndexAnchor,
+                name: 'VantIndexAnchor'
+            },
+            {
+                path: 'ZhiMaInfo',
+                component: ZhiMaInfo,
+                name: 'ZhiMaInfo',
+                meta: {
+                    title: '芝麻信用',
+                    meta: {
+                        noRefresh: true
+                    }
+                }
+            },
+            {
+                path: 'JDInfo',
+                component: JDInfo,
+                name: 'JDInfo',
+                meta: {
+                    title: '京东信用'
+                }
+            },
         ]
     },
-    { path: '/CreditLife', component: CreditLife, name: "CreditLife", meta: { needLogin: true, title: '信用生活' } },
-    { path: '/CreditCheese', component: CreditCheese, name: "CreditCheese", meta: { title: '信用芝士' } },
+    {
+        path: '/CreditLife',
+        component: CreditLife,
+        name: "CreditLife",
+        meta: {
+            needLogin: true,
+            title: '信用生活'
+        }
+    },
+    {
+        path: '/CreditCheese',
+        component: CreditCheese,
+        name: "CreditCheese",
+        meta: {
+            title: '信用芝士'
+        }
+    },
     {
         path: "/CreditCheeseDetail",
         component: CreditCheeseDetail,
         name: "CreditCheeseDetail",
-        meta: { title: "芝士详情" }
+        meta: {
+            title: "芝士详情"
+        }
     },
     {
         path: "/CreditCheeseVideoDetail",
         component: CreditCheeseVideoDetail,
         name: "CreditCheeseVideoDetail",
-        meta: { title: "芝士视频详情" }
+        meta: {
+            title: "芝士视频详情"
+        }
     },
-    { path: '/CreditReport', component: CreditReport, name: "CreditReport", meta: { title: '信用报告' } },
-    { path: '/Recharge', component: Recharge, name: 'Recharge', meta: { title: '充值' } },
-    { path: '/ChangeDetails', component: ChangeDetails, name: 'ChangeDetails', meta: { title: '兑换详情' } },
-    { path: '/GoodShopList', component: GoodShopList, name: 'GoodShopList', meta: { title: '兑换商城' } },
-    { path: '/MyOrder', component: MyOrder, name: 'MyOrder', meta: { needLogin: true, title: '我的订单' } },
-    { path: '/MyRecord', component: MyRecord, name: 'MyRecord', meta: { title: '兑换记录' } },
-    { path: '/MyOrderDetail', component: MyOrderDetail, name: 'MyOrderDetail', meta: { title: '订单详情' } },
-    { path: '*', name: 'NotFoundComponent', meta: { title: '未找到页面' }, component: NotFoundComponent }
+    {
+        path: '/CreditReport',
+        component: CreditReport,
+        name: "CreditReport",
+        meta: {
+            title: '信用报告'
+        }
+    },
+    {
+        path: '/Recharge',
+        component: Recharge,
+        name: 'Recharge',
+        meta: {
+            title: '充值'
+        }
+    },
+    {
+        path: '/ChangeDetails',
+        component: ChangeDetails,
+        name: 'ChangeDetails',
+        meta: {
+            title: '兑换详情'
+        }
+    },
+    {
+        path: '/GoodShopList',
+        component: GoodShopList,
+        name: 'GoodShopList',
+        meta: {
+            title: '兑换商城'
+        }
+    },
+    {
+        path: '/MyOrder',
+        component: MyOrder,
+        name: 'MyOrder',
+        meta: {
+            needLogin: true,
+            title: '我的订单'
+        }
+    },
+    {
+        path: '/MyRecord',
+        component: MyRecord,
+        name: 'MyRecord',
+        meta: {
+            title: '兑换记录'
+        }
+    },
+    {
+        path: '/MyOrderDetail',
+        component: MyOrderDetail,
+        name: 'MyOrderDetail',
+        meta: {
+            title: '订单详情'
+        }
+    },
+    {
+        path: '*',
+        name: 'NotFoundComponent',
+        meta: {
+            title: '未找到页面'
+        },
+        component: NotFoundComponent
+    }
 ];
 const router = new Router({
     mode: 'history',
@@ -117,7 +318,10 @@ const router = new Router({
         if (savedPosition) {
             return savedPosition
         } else {
-            return { x: 0, y: 0 }
+            return {
+                x: 0,
+                y: 0
+            }
         }
     }
 });
@@ -130,7 +334,9 @@ let checkLogin = () => {
     if (userId) {
         return true
     } else {
-        router.push({ name: "Login" });
+        router.push({
+            name: "Login"
+        });
     }
 };
 
