@@ -320,7 +320,37 @@ let tools = (function() {
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]);
         return null;
-    }
+    };
+
+
+    function appendParams(url, params) {
+        if (params) {
+            var baseWithSearch = url.split('#')[0];
+            var hash = url.split('#')[1];
+            for (var key in params) {
+                var attrValue = params[key];
+                if (attrValue !== undefined) {
+                    var newParam = key + "=" + attrValue;
+                    if (baseWithSearch.indexOf('?') > -1) {
+                        var oldParamReg = new RegExp('^' + key + '=[-%.!~*\'\(\)\\w]*', 'g');
+                        if (oldParamReg.test(baseWithSearch)) {
+                            baseWithSearch = baseWithSearch.replace(oldParamReg, newParam);
+                        } else {
+                            baseWithSearch += "&" + newParam;
+                        }
+                    } else {
+                        baseWithSearch += "?" + newParam;
+                    }
+                }
+            }
+            if (hash) {
+                url = baseWithSearch + '#' + hash;
+            } else {
+                url = baseWithSearch;
+            }
+        }
+        return url;
+    };
 
     return {
         callServer,
@@ -342,7 +372,8 @@ let tools = (function() {
         dateFormat,
         setCookie,
         getCookie,
-        getQueryString
+        getQueryString,
+        appendParams
     }
 })();
 

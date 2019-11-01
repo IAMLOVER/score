@@ -52,22 +52,22 @@
     <section class="task-area p24 mb32">
       <p class="title">任务中心</p>
       <ul class="task-wrap">
-        <li @click="showMsg">
+        <li @click="goToQuickScore">
           <div class="left">
             <p class="task-icon daily"></p>
             <div class="task-desc">
               <p class="task-titles">
-                <span>每日签到赢大奖</span>
-                <span class="faf5">天天抽不停</span>
+                <span>完善信息</span>
+                <span class="faf5">快速提分</span>
               </p>
-              <p class="ce959">信用分+2</p>
+              <p class="ce959">个人资料每项+{{mark ? "3" : "5"}}</p>
             </div>
           </div>
-          <div class="right completed">
-            <span>已完成</span>
+          <div class="right" :class="statusProgress == '已完成'?'': 'completed'">
+            <span>{{statusProgress}}</span>
           </div>
         </li>
-        <li @click="showMsg">
+        <li @click="updateVip">
           <div class="left">
             <p class="task-icon vip"></p>
             <div class="task-desc">
@@ -75,14 +75,20 @@
                 <span>升级VIP会员</span>
                 <span class="faf5">信任礼包</span>
               </p>
-              <p class="ce959">信用分+200</p>
+              <p class="ce959">信用分+100</p>
             </div>
           </div>
-          <div class="right">
-            <span>未完成</span>
+          <div
+            class="right"
+            :class="userInfo.rank == 1 || userInfo.rank == 11 || userInfo.rank == 12 || userInfo.rank == 13 || userInfo.rank == 14 ? '' :'completed'"
+          >
+            <span
+              v-if="userInfo.rank == 1 || userInfo.rank == 11 || userInfo.rank == 12 || userInfo.rank == 13 || userInfo.rank == 14"
+            >已完成</span>
+            <span v-else>未完成</span>
           </div>
         </li>
-        <li @click="showMsg">
+        <li @click="settingPlan">
           <div class="left">
             <p class="task-icon repayment"></p>
             <div class="task-desc">
@@ -93,7 +99,7 @@
               <p class="ce959">信用分自动提升</p>
             </div>
           </div>
-          <div class="right">
+          <div class="right" :class="isSetReplay?'':'completed'">
             <span>未完成</span>
           </div>
         </li>
@@ -136,7 +142,9 @@ export default {
     return {
       mark: "", // 来源渠道
       isReport: "", // 是否做过征信
+      isSetReplay: "", // 是否有计划
       customerId: "", // 渠道用户id
+      userInfo: {}, // 用户信息
       assessTime: "", // 当前评估时间
       scoreData: "", //信用分默认400
       areaIcon: "icon4", //仪表盘背景图
@@ -190,6 +198,9 @@ export default {
         hideLoading();
         if (res.code == 0) {
           let { creditScore, differenceTime, assessTime } = res.data;
+          this.userInfo = res.data;
+          this.isReport = res.data.isReport;
+          this.isSetReplay = res.data.isSetReplay;
           // 设置分数
           this.scoreData = creditScore;
           // 设置评估时间
@@ -331,12 +342,32 @@ export default {
     goToCreditReport() {
       // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
       if (this.mark && this.isReport == 0) {
-        window.location.href = `${window.location.href}#need_report`;
+        let url = window.location.href;
+        // 说明点击过了
+        if (url.indexOf("#need_report") > -1) {
+          url = url.replace(
+            url.substring(url.indexOf("#need_report"), url.length),
+            ""
+          );
+          window.open("http://xyf.dazhongdianjin.com/#need_report");
+          return;
+        }
+        window.open("http://xyf.dazhongdianjin.com/#need_report");
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
       if (this.mark && this.isReport == 1) {
-        window.location.href = `${window.location.href}#go_report`;
+        let url = window.location.href;
+        // 说明点击过了
+        if (url.indexOf("#go_report") > -1) {
+          url = url.replace(
+            url.substring(url.indexOf("#go_report"), url.length),
+            ""
+          );
+          window.open("http://xyf.dazhongdianjin.com/#go_report");
+          return;
+        }
+        window.open("http://xyf.dazhongdianjin.com/#go_report");
         return;
       }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
@@ -347,7 +378,6 @@ export default {
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
-          console.log(res.data);
           if (res.data.token) {
             window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
           } else {
@@ -398,13 +428,82 @@ export default {
           if (res.code == 0) {
             this.userId = res.data.userId;
             this.token = res.data.token;
-            this.isReport = res.data.isReport;
           } else {
             showMsg(res.msg);
           }
-        }).then(res => {
-             this.getScoreData();
         })
+        .then(res => {
+          this.getScoreData();
+        });
+    },
+    // 升级ViP
+    updateVip() {
+      let { showMsg } = this.$tools;
+      if (this.mark == "bianlimao" && this.userInfo.rank == 0) {
+        let url = window.location.href;
+        // 说明点击过了
+        if (url.indexOf("#update_vip") > -1) {
+          url = url.replace(
+            url.substring(url.indexOf("#update_vip"), url.length),
+            ""
+          );
+          window.open("http://xyf.dazhongdianjin.com/#update_vip");
+          return;
+        }
+        window.open("http://xyf.dazhongdianjin.com/#update_vip");
+        return;
+      }
+      if (
+        this.mark == "bianlimao" &&
+        (this.userInfo.rank == 1 ||
+          this.userInfo.rank == 11 ||
+          this.userInfo.rank == 12 ||
+          this.userInfo.rank == 13 ||
+          this.userInfo.rank == 14)
+      ) {
+        showMsg("你已经是VIP用户");
+      }
+      if (!this.mark) {
+        showMsg("功能正在开发中，敬请期待...");
+      }
+    },
+    // 设置还款计划
+    settingPlan() {
+      let { showMsg } = this.$tools;
+      if (!this.mark) {
+        showMsg("功能正在开发中，敬请期待...");
+        return;
+      }
+      if (this.mark == "bianlimao" && this.userInfo.rank == 0) {
+        showMsg("请先升级为VIP会员");
+        return;
+      }
+      if (
+        this.mark == "bianlimao" &&
+        this.userInfo.rank != 0 &&
+        this.isSetReplay == 0
+      ) {
+        let url = window.location.href;
+        // 说明点击过了
+        if (url.indexOf("#update_plan") > -1) {
+          url = url.replace(
+            url.substring(url.indexOf("#update_plan"), url.length),
+            ""
+          );
+          window.open("http://xyf.dazhongdianjin.com/#update_plan");
+          return;
+        }
+        window.open("http://xyf.dazhongdianjin.com/#update_plan");
+        return;
+      }
+      if (
+        this.mark == "bianlimao" &&
+        this.userInfo.rank != 0 &&
+        this.isSetReplay != 0
+      ) {
+        showMsg("你已经作过计划了");
+        return;
+      }
     }
   },
   computed: {
@@ -419,6 +518,44 @@ export default {
           ? "http://xyf.dazhongdianjin.com"
           : "http://xyf.dazhongdianjin.cn";
       return baseURL;
+    },
+    statusProgress() {
+      let userInfo = this.userInfo;
+      let account = 0;
+      for (const key in userInfo) {
+        if (key == "deedStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "driverLicenseStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "drivingLicenseStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "educationStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "emailStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "idCardStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "jingdongStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "passportStatus" && userInfo[key] == 1) {
+          account++;
+        }
+        if (key == "sesameStatus" && userInfo[key] == 1) {
+          account++;
+        }
+      }
+      if (account == 9) {
+        return "已完成";
+      } else {
+        return `${account}/9`;
+      }
     }
   }
 };
@@ -630,12 +767,11 @@ export default {
 .task-area {
   .task-wrap {
     width: 100%;
-    min-height: 2.82rem;
+    // min-height: 2.82rem;
     border-radius: 0.1rem;
     -webkit-box-shadow: 0px 1px 12px 0px rgba(73, 73, 73, 0.14);
     box-shadow: 0px 1px 12px 0px rgba(73, 73, 73, 0.14);
     padding: 0.2rem 0.3rem;
-
     li {
       display: -webkit-box;
       display: -webkit-flex;

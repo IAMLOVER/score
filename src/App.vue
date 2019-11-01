@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <transition name="transitionRouter">
-            <router-view></router-view>
-        </transition>
+      <router-view></router-view>
   </div>
 </template>
 <script>
@@ -109,14 +107,14 @@ body {
 .mescroll-fade-in ,.mescroll-fade-out{
   visibility: hidden !important;
 }
-.transitionRouter-enter-active,
-.transitionRouter-leave-active {
-    transition: all 0.3s ease;
-}
+// .transitionRouter-enter-active,
+// .transitionRouter-leave-active {
+//     transition: all 0.3s ease;
+// }
 
-.transitionRouter-enter,
-.transitionRouter-leave{
-    transform: translateX(100%);
-}
+// .transitionRouter-enter,
+// .transitionRouter-leave{
+//     transform: translateX(100%);
+// }
 
 </style>

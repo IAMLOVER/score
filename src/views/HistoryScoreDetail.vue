@@ -1,18 +1,25 @@
 <template>
   <section class="history-score-detail">
-    <ul v-for="(item,index) in computerDataDetail" :key="index">
-      <li v-for="(liItem, liIndex) in item.changeScore" :key="liIndex">
-        <div class="detail-left">
-          <div class="detail-title">{{
-              liIndex === "addBasicScore" ? "用户基础分" : 
-              liIndex === "addInfoScore" ? "用户信息分" : 
-              liIndex === "addKpiScore" ? "KPI分" : 
-              liIndex === "addPointsScore" ? "猫粮分" : "信用报告" }}</div>
-          <div class="detail-time">{{item.updateTime}}</div>
-        </div>
-        <div class="detail-right">+{{liItem}}</div>
-      </li>
-    </ul>
+    <div v-if="show">
+      <ul v-for="(item,index) in computerDataDetail" :key="index">
+        <li v-for="(liItem, liIndex) in item.changeScore" :key="liIndex">
+          <div class="detail-left">
+            <div class="detail-title">
+              {{
+              liIndex === "addBasicScore" ? "用户基础分" :
+              liIndex === "addInfoScore" ? "用户信息分" :
+              liIndex === "addKpiScore" ? "KPI分" :
+              liIndex === "addPointsScore" ? "猫粮分" : "信用报告" }}
+            </div>
+            <div class="detail-time">{{item.updateTime}}</div>
+          </div>
+          <div class="detail-right">+{{liItem}}</div>
+        </li>
+      </ul>
+    </div>
+    <div v-if="!show" class="empty">
+        暂无更新内容
+    </div>
   </section>
 </template>
 
@@ -23,23 +30,24 @@ export default {
       creatTime: "",
       userId: "",
       token: "",
-      dataDetail: []
+      dataDetail: [],
+      show: false
     };
   },
   computed: {
-      // 清除每次更新项目还是0的字段
-      computerDataDetail(){
-          let dataDetail = this.dataDetail;
-          // 循环数组dataDetail的每一项，找到changeScore对象，遍历对象的属性，判断如果属性值为0，直接delete掉该属性
-          dataDetail.forEach(element => {
-              for (const key in element.changeScore) {
-                 if(element.changeScore[key] == 0){
-                     delete element.changeScore[key]
-                 }
-              }
-          });
-          return dataDetail;
-      }
+    // 清除每次更新项目还是0的字段
+    computerDataDetail() {
+      let dataDetail = this.dataDetail;
+      // 循环数组dataDetail的每一项，找到changeScore对象，遍历对象的属性，判断如果属性值为0，直接delete掉该属性
+      dataDetail.forEach(element => {
+        for (const key in element.changeScore) {
+          if (element.changeScore[key] == 0) {
+            delete element.changeScore[key];
+          }
+        }
+      });
+      return dataDetail;
+    }
   },
   created() {
     this.creatTime = this.$route.query.creatTime;
@@ -57,11 +65,21 @@ export default {
       params.userId = this.userId;
       params.token = this.token;
       params.createTime = this.creatTime;
-      callServer("post", "/djh/user_credit_score/change_list",params).then((res) => {
-          if(res.code == 0){
-              this.dataDetail = res.data.list
+      callServer("post", "/djh/user_credit_score/change_list", params).then(
+        res => {
+          if (res.code == 0) {
+            this.dataDetail = res.data.list;
+            this.dataDetail.forEach(element => {
+              for (const key in element.changeScore) {
+                if (element.changeScore[key] !== 0) {
+                  this.show = true;
+                  return;
+                }
+              }
+            });
           }
-      })
+        }
+      );
     }
   }
 };
@@ -97,5 +115,11 @@ export default {
       }
     }
   }
+}
+.empty{
+    text-align: center;
+    font-size: .35rem;
+    margin-top: 6rem;
+    color: #999;
 }
 </style>

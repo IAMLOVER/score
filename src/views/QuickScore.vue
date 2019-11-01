@@ -296,14 +296,34 @@ export default {
     },
     // 去信用报告
     goToCreditReport() {
-      // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
+        // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
       if (this.mark && this.isReport == 0) {
-        window.location.href = `${window.location.href}#need_report`;
+        let url = window.location.href;
+        // 说明点击过了
+        if (url.indexOf("#need_report") > -1) {
+          url = url.replace(
+            url.substring(url.indexOf("#need_report"), url.length),
+            ""
+          );
+          window.open("http://xyf.dazhongdianjin.com/#need_report");
+          return;
+        }
+        window.open("http://xyf.dazhongdianjin.com/#need_report");
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
       if (this.mark && this.isReport == 1) {
-        window.location.href = `${window.location.href}#go_report`;
+        let url = window.location.href;
+        // 说明点击过了
+        if (url.indexOf("#go_report") > -1) {
+          url = url.replace(
+            url.substring(url.indexOf("#go_report"), url.length),
+            ""
+          );
+          window.open("http://xyf.dazhongdianjin.com/#go_report");
+          return;
+        }
+        window.open("http://xyf.dazhongdianjin.com/#go_report");
         return;
       }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;

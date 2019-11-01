@@ -48,7 +48,7 @@
               <span class="now-price">￥{{item.money}}</span>
               <span
                 class="old-price"
-                v-if="item.volume"
+                v-if="item.volume && item.volume != item.money"
               >￥{{item.volume}}</span>
             </div>
           </router-link>
