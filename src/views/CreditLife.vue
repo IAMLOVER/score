@@ -113,13 +113,7 @@ export default {
   created() {
     const { getCookie, isEmpty } = this.$tools;
     this.scoreData =
-      this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
-    if (
-      !JSON.parse(localStorage.getItem("store")).openid &&
-      /micromessenger/i.test(navigator.userAgent)
-    ) {
-      // this.saveOpenId();
-    }
+    this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
 
@@ -128,24 +122,6 @@ export default {
   },
   mounted() {},
   methods: {
-    // 保存openId
-    saveOpenId() {
-      let openid = JSON.parse(localStorage.getItem("wxUserInfo")).openid;
-      const { callServer } = this.$tools;
-      let params = {};
-      (params.openid = openid),
-        (params.userId = JSON.parse(
-          localStorage.getItem("wxDianJinUserStore")
-        ).userId),
-        (params.token = JSON.parse(
-          localStorage.getItem("wxDianJinUserStore")
-        ).token);
-      callServer("post", "/djh/user_info/save_openid", params).then(res => {
-        if (res.code == 0) {
-          JSON.parse(localStorage.getItem("store")).openid = openid;
-        }
-      });
-    },
     getBanner() {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();
@@ -251,7 +227,6 @@ export default {
       window.location.href =
         "https://api.ligusports.com/JH_venue_h5/index.html#/home?source=dzdj";
     },
-
     // 关闭welcometoast
     closeToast(val) {
       this.isFirstLogin = val;

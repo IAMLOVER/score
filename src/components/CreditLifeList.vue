@@ -5,10 +5,7 @@
         <span class="fc201D mr5">{{title}}</span>
         <span class="fc138A">{{subtitle}}</span>
       </div>
-      <div
-        class="right goMore"
-        @click="goToLifeMore(type)"
-      >更多</div>
+      <div class="right goMore" @click="goToLifeMore(type)">更多</div>
     </div>
     <ul class="content-list">
       <li
@@ -18,21 +15,12 @@
         @click="goJump(item.goodsId,item.url)"
       >
         <div class="img">
-          <img
-            :src="item.goodsImg"
-            alt=""
-          >
+          <img :src="item.goodsImg" alt />
         </div>
         <p class="life-title">{{item.goodsName}}</p>
-        <div
-          class="price-area"
-          v-if="item.money!=0"
-        >
+        <div class="price-area" v-if="item.money!=0">
           <span class="now-price">￥{{item.money}}</span>
-          <span
-            class="old-price"
-            v-if="item.volume && item.volume != item.money"
-          >￥{{item.volume}}</span>
+          <span class="old-price" v-if="item.volume && item.volume != item.money">￥{{item.volume}}</span>
         </div>
       </li>
     </ul>
@@ -66,12 +54,27 @@ export default {
     },
     // 列表跳转
     goJump(id, url) {
+      // 判断是否是其他渠道用户mark
+      let store = localStorage.getItem("store")
+        ? JSON.parse(localStorage.getItem("store"))
+        : null;
+      let mark;
+      if (store) {
+        mark = store.mark;  
+      }
       if (url) {
         window.location.href = url;
         return;
       }
       if (!id) return;
-      this.$router.push({ name: "ChangeDetails", query: { goodsId: id } });
+      if (mark == "bianlimao") {
+        this.$router.push({
+          name: "ChangeForBianlimao",
+          query: { goodsId: id }
+        });
+      } else {
+        this.$router.push({ name: "ChangeDetails", query: { goodsId: id } });
+      }
     }
   }
 };

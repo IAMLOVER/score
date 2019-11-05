@@ -49,6 +49,8 @@ const Recharge = () =>
     import ('./views/Recharge.vue');
 const ChangeDetails = () =>
     import ("./views/ChangeDetails.vue");
+const ChangeForBianlimao = () =>
+    import ("./views/ChangeForBianlimao.vue");
 const GoodShopList = () =>
     import ("./views/GoodShopList.vue");
 const MyOrder = () =>
@@ -264,6 +266,14 @@ const routes = [{
         path: '/ChangeDetails',
         component: ChangeDetails,
         name: 'ChangeDetails',
+        meta: {
+            title: '兑换详情'
+        }
+    },
+    {
+        path: '/ChangeForBianlimao',
+        component: ChangeForBianlimao,
+        name: 'ChangeForBianlimao',
         meta: {
             title: '兑换详情'
         }

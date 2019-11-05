@@ -1,22 +1,11 @@
 <template>
   <section class="goods-list-area">
     <!-- 滚动基本结构 -->
-    <MescrollVue
-      ref="mescroll"
-      :down="mescrollDown"
-      :up="mescrollUp"
-      @init="mescrollInit"
-    >
+    <MescrollVue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
       <!-- NAV AREA -->
       <nav class="table-area">
-        <router-link
-          :to="{name:'MyOrder'}"
-          class="table table-order"
-        ></router-link>
-        <router-link
-          :to="{name:'MyRecord'}"
-          class="table table-record"
-        ></router-link>
+        <router-link :to="{name:'MyOrder'}" class="table table-order"></router-link>
+        <router-link :to="{name:'MyRecord'}" class="table table-record"></router-link>
       </nav>
       <!-- GOODS TITLE LINE AREA -->
       <section class="goods-title-line-area">
@@ -25,23 +14,20 @@
         <span class="line"></span>
       </section>
       <!-- GOODS AREA -->
-      <section
-        class="credit-life-content-area"
-        id="upscrollWarp"
-      >
+      <section class="credit-life-content-area" id="upscrollWarp">
         <div class="content-list">
-          <router-link
+          <div
             class="list-item"
             v-for="(item,index) in dataList"
             :key="index"
-            :to="`ChangeDetails?goodsId=${item.goodsId}`"
+            @click="goJump(item.goodsId)"
           >
             <div class="img life1">
               <img
                 src="../assets/image/mescrolloptions/img_default@2x.png"
                 :imgurl="item.goodsImg"
-                alt=""
-              >
+                alt
+              />
             </div>
             <p class="life-title">{{item.goodsName}}</p>
             <div class="price-area">
@@ -51,7 +37,7 @@
                 v-if="item.volume && item.volume != item.money"
               >￥{{item.volume}}</span>
             </div>
-          </router-link>
+          </div>
         </div>
       </section>
     </MescrollVue>
@@ -143,6 +129,26 @@ export default {
         .catch(error => {
           mescroll.endErr();
         });
+    },
+    // 列表跳转
+    goJump(id) {
+      // 判断是否是其他渠道用户mark
+      let store = localStorage.getItem("store")
+        ? JSON.parse(localStorage.getItem("store"))
+        : null;
+      let mark;
+      if (store) {
+        mark = store.mark;
+      }
+      if (!id) return;
+      if (mark == "bianlimao") {
+        this.$router.push({
+          name: "ChangeForBianlimao",
+          query: { goodsId: id }
+        });
+      } else {
+        this.$router.push({ name: "ChangeDetails", query: { goodsId: id } });
+      }
     }
   }
 };

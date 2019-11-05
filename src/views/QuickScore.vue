@@ -20,7 +20,8 @@
           ￥
           <span class="price">19.9</span>
         </span>
-        <span class="colorf455 query">我要查询</span>
+        <span class="colorf455 query" v-if="isReport == 0">我要查询</span>
+        <span class="suc-icon" v-else style="position:absolute;right:.35rem"></span>
       </div>
     </section>
     <!-- OWN INFOS AREA -->
@@ -305,25 +306,14 @@ export default {
             url.substring(url.indexOf("#need_report"), url.length),
             ""
           );
-          window.open("http://xyf.dazhongdianjin.com/#need_report");
+          window.open(`/empty.html/#need_report`);
           return;
         }
-        window.open("http://xyf.dazhongdianjin.com/#need_report");
+        window.open(`/empty.html/#need_report`);
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
       if (this.mark && this.isReport == 1) {
-        let url = window.location.href;
-        // 说明点击过了
-        if (url.indexOf("#go_report") > -1) {
-          url = url.replace(
-            url.substring(url.indexOf("#go_report"), url.length),
-            ""
-          );
-          window.open("http://xyf.dazhongdianjin.com/#go_report");
-          return;
-        }
-        window.open("http://xyf.dazhongdianjin.com/#go_report");
         return;
       }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;

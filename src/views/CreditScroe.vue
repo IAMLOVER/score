@@ -162,6 +162,7 @@ export default {
     if (this.mark == "bianlimao") {
       this.customerId = this.$route.query.customerId;
       this.customerLogin(this.mark, this.customerId);
+      this.SET_MARK(this.mark)
     } else {
       this.token = this.userIdToken.token;
       this.userId = this.userIdToken.userId;
@@ -185,7 +186,8 @@ export default {
       "SET_CAR_INFO_STATUS",
       "SET_HOUSE_INFO_STATUS",
       "SET_ZHIMA_INFO_STATUS",
-      "SET_JD_INFO_STATUS"
+      "SET_JD_INFO_STATUS",
+      "SET_MARK"
     ]),
     getScoreData() {
       const { showLoading, hideLoading, callServer, showMsg } = this.$tools;
@@ -334,7 +336,10 @@ export default {
       } else {
         this.$router.push({
           name: "QuickScore",
-          query: { scoreData: this.scoreData }
+          query: { 
+          scoreData: this.scoreData,
+          isReport: this.isReport
+          }
         });
       }
     },
@@ -349,10 +354,10 @@ export default {
             url.substring(url.indexOf("#need_report"), url.length),
             ""
           );
-          window.open("http://xyf.dazhongdianjin.com/#need_report");
+          window.open(`/empty.html/#need_report`);
           return;
         }
-        window.open("http://xyf.dazhongdianjin.com/#need_report");
+        window.open(`/empty.html/#need_report`);
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
@@ -364,10 +369,10 @@ export default {
             url.substring(url.indexOf("#go_report"), url.length),
             ""
           );
-          window.open("http://xyf.dazhongdianjin.com/#go_report");
+          window.open(`/empty.html/#go_report`);
           return;
         }
-        window.open("http://xyf.dazhongdianjin.com/#go_report");
+        window.open(`/empty.html/#go_report`);
         return;
       }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
@@ -447,10 +452,10 @@ export default {
             url.substring(url.indexOf("#update_vip"), url.length),
             ""
           );
-          window.open("http://xyf.dazhongdianjin.com/#update_vip");
+          window.open(`/empty.html/#update_vip`);
           return;
         }
-        window.open("http://xyf.dazhongdianjin.com/#update_vip");
+        window.open(`/empty.html/#update_vip`);
         return;
       }
       if (
@@ -490,10 +495,10 @@ export default {
             url.substring(url.indexOf("#update_plan"), url.length),
             ""
           );
-          window.open("http://xyf.dazhongdianjin.com/#update_plan");
+          window.open(`/empty.html/#update_plan`);
           return;
         }
-        window.open("http://xyf.dazhongdianjin.com/#update_plan");
+        window.open(`/empty.html/#update_plan`);
         return;
       }
       if (

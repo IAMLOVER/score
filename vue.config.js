@@ -6,7 +6,7 @@ function resolve(dir) {
 module.exports = {
     publicPath: "/",
     lintOnSave: false, //关闭整个页面的eslint检查
-    productionSourceMap: true,
+    productionSourceMap: false,
     chainWebpack(config) {
         config.resolve.alias
             .set('components', resolve('src/components'))
