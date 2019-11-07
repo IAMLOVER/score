@@ -41,7 +41,7 @@ export default {
       if (type == 4) {
         //大健康
         window.location.href =
-          "https://jkt.jkwlx.net/wx/index.jhtml?from=singlemessage&isappinstalled=0";
+          "https://jkt.jkwlx.net/wx/index.jhtml?sponsorId=66747441";
         return;
       }
       if (type == 3) {

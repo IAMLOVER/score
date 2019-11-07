@@ -91,7 +91,8 @@ export default {
       ownInfoList: [], //个人信息数据
       jobList: [], //职业数据
       creditList: [], //信用数据
-      differenceTime: "" //时间
+      differenceTime: "", //时间
+      baseURL: "" // 用于跳转到空白页面的baseUrl
     };
   },
   created() {
@@ -104,6 +105,8 @@ export default {
     this.mark = this.$route.query.mark;
     this.isReport = this.$route.query.isReport;
     this.getUserInfo();
+    let baseURL = window.location.origin;
+    this.baseURL = baseURL.indexOf(".com") > -1 ? "http://m.dazhongdianjin.com" : "http://m.dazhongdianjin.cn";
   },
   mounted() {},
   methods: {
@@ -293,6 +296,10 @@ export default {
         this.$tools.showMsg("信息已填写完成");
         return;
       }
+      if(this.mark && info == "IdCard"){
+        window.open(`${this.baseURL}/empty.html#certification`);
+        return;
+      }
       this.$router.push({ path: `EditInfo/${info}`, query: { info: info } });
     },
     // 去信用报告
@@ -306,10 +313,10 @@ export default {
             url.substring(url.indexOf("#need_report"), url.length),
             ""
           );
-          window.open(`/empty.html/#need_report`);
+          window.open(`${this.baseURL}/empty.html#need_report`);
           return;
         }
-        window.open(`/empty.html/#need_report`);
+        window.open(`${this.baseURL}/empty.html#need_report`);
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听

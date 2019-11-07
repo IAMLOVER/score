@@ -153,7 +153,8 @@ export default {
       gradeStr: "", //级别
       hotRecommend: [], // 热门推荐
       activity: [], // 精选活动
-      activitySub: []
+      activitySub: [],
+      baseURL: "" // 用于跳转到空白页面的baseUrl
     };
   },
   created() {
@@ -162,7 +163,7 @@ export default {
     if (this.mark == "bianlimao") {
       this.customerId = this.$route.query.customerId;
       this.customerLogin(this.mark, this.customerId);
-      this.SET_MARK(this.mark)
+      this.SET_MARK(this.mark);
     } else {
       this.token = this.userIdToken.token;
       this.userId = this.userIdToken.userId;
@@ -172,6 +173,8 @@ export default {
     this.getHotRecommend();
     // 获取精选活动
     this.getActivity();
+    let baseURL = window.location.origin;
+    this.baseURL = baseURL.indexOf(".com") > -1 ? "http://m.dazhongdianjin.com" : "http://m.dazhongdianjin.cn";
   },
   mounted() {},
   methods: {
@@ -336,9 +339,9 @@ export default {
       } else {
         this.$router.push({
           name: "QuickScore",
-          query: { 
-          scoreData: this.scoreData,
-          isReport: this.isReport
+          query: {
+            scoreData: this.scoreData,
+            isReport: this.isReport
           }
         });
       }
@@ -354,10 +357,10 @@ export default {
             url.substring(url.indexOf("#need_report"), url.length),
             ""
           );
-          window.open(`/empty.html/#need_report`);
+          window.open(`${this.baseURL}/empty.html#need_report`);
           return;
         }
-        window.open(`/empty.html/#need_report`);
+        window.open(`${this.baseURL}/empty.html#need_report`);
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
@@ -369,10 +372,10 @@ export default {
             url.substring(url.indexOf("#go_report"), url.length),
             ""
           );
-          window.open(`/empty.html/#go_report`);
+          window.open(`${this.baseURL}/empty.html#go_report`);
           return;
         }
-        window.open(`/empty.html/#go_report`);
+        window.open(`${this.baseURL}/empty.html#go_report`);
         return;
       }
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
@@ -452,10 +455,10 @@ export default {
             url.substring(url.indexOf("#update_vip"), url.length),
             ""
           );
-          window.open(`/empty.html/#update_vip`);
+          window.open(`${this.baseURL}/empty.html#update_vip`);
           return;
         }
-        window.open(`/empty.html/#update_vip`);
+        window.open(`${this.baseURL}/empty.html#update_vip`);
         return;
       }
       if (
@@ -495,10 +498,10 @@ export default {
             url.substring(url.indexOf("#update_plan"), url.length),
             ""
           );
-          window.open(`/empty.html/#update_plan`);
+          window.open(`${this.baseURL}/empty.html#update_plan`);
           return;
         }
-        window.open(`/empty.html/#update_plan`);
+        window.open(`${this.baseURL}/empty.html#update_plan`);
         return;
       }
       if (
@@ -573,7 +576,6 @@ export default {
   height: 4.2rem;
   background: url("../assets/image/creditScore/banner@2x.png") no-repeat center
     center / 100% 100%;
-
   .score-area {
     position: absolute;
     width: 2.8rem;

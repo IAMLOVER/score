@@ -59,8 +59,8 @@ const MyRecord = () =>
     import ("./views/MyRecord.vue");
 const MyOrderDetail = () =>
     import ("./views/MyOrderDetail.vue");
-const NotFoundComponent = () =>
-    import ("./views/NotFoundComponent.vue")
+// const NotFoundComponent = () =>
+//     import ("./views/NotFoundComponent.vue")
 Vue.use(Router);
 
 // 创建路由规则
@@ -311,14 +311,14 @@ const routes = [{
             title: '订单详情'
         }
     },
-    {
-        path: '*',
-        name: 'NotFoundComponent',
-        meta: {
-            title: '未找到页面'
-        },
-        component: NotFoundComponent
-    }
+    // {
+    //     path: '*',
+    //     name: 'NotFoundComponent',
+    //     meta: {
+    //         title: '未找到页面'
+    //     },
+    //     component: NotFoundComponent
+    // }
 ];
 const router = new Router({
     mode: 'history',

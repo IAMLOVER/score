@@ -63,10 +63,16 @@ export default {
       goodsId: "",
       goodsDetail: "",
       typeIcon: "success", //显示是否成功图标
-      isShowToast: false //是否显示toast
+      isShowToast: false, //是否显示toast
+      baseURL: "" // 用于跳转到空白页面的baseUrl
     };
   },
   created() {
+    let baseURL = window.location.origin;
+    this.baseURL =
+      baseURL.indexOf(".com") > -1
+        ? "http://m.dazhongdianjin.com"
+        : "http://m.dazhongdianjin.cn";
     const store = JSON.parse(
       localStorage.getItem("store") ? localStorage.getItem("store") : null
     );
@@ -155,7 +161,7 @@ export default {
           let serialNo = res.data.serialNo;
           localStorage.setItem("serialNo", serialNo);
           window.open(
-            `/empty.html/#order_no=${serialNo}`
+            `${this.baseURL}/empty.html#order_no=${serialNo}`
           );
         } else {
           hideLoading();
@@ -178,7 +184,7 @@ export default {
     },
     // 兑换接口
     exchange() {
-      const { callServer, showMsg, showLoading,hideLoading } = this.$tools;
+      const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
       const serialNo = localStorage.getItem("serialNo")
         ? localStorage.getItem("serialNo")
         : "";
