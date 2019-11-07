@@ -31,7 +31,6 @@
           v-if="goodsDetail.stock>0"
           class="submit-info"
           :class="userId ? 'active': ''"
-          :disabled="userId ? true :false"
           @click="submitGoodsInfo(goodsDetail.money)"
         >{{goodsDetail.money==0?'免费兑换':'立即兑换'}}</div>
         <div v-else class="no-exchange" @click="showMsg">不可兑换</div>
@@ -79,7 +78,7 @@ export default {
     this.userId = store ? store.userId : null;
     this.token = store ? store.token : null;
     this.mark = store ? store.mark : null;
-    this.goodsId = this.$route.query.goodsId;
+    this.goodsId = this.$route.query.goodsId ?  this.$route.query.goodsId : localStorage.getItem('goodsId');
     this.getGoodsDetail(this.goodsId);
 
     // 后台确定支付结果，返回到此页面;
@@ -160,9 +159,8 @@ export default {
           // 拿到订单号跳转链接交予app
           let serialNo = res.data.serialNo;
           localStorage.setItem("serialNo", serialNo);
-          window.open(
-            `${this.baseURL}/empty.html#order_no=${serialNo}`
-          );
+          localStorage.setItem("goodsId", this.goodsId);
+          window.location.href =  `${this.baseURL}/empty.html#order_no=${serialNo}`
         } else {
           hideLoading();
           showMsg(res.msg);
@@ -312,10 +310,8 @@ export default {
   }
 
   .goods-btn-area {
-    position: absolute;
+    margin-top: .2rem;
     width: 100%;
-    left: 0;
-    bottom: 0.2rem;
   }
   .submit-info {
     width: 5.6rem;

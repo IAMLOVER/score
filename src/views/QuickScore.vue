@@ -304,26 +304,27 @@ export default {
     },
     // 去信用报告
     goToCreditReport() {
+      const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
         // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
       if (this.mark && this.isReport == 0) {
-        let url = window.location.href;
-        // 说明点击过了
-        if (url.indexOf("#need_report") > -1) {
-          url = url.replace(
-            url.substring(url.indexOf("#need_report"), url.length),
-            ""
-          );
-          window.open(`${this.baseURL}/empty.html#need_report`);
-          return;
-        }
-        window.open(`${this.baseURL}/empty.html#need_report`);
+        // let url = window.location.href;
+        // // 说明点击过了
+        // if (url.indexOf("#need_report") > -1) {
+        //   url = url.replace(
+        //     url.substring(url.indexOf("#need_report"), url.length),
+        //     ""
+        //   );
+        //   window.open(`${this.baseURL}/empty.html#need_report`);
+        //   return;
+        // }
+        // window.open(`${this.baseURL}/empty.html#need_report`);
+        showMsg('功能正在完善中...')
         return;
       }
       // 其他渠道进入，并且完成信检，刷新当前页，后面加入#go_report字段，交予app监听
       if (this.mark && this.isReport == 1) {
         return;
       }
-      const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();
       callServer("post", "/djh/user_info/report_token", {
         userId: this.userId,
@@ -334,7 +335,8 @@ export default {
           if (res.data.token) {
             window.location.href = `http://wlm.dazhongdianjin.com/creditReport/creditReportNew/creditSearchNew.html?token=${res.data.token}`;
           } else {
-            this.$router.push({ name: "CreditReport" });
+            showMsg('功能正在完善中...')
+            // this.$router.push({ name: "CreditReport" });
           }
         } else if (res.code == 101) {
           // 登录超时

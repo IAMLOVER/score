@@ -65,11 +65,10 @@
     </template>
 
     <!-- Private doctor AREA -->
-    <template v-if="djkList.length>0">
+    <!-- <template v-if="djkList.length>0">
       <CreditLifeList :lifeList="djkList" title="大健康" subtitle="平安好医生、私人医生" type="4"></CreditLifeList>
-      <!-- 分割线 -->
       <div class="line10"></div>
-    </template>
+    </template>-->
 
     <!-- Intellectual finance area -->
     <template v-if="zjrList.length>0">
@@ -83,6 +82,27 @@
     <transition name="fade">
       <WelcomeToast v-if="isFirstLogin" @closeToast="closeToast" :goodsNoList="goodsNoList"></WelcomeToast>
     </transition>
+    <Eleven
+      :goodsList="elevenData"
+      @showEleven="showElevenFn"
+      @receiveElevenGoods="receiveElevenGoodsFn"
+      v-if="showEleven && elevenData.length==1"
+    ></Eleven>
+    <ElevenTwo
+      :goodsList="elevenData"
+      @showEleven="showElevenFn"
+      @receiveElevenGoods="receiveElevenGoodsFn"
+      v-if="showEleven && elevenData.length==2"
+    ></ElevenTwo>
+    <ElevenThree
+      :goodsList="elevenData"
+      @showEleven="showElevenFn"
+      @receiveElevenGoods="receiveElevenGoodsFn"
+      v-if="showEleven && elevenData.length==3"
+    ></ElevenThree>
+
+    <ElevenSuccess v-show="elevenSuccessShow" @elevenSuccessShow="elevenSuccessShowFn" @goMyOrder="goMyOrderFn"></ElevenSuccess>
+    <ElevenFail v-show="elevenFailShow" @elevenFailShow="elevenFailShowFn"></ElevenFail>
   </section>
 </template>
 
@@ -92,12 +112,24 @@ import "@/assets/css/swiper.min.css";
 import WX_SDK from "@/assets/js/WX_SDK.js";
 import CreditLifeList from "../components/CreditLifeList";
 import WelcomeToast from "../components/WelcomeToast";
-
+import Eleven from "../components/Eleven";
+import ElevenTwo from "../components/ElevenTwo";
+import ElevenThree from "../components/ElevenThree";
+import ElevenSuccess from "../components/ElevenSuccess";
+import ElevenFail from "../components/ElevenFail";
 import { mapGetters } from "vuex";
 export default {
   name: "CreditLife",
   mixins: [WX_SDK],
-  components: { CreditLifeList, WelcomeToast },
+  components: {
+    CreditLifeList,
+    WelcomeToast,
+    Eleven,
+    ElevenTwo,
+    ElevenThree,
+    ElevenSuccess,
+    ElevenFail
+  },
   data() {
     return {
       isFirstLogin: false, //是否新用户第一次登陆控制
@@ -107,18 +139,30 @@ export default {
       xylList: [], //新娱乐列表数据
       yshList: [], //优生活列表数据
       djkList: [], //大健康列表数据
-      zjrList: [] //智金融列表数据
+      zjrList: [], //智金融列表数据
+      elevenData: [], // 双十一活动数据
+      showEleven: false, // 弹出框显示隐藏
+      elevenSuccessShow: false,
+      elevenFailShow: false
     };
   },
   created() {
     const { getCookie, isEmpty } = this.$tools;
     this.scoreData =
-    this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
+      this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
 
     if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
-    this.getBond(); //获取新用户首次登陆券
+    const store = localStorage.getItem("store")
+      ? JSON.parse(localStorage.getItem("store"))
+      : null;
+    if (store.mark) {
+      this.getElevenData();
+      return;
+    } else {
+      this.getBond(); //获取新用户首次登陆券
+    }
   },
   mounted() {},
   methods: {
@@ -234,6 +278,54 @@ export default {
     showMsg() {
       const { showMsg } = this.$tools;
       showMsg("功能正在开发，敬请期待...");
+    },
+    getElevenData() {
+      const { callServer, showMsg } = this.$tools;
+      let params = {
+        userId: this.userIdToken.userId,
+        token: this.userIdToken.token
+      };
+      callServer("POST", "/djh/pointsEquity/getUserEquity", params).then(
+        res => {
+          if (res.code == 0) {
+            this.elevenData = res.data.goodsList;
+            if (this.elevenData && this.elevenData.length > 0) {
+              this.showEleven = true;
+            }
+          }
+        }
+      );
+    },
+    showElevenFn() {
+      this.showEleven = false;
+    },
+    elevenSuccessShowFn() {
+      this.elevenSuccessShow = false;
+    },
+    goMyOrderFn() {
+      this.elevenSuccessShow = false;
+      this.$router.push({ name: "MyOrder" });
+    },
+    elevenFailShowFn() {
+      this.elevenFailShow = false;
+    },
+    // 一键领取
+    receiveElevenGoodsFn() {
+      const { callServer, showMsg } = this.$tools;
+      let params = {
+        userId: this.userIdToken.userId,
+        token: this.userIdToken.token
+      };
+      callServer("POST", "/djh/zhongchenOrder/getGiftCard", params).then(
+        res => {
+          if (res.code == 0) {
+            this.showEleven = false;
+            this.elevenSuccessShow = true;
+          } else {
+            this.elevenFailShow = false;
+          }
+        }
+      );
     }
   },
   computed: {
@@ -390,7 +482,7 @@ export default {
 
   .fade-enter-active,
   .fade-leave-active {
-   transition: opacity .3s;
+    transition: opacity 0.3s;
   }
   .fade-enter,
   .fade-leave-active {

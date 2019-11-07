@@ -11,7 +11,18 @@ export default {
   },
   created() {}
 };
+
 </script> 
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?fb31081e41fb7cc575faa4b9d4d458dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
 <style lang="less">
 html,
