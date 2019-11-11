@@ -84,24 +84,32 @@
     </transition>
     <Eleven
       :goodsList="elevenData"
+      :disabled="disabled"
       @showEleven="showElevenFn"
       @receiveElevenGoods="receiveElevenGoodsFn"
-      v-if="showEleven && elevenData.length==1"
+      v-show="showEleven && elevenData.length==1"
     ></Eleven>
+
     <ElevenTwo
       :goodsList="elevenData"
       @showEleven="showElevenFn"
+      :disabled="disabled"
       @receiveElevenGoods="receiveElevenGoodsFn"
-      v-if="showEleven && elevenData.length==2"
+      v-show="showEleven && elevenData.length==2"
     ></ElevenTwo>
     <ElevenThree
       :goodsList="elevenData"
+      :disabled="disabled"
       @showEleven="showElevenFn"
       @receiveElevenGoods="receiveElevenGoodsFn"
-      v-if="showEleven && elevenData.length==3"
+      v-show="showEleven && elevenData.length==3"
     ></ElevenThree>
 
-    <ElevenSuccess v-show="elevenSuccessShow" @elevenSuccessShow="elevenSuccessShowFn" @goMyOrder="goMyOrderFn"></ElevenSuccess>
+    <ElevenSuccess
+      v-show="elevenSuccessShow"
+      @elevenSuccessShow="elevenSuccessShowFn"
+      @goMyOrder="goMyOrderFn"
+    ></ElevenSuccess>
     <ElevenFail v-show="elevenFailShow" @elevenFailShow="elevenFailShowFn"></ElevenFail>
   </section>
 </template>
@@ -143,7 +151,8 @@ export default {
       elevenData: [], // 双十一活动数据
       showEleven: false, // 弹出框显示隐藏
       elevenSuccessShow: false,
-      elevenFailShow: false
+      elevenFailShow: false,
+      disabled: false
     };
   },
   created() {
@@ -152,8 +161,6 @@ export default {
       this.getCreditScoreGrade.creditScore || this.$route.query.scoreData;
     this.getBanner(); //获取banner图
     this.getYshXylDataList(); //获取优生活，新娱乐数据
-
-    if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
     const store = localStorage.getItem("store")
       ? JSON.parse(localStorage.getItem("store"))
       : null;
@@ -161,6 +168,7 @@ export default {
       this.getElevenData();
       return;
     } else {
+      if (!isEmpty(getCookie("bondNum")) && getCookie("bondNum") >= 3) return;
       this.getBond(); //获取新用户首次登陆券
     }
   },
@@ -312,6 +320,7 @@ export default {
     // 一键领取
     receiveElevenGoodsFn() {
       const { callServer, showMsg } = this.$tools;
+      this.disabled = true;
       let params = {
         userId: this.userIdToken.userId,
         token: this.userIdToken.token
@@ -319,10 +328,16 @@ export default {
       callServer("POST", "/djh/zhongchenOrder/getGiftCard", params).then(
         res => {
           if (res.code == 0) {
-            this.showEleven = false;
-            this.elevenSuccessShow = true;
+            if (res.data.goodsList && res.data.goodsList.length > 0) {
+              this.elevenSuccessShow = true;
+              this.showEleven = false;
+            } else {
+              this.elevenSuccessShow = false;
+              this.elevenFailShow = true;
+              this.showEleven = false;
+            }
           } else {
-            this.elevenFailShow = false;
+            showMsg(res.msg);
           }
         }
       );

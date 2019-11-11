@@ -5,18 +5,25 @@
       <div class="goods">
         <div class="item" v-for="(item,index) in goodsList" :key="index">
           <div class="item-left">
-             <img :src="item.goodsImg.includes('http')?item.goodsImg:(imgPrePath + item.goodsImg)" alt />
+            <img
+              :src="item.goodsImg.includes('http')?item.goodsImg:(imgPrePath + item.goodsImg)"
+              alt
+            />
           </div>
           <div class="item-right">
             <p class="item-name">{{item.goodsName}}</p>
+            <p class="item-count">限量{{item.amount}}</p>
+
             <p>
               <span class="money">￥{{item.money}}</span>
               <span class="old">￥{{item.goodsPrice}}</span>
+              <span class="active" v-if="item.amount != item.receiveCount">已抢{{item.receiveCount}}</span>
+              <span class="over" v-else>已抢光</span>
             </p>
           </div>
         </div>
       </div>
-      <div class="receive" @click="receiveElevenGoods">一键领取</div>
+      <button :disabled="disabled" class="receive" @click="receiveElevenGoods">一键领取</button>
       <img src="../assets/image/creditLife/ic_close@2x.png" alt class="close" @click="showEleven" />
     </div>
   </section>
@@ -26,7 +33,8 @@
 export default {
   name: "ElevenThree",
   props: {
-    goodsList: Array
+    goodsList: Array,
+    disabled: Boolean
   },
   created() {},
   computed: {
@@ -59,7 +67,7 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 999;
-  padding-top: .35rem;
+  padding-top: 0.35rem;
   .eleven-content {
     width: 100vw;
     height: 11.27rem;
@@ -88,32 +96,45 @@ export default {
         }
         .item-right {
           height: 1rem;
+          p {
+            padding-bottom: 0.12rem;
+          }
           .item-name {
             width: 2.15rem;
             font-size: 0.28rem;
             color: #080421;
             font-family: PingFang SC;
             font-weight: 500;
-            padding-top: 0.1rem;
             overflow: hidden;
             -o-text-overflow: ellipsis;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
+             padding-bottom: 0;
+            line-height: .3rem;
           }
           .money {
             color: #ff7650;
             font-size: 0.32rem;
-            padding-top: 0.3rem;
             margin-right: 0.1rem;
           }
           .old {
             color: #999;
             font-size: 0.24rem;
             text-decoration: line-through;
-            padding-top: 0.33rem;
             display: inline-block;
+          }
+          .active,
+          .over {
+            font-size: 0.24rem;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: rgba(255, 118, 80, 1);
+            float: right;
+          }
+          .over {
+            color: #999;
           }
         }
       }
@@ -138,6 +159,8 @@ export default {
       left: 50%;
       transform: translateX(-1.615rem);
       bottom: 0.5rem;
+      border: none;
+      outline: none;
     }
     .close {
       width: 0.75rem;

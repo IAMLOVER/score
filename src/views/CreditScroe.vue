@@ -100,7 +100,8 @@
             </div>
           </div>
           <div class="right" :class="isSetReplay?'':'completed'">
-            <span>未完成</span>
+            <span v-if="!isSetReplay">未完成</span>
+            <span v-else>已完成</span>
           </div>
         </li>
       </ul>
@@ -375,7 +376,6 @@ export default {
             url.substring(url.indexOf("#go_report"), url.length),
             ""
           );
-          // window.open(`${this.baseURL}/empty.html#go_report`);
           window.location.href = `${this.baseURL}/empty.html#go_report`;
           return;
         }
@@ -459,11 +459,9 @@ export default {
             url.substring(url.indexOf("#update_vip"), url.length),
             ""
           );
-          // window.open(`${this.baseURL}/empty.html#update_vip`);
           window.location.href = `${this.baseURL}/empty.html#update_vip`;
           return;
         }
-        // window.open(`${this.baseURL}/empty.html#update_vip`);
           window.location.href = `${this.baseURL}/empty.html#update_vip`;
         return;
       }
@@ -504,7 +502,6 @@ export default {
             url.substring(url.indexOf("#update_plan"), url.length),
             ""
           );
-          // window.open(`${this.baseURL}/empty.html#update_plan`);
           window.location.href = `${this.baseURL}/empty.html#update_plan`;
           return;
         }
