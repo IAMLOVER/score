@@ -35,10 +35,6 @@
           @click="submitGoodsInfo(goodsDetail.money)"
         >{{goodsDetail.money==0?'免费兑换':'立即兑换'}}</div>
         <div v-else class="no-exchange" @click="showMsg">不可兑换</div>
-        <!-- <div class="now-stock">
-          （当前剩余库存
-          <span class="stock-num">{{goodsDetail.stock}}</span>）
-        </div> -->
       </div>
     </section>
     <!-- toast -->
@@ -69,7 +65,11 @@ export default {
   created() {
     //获取当前连接，根据fromId判断是从哪一个公众号进入的当前页面;1:大众点金 2:微联盟
     let fromId = this.$route.query.fromId;
-    this.userId = localStorage.getItem('store') ? JSON.parse(localStorage.getItem('store')).userId : null
+    let store = localStorage.getItem("store")
+      ? JSON.parse(localStorage.getItem("store"))
+      : null;
+    this.userId = store.userId;
+    this.token = store.token;
     this.fromId = fromId;
     if (fromId == 1) {
       // 判断大众点金是否已经授权
@@ -103,6 +103,10 @@ export default {
     }
     this.goodsId = this.$route.query.goodsId;
     this.getGoodsDetail(this.goodsId);
+    let payResult = this.$route.query.payResult;
+    if (payResult) {
+      this.checkOrderPayResult();
+    }
   },
   methods: {
     getGoodsDetail(id) {
@@ -187,56 +191,84 @@ export default {
       );
       this.userId = store ? store.userId : null;
       this.token = store ? store.token : null;
-      callServer("POST", "/djh/wx_pay/zhongchen/prepay", {
-        userId: this.userId,
-        openid: this.openid,
-        money: (money * 100).toFixed(2) * 1,
-        body: "卡券购买",
-        type: 2, //1话费 2卡券
-        goodsId: this.goodsId,
-        goodsNum: 1 //商品数量
-      }).then(res => {
-        if (res.code == 0) {
-          const params = {
-            appId: res.data.appId,
-            timeStamp: res.data.timeStamp,
-            nonceStr: res.data.nonceStr,
-            package: res.data.package,
-            signType: res.data.signType,
-            prepay_id: res.data.prepay_id,
-            sign: res.data.sign
-          };
-          // 预支付订单号
-          const outTradeNo = res.data.outTradeNo;
-          this.myWXPay(
-            params,
-            res => {
-              this.isShowToast = true;
-              this.typeIcon = "success";
-            },
-            err => {
-              this.isShowToast = true;
-              this.typeIcon = "fail";
-            },
-            cancel => {
-              callServer("POST", "/djh/wx_pay/zhongchen/cancel", {
-                outTradeNo: outTradeNo,
-                userId: this.userId,
-                token: this.token
-              }).then(res => {
-                if (res.code == 0) {
-                  showMsg("支付已取消", 2000);
-                } else {
-                  showMsg(res.msg);
-                }
-              });
-            }
-          );
-        } else {
-          hideLoading();
-          showMsg(res.msg);
-        }
-      });
+      if (this.openid) {
+        callServer("POST", "/djh/wx_pay/zhongchen/prepay", {
+          userId: this.userId,
+          openid: this.openid,
+          money: (money * 100).toFixed(2) * 1,
+          body: "卡券购买",
+          type: 2, //1话费 2卡券
+          goodsId: this.goodsId,
+          goodsNum: 1 //商品数量
+        }).then(res => {
+          if (res.code == 0) {
+            const params = {
+              appId: res.data.appId,
+              timeStamp: res.data.timeStamp,
+              nonceStr: res.data.nonceStr,
+              package: res.data.package,
+              signType: res.data.signType,
+              prepay_id: res.data.prepay_id,
+              sign: res.data.sign
+            };
+            // 预支付订单号
+            const outTradeNo = res.data.outTradeNo;
+            this.myWXPay(
+              params,
+              res => {
+                this.isShowToast = true;
+                this.typeIcon = "success";
+              },
+              err => {
+                this.isShowToast = true;
+                this.typeIcon = "fail";
+              },
+              cancel => {
+                callServer("POST", "/djh/wx_pay/zhongchen/cancel", {
+                  outTradeNo: outTradeNo,
+                  userId: this.userId,
+                  token: this.token
+                }).then(res => {
+                  if (res.code == 0) {
+                    showMsg("支付已取消", 2000);
+                  } else {
+                    showMsg(res.msg);
+                  }
+                });
+              }
+            );
+          } else {
+            hideLoading();
+            showMsg(res.msg);
+          }
+        });
+      } else {
+        callServer("POST", "/djh/wx_pay/zhongchen/webPrepay", {
+          userId: this.userId,
+          money: (money * 100).toFixed(2) * 1,
+          body: "卡券购买",
+          type: 2, //1话费 2卡券
+          goodsId: this.goodsId,
+          goodsNum: 1 //商品数量
+        }).then(res => {
+          console.log(res);
+          if (res.code == 0) {
+            let baseURL = window.location.origin;
+            baseURL =
+              baseURL.indexOf(".com") > -1
+                ? "http://xyf.dazhongdianjin.com"
+                : "http://xyf.dazhongdianjin.cn";
+
+            let redirect_url = encodeURIComponent(
+              `${baseURL}/ChangeDetails?goodsId=${this.goodsId}&payResult=1`
+            );
+            localStorage.setItem("outTradeNo", res.data.outTradeNo);
+            window.location.href = `${res.data.mweb_url}&redirect_url=${redirect_url}`;
+          } else {
+            showMsg(res.msg);
+          }
+        });
+      }
     },
     sureFn(val) {
       // 关闭弹出层
@@ -250,6 +282,31 @@ export default {
     showMsg() {
       const { showMsg } = this.$tools;
       showMsg("当前库存为0，不可兑换");
+    },
+    // 查单操作
+    checkOrderPayResult() {
+      let outTradeNo = localStorage.getItem("outTradeNo");
+      let { callServer, showMsg } = this.$tools;
+      callServer("POST", "/djh/zhongchenOrder/h5PayStatus", {
+        outTradeNo: outTradeNo,
+        userId: this.userId,
+        token: this.token
+      }).then(res => {
+        if (res.code == 0) {
+          // orderStatus
+          // PREPAY(1, "预支付"),
+          // SUCCESS(2, "支付成功"),
+          // FAILURE(3, "支付失败"),
+          if (res.data.orderStatus == 1 || res.data.orderStatus == 3) {
+            this.isShowToast = true;
+            this.typeIcon = "fail";
+          }
+          if (res.data.orderStatus == 2) {
+            this.isShowToast = true;
+            this.typeIcon = "success";
+          }
+        }
+      });
     }
   }
 };

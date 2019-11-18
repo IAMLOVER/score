@@ -67,7 +67,8 @@ export default {
         return;
       }
       if (!id) return;
-      if (mark == "bianlimao") {
+      let payType = localStorage.getItem('payType');
+      if (mark == "bianlimao" && payType != 1) {
         this.$router.push({
           name: "ChangeForBianlimao",
           query: { goodsId: id }

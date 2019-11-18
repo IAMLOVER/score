@@ -142,6 +142,7 @@ export default {
   data() {
     return {
       mark: "", // 来源渠道
+      payType: "", // 支付方式 1:H5支付，2:渠道支付
       isReport: "", // 是否做过征信
       isSetReplay: "", // 是否有计划
       customerId: "", // 渠道用户id
@@ -215,6 +216,9 @@ export default {
           this.setUserInfoStatus(res.data);
           // 设置表盘和对应的级别和时间差
           this.setGrade(differenceTime);
+          if(res.data.payType == 1 || res.data.payType == 2){
+            localStorage.setItem('payType', res.data.payType)
+          }
           // 设置微信分享
           this.myWxShare(
             {
@@ -353,17 +357,6 @@ export default {
 
       // 其他渠道进入，并且没有完成信检，刷新当前页，后面加入#need_report字段，交予app监听
       if (this.mark && this.isReport == 0) {
-        // let url = window.location.href;
-        // // 说明点击过了
-        // if (url.indexOf("#need_report") > -1) {
-        //   url = url.replace(
-        //     url.substring(url.indexOf("#need_report"), url.length),
-        //     ""
-        //   );
-        //   window.open(`${this.baseURL}/empty.html#need_report`);
-        //   return;
-        // }
-        // window.open(`${this.baseURL}/empty.html#need_report`);
         showMsg('功能正在完善中...');
         return;
       }

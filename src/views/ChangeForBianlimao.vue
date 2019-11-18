@@ -34,10 +34,6 @@
           @click="submitGoodsInfo(goodsDetail.money)"
         >{{goodsDetail.money==0?'免费兑换':'立即兑换'}}</div>
         <div v-else class="no-exchange" @click="showMsg">不可兑换</div>
-        <!-- <div class="now-stock">
-          （当前剩余库存
-          <span class="stock-num">{{goodsDetail.stock}}</span>）
-        </div> -->
       </div>
     </section>
     <!-- toast -->
