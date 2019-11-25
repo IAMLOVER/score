@@ -39,6 +39,15 @@
     </section>
     <!-- toast -->
     <GoodsToast v-show="isShowToast" :typeIcon="typeIcon" @sure="sureFn" @goToTarget="goToTargetFn"></GoodsToast>
+
+    <!-- 手动确认是否完成了支付 -->
+    <div class="pay-result-shadow" v-show="showPayShadow">
+      <div class="content">
+        <div>请确认微信支付是否已完成</div>
+        <div style="color:red" @click="checkOrderPayResult">已完成支付</div>
+        <div @click="payAgain">支付遇到问题，重新支付</div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -59,7 +68,8 @@ export default {
       goodsId: "",
       goodsDetail: "",
       typeIcon: "success", //显示是否成功图标
-      isShowToast: false //是否显示toast
+      isShowToast: false, //是否显示toast
+      showPayShadow: false
     };
   },
   created() {
@@ -104,16 +114,25 @@ export default {
     this.goodsId = this.$route.query.goodsId;
     this.getGoodsDetail(this.goodsId);
     let payResult = this.$route.query.payResult;
+    window.history.replaceState(
+      null,
+      null,
+      `${window.location.href.replace("&payResult=1", "")}`
+    );
     if (payResult) {
-      this.checkOrderPayResult();
+      this.showPayShadow = true;
     }
   },
   methods: {
     getGoodsDetail(id) {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();
+      let mark = localStorage.getItem("store")
+        ? JSON.parse(localStorage.getItem("store")).mark
+        : "";
       callServer("POST", "/djh/zhongchenGoods/detail", {
-        goodsId: id
+        goodsId: id,
+        mark: mark
       }).then(res => {
         hideLoading();
         if (res.code == 0) {
@@ -263,7 +282,9 @@ export default {
               `${baseURL}/ChangeDetails?goodsId=${this.goodsId}&payResult=1`
             );
             localStorage.setItem("outTradeNo", res.data.outTradeNo);
-            window.location.href = `${res.data.mweb_url}&redirect_url=${redirect_url}`;
+            let payUrl = `${res.data.mweb_url}&redirect_url=${redirect_url}`;
+            localStorage.setItem("payUrl", payUrl);
+            window.location.href = payUrl;
           } else {
             showMsg(res.msg);
           }
@@ -292,6 +313,7 @@ export default {
         userId: this.userId,
         token: this.token
       }).then(res => {
+        this.showPayShadow = false;
         if (res.code == 0) {
           // orderStatus
           // PREPAY(1, "预支付"),
@@ -307,6 +329,12 @@ export default {
           }
         }
       });
+    },
+    // 点击重新支付
+    payAgain() {
+      this.showPayShadow = false;
+      let payUrl = localStorage.getItem("payUrl");
+      window.location.href = payUrl;
     }
   }
 };
@@ -437,6 +465,37 @@ export default {
       font-size: 0.32rem;
       color: #333;
       font-weight: 500;
+    }
+  }
+  .pay-result-shadow {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.12);
+    .content {
+      width: 5.5rem;
+      height: 3rem;
+      background: #fff;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 0.3rem;
+      div {
+        height: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        line-height: 1rem;
+        font-size: 0.28rem;
+        text-align: center;
+        border-bottom: 0.01rem solid #eee;
+        &:last-child {
+          border-bottom: none;
+          color: #666;
+        }
+      }
     }
   }
 }

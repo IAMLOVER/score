@@ -104,11 +104,13 @@ export default {
       this.mescroll = mescroll;
     },
     upCallback(page, mescroll) {
+     let mark = localStorage.getItem('store') ? JSON.parse(localStorage.getItem('store')).mark :'';
       // 发送请求
       this.$tools
         .callServer("POST", "/djh/zhongchenGoods/list", {
           pageNo: page.num - 1,
           pageSize: page.size,
+          mark: mark,
           exchangeType: this.exchangeType, //搜索卡券参数
           type: this.type //1,优生活 2，新娱乐 3，智金融
         })

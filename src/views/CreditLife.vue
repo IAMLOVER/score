@@ -214,7 +214,10 @@ export default {
     },
     getYshXylDataList() {
       const { callServer, showMsg } = this.$tools;
-      callServer("POST", "/djh/zhongchenGoods/getList", {}).then(res => {
+     let mark = localStorage.getItem('store') ? JSON.parse(localStorage.getItem('store')).mark :'';
+      callServer("POST", "/djh/zhongchenGoods/getList", {
+        mark: mark
+      }).then(res => {
         if (res.code == 0) {
           let { xylList, yshList, djkList, zjrList } = res.data;
           this.yshList = yshList;

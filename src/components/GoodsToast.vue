@@ -142,7 +142,7 @@ export default {
         width: 80%;
         p {
           flex: 1;
-          height: 100%;
+          height: .8rem;
           line-height: 0.8rem;
           text-align: center;
           cursor: pointer;

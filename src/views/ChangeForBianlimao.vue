@@ -112,8 +112,10 @@ export default {
     getGoodsDetail(id) {
       const { callServer, showLoading, hideLoading, showMsg } = this.$tools;
       showLoading();
+      let mark = localStorage.getItem('store') ? JSON.parse(localStorage.getItem('store')).mark :'';
       callServer("POST", "/djh/zhongchenGoods/detail", {
-        goodsId: id
+        goodsId: id,
+        mark:mark,
       }).then(res => {
         hideLoading();
         if (res.code == 0) {

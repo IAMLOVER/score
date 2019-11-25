@@ -203,9 +203,11 @@ export default {
     getMobileAmount() {
       const { callServer, showMsg, showLoading, hideLoading } = this.$tools;
       let mobileType = this.mobileType;
+      let mark = localStorage.getItem('store') ? JSON.parse(localStorage.getItem('store')).mark :'';
       callServer("POST", "/djh/zhongchenGoods/list", {
         bureaus: mobileType,
         goodsType: "HF",
+        mark:mark,
         pageNo: 0, //pageNo从0开始
         pageSize: 5
       }).then(res => {
