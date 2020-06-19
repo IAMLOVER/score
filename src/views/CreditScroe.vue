@@ -49,7 +49,7 @@
       </ul>
     </section>
     <!-- TASK -->
-    <section class="task-area p24 mb32">
+    <section class="task-area p24 mb32" style="display:none">
       <p class="title">任务中心</p>
       <ul class="task-wrap">
         <li @click="goToQuickScore">

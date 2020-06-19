@@ -97,27 +97,27 @@ export default {
           list: [],
           isListInit: false
         },
-        {
-          name: "房贷",
-          type: "10",
-          mescroll: null,
-          list: [],
-          isListInit: false
-        },
-        {
-          name: "车贷",
-          type: "11",
-          mescroll: null,
-          list: [],
-          isListInit: false
-        },
-        {
-          name: "信贷",
-          type: "12",
-          mescroll: null,
-          list: [],
-          isListInit: false
-        }
+        // {
+        //   name: "房贷",
+        //   type: "10",
+        //   mescroll: null,
+        //   list: [],
+        //   isListInit: false
+        // },
+        // {
+        //   name: "车贷",
+        //   type: "11",
+        //   mescroll: null,
+        //   list: [],
+        //   isListInit: false
+        // },
+        // {
+        //   name: "信贷",
+        //   type: "12",
+        //   mescroll: null,
+        //   list: [],
+        //   isListInit: false
+        // }
       ],
       tabWidth: 80, // 每个tab的宽度
       barWidth: 40, // tab底部红色线的宽度
@@ -133,7 +133,7 @@ export default {
       }
     };
   },
-  created() {},
+  created() {this.getCheeseType()},
   methods: {
     // mescroll初始化的回调
     mescrollInit(tabIndex, arg) {
@@ -285,6 +285,18 @@ export default {
       let curMescroll = this.$refs["mescroll" + this.curIndex]; // 找到当前mescroll的ref,调用子组件mescroll-vue的beforeRouteEnter方法
       curMescroll && curMescroll.beforeRouteLeave(); // 退出路由时,记录列表滚动的位置,隐藏回到顶部按钮和isBounce的配置
       next();
+    },
+    // 获取头条类型
+    getCheeseType(){
+      let {callServer,showMsg} = this.$tools;
+      callServer("POST","/djh/info_type_xyf/list",{}).then(res => {
+        if(res.code == "0"){
+          let serverTabs = res.data;
+          this.tabs.map((item,index) => {
+            return item.name = serverTabs[index].typeName;
+          })
+        }
+      })
     }
   }
 };
